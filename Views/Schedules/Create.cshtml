@@ -1,0 +1,47 @@
+@model UM_Project.Models.Schedule
+@{
+    ViewData["Title"] = "Create Schedule";
+    var courses = ViewBag.Courses as List<UM_Project.Models.Course>;
+}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">Create Schedule</div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-3">
+                            <label asp-for="CourseId" class="form-label"></label>
+                            <select asp-for="CourseId" class="form-select">
+                                <option value="">-- Select Course --</option>
+                                @foreach (var c in courses)
+                                {
+                                    <option value="@c.CourseId">@c.CourseName (@c.CourseCode)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="CourseId" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Day" class="form-label"></label>
+                            <input asp-for="Day" class="form-control" placeholder="e.g., Monday" required />
+                            <span asp-validation-for="Day" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Time" class="form-label"></label>
+                            <input asp-for="Time" class="form-control" placeholder="e.g., 09:00 - 10:30" required />
+                            <span asp-validation-for="Time" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Room" class="form-label"></label>
+                            <input asp-for="Room" class="form-control" placeholder="e.g., A-101" required />
+                            <span asp-validation-for="Room" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

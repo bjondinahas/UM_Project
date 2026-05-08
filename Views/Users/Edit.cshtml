@@ -1,0 +1,44 @@
+@model UM_Project.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Edit User";
+    var roles = ViewBag.Roles as List<IdentityRole>;
+    var currentRole = ViewBag.CurrentRole as string;
+}
+<h2>Edit User</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="CustomId"></label>
+        <input asp-for="CustomId" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Role</label>
+        <select name="role" class="form-control">
+            @foreach (var r in roles)
+            {
+                if (r.Name == currentRole)
+                {
+                    <option value="@r.Name" selected>@r.Name</option>
+                }
+                else
+                {
+                    <option value="@r.Name">@r.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

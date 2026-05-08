@@ -1,0 +1,60 @@
+@model UM_Project.Models.Professor
+@{
+    ViewData["Title"] = "Edit Professor";
+    var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
+}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-white text-center py-3">
+                    <h3 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Professor</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="ProfessorId" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="FullName" class="form-control" placeholder="Full Name" required />
+                            <label asp-for="FullName">Full Name</label>
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" class="form-control" type="email" placeholder="Email" required />
+                            <label asp-for="Email">Email</label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Title" class="form-control" placeholder="Title" />
+                            <label asp-for="Title">Title</label>
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select asp-for="DepartmentId" class="form-select" required>
+                                <option value="">-- Select Department --</option>
+                                @if (departments != null)
+                                {
+                                    foreach (var dept in departments)
+                                    {
+                                        <option value="@dept.DepartmentId" selected="@(dept.DepartmentId == Model.DepartmentId)">@dept.DepartmentName</option>
+                                    }
+                                }
+                            </select>
+                            <label asp-for="DepartmentId">Department</label>
+                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,12 @@
+@page
+@using Microsoft.AspNetCore.Identity
+@using UM_Project.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Log out";
+}
+
+@{
+    await SignInManager.SignOutAsync();
+    Response.Redirect("/");
+}

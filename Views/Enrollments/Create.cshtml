@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "New Enrollment";
+    var students = ViewBag.Students as List<UM_Project.Models.Student>;
+    var courses = ViewBag.Courses as List<UM_Project.Models.Course>;
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h3 class="mb-0"><i class="fas fa-registered me-2"></i>Enroll Student in Course</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="form-floating mb-3">
+                            <select name="StudentId" class="form-select" required>
+                                <option value="">-- Select Student --</option>
+                                @if (students != null)
+                                {
+                                    foreach (var s in students)
+                                    {
+                                        <option value="@s.StudentId">@s.FullName (@s.StudentNumber)</option>
+                                    }
+                                }
+                            </select>
+                            <label>Student</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select name="CourseId" class="form-select" required>
+                                <option value="">-- Select Course --</option>
+                                @if (courses != null)
+                                {
+                                    foreach (var c in courses)
+                                    {
+                                        <option value="@c.CourseId">@c.CourseCode - @c.CourseName</option>
+                                    }
+                                }
+                            </select>
+                            <label>Course</label>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Enroll
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

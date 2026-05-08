@@ -1,0 +1,88 @@
+@model UM_Project.Models.Course
+@{
+    ViewData["Title"] = "Edit Course";
+    var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
+    var professors = ViewBag.Professors as List<UM_Project.Models.Professor>;
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-white text-center py-3">
+                    <h3 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Course</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="CourseId" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="CourseCode" class="form-control" placeholder="Course Code" required />
+                                    <label asp-for="CourseCode">Course Code</label>
+                                    <span asp-validation-for="CourseCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Credits" class="form-control" type="number" min="1" max="10" placeholder="Credits" required />
+                                    <label asp-for="Credits">Credits</label>
+                                    <span asp-validation-for="Credits" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="CourseName" class="form-control" placeholder="Course Name" required />
+                            <label asp-for="CourseName">Course Name</label>
+                            <span asp-validation-for="CourseName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select asp-for="DepartmentId" class="form-select" required>
+                                <option value="">-- Select Department --</option>
+                                @if (departments != null)
+                                {
+                                    foreach (var dept in departments)
+                                    {
+                                        <option value="@dept.DepartmentId" selected="@(dept.DepartmentId == Model.DepartmentId)">@dept.DepartmentName</option>
+                                    }
+                                }
+                            </select>
+                            <label asp-for="DepartmentId">Department</label>
+                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select asp-for="ProfessorId" class="form-select" required>
+                                <option value="">-- Select Professor --</option>
+                                @if (professors != null)
+                                {
+                                    foreach (var prof in professors)
+                                    {
+                                        <option value="@prof.ProfessorId" selected="@(prof.ProfessorId == Model.ProfessorId)">@prof.FullName - @prof.Title</option>
+                                    }
+                                }
+                            </select>
+                            <label asp-for="ProfessorId">Professor</label>
+                            <span asp-validation-for="ProfessorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

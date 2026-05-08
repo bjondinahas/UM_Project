@@ -1,0 +1,66 @@
+@page
+@using Microsoft.AspNetCore.Identity
+@using UM_Project.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #011425 0%, #1F4959 100%);">
+                    <i class="fas fa-graduation-cap fa-3x mb-2"></i>
+                    <h3 class="mb-0">UM_Project</h3>
+                    <p class="mb-0 mt-2 opacity-75">Log in to your account</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="form-floating mb-3">
+                            <input type="email" name="Email" class="form-control" placeholder="name@example.com"  />
+                            <label>Email</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" name="Password" class="form-control" placeholder="password" />
+                            <label>Password</label>
+                        </div>
+
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="RememberMe" /> Remember
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">Log in</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">
+                        Don't have an account?
+                        <a asp-page="./Register" class="text-decoration-none">Register here</a>
+                    </p>
+                </div>
+            </div>
+            <div class="text-center mt-3 small text-muted">
+                <span>Test credentials: admin@umproject.com / Admin@123</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public async Task<IActionResult> OnPostAsync(string Email, string Password, bool RememberMe)
+    {
+        var user = await UserManager.FindByEmailAsync(Email);
+        if (user == null) return Page();
+        var result = await SignInManager.PasswordSignInAsync(user, Password, RememberMe, lockoutOnFailure: false);
+        if (result.Succeeded) return Redirect("/");
+        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        return Page();
+    }
+}

@@ -1,0 +1,22 @@
+@model IEnumerable<UM_Project.Models.Grade>
+@{
+    ViewData["Title"] = "My Grades";
+    double avg = Model.Any() ? Model.Average(g => g.Value) : 0;
+}
+<h1>My Grades</h1>
+<table class="table table-striped">
+    <thead><tr><th>Course</th><th>Grade</th><th>Status</th><th>Date</th></tr></thead>
+    <tbody>
+        @foreach (var g in Model)
+        {
+            <tr>
+                <td>@g.Course?.CourseName</td>
+                <td class="@(g.Value>=6?"text-success":"text-danger") fw-bold">@g.Value</td>
+                <td>@(g.Value>=6?"PASS":"FAIL")</td>
+                <td>@g.DateRecorded.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot><tr class="table-info"><td colspan="2"><strong>Average</strong></td><td colspan="2"><strong>@avg.ToString("0.00")</strong> @(avg>=6?"(PASS)":"(FAIL)")</td></tr></tfoot>
+</table>
+<a asp-action="Dashboard" class="btn btn-secondary">Back</a>
