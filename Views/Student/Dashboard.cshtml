@@ -1,14 +1,20 @@
 @model IEnumerable<UM_Project.Models.Enrollment>
+
 @{
     ViewData["Title"] = "Student Dashboard";
-    var grades = ViewBag.Grades as Dictionary<int, UM_Project.Models.Grade> ?? new Dictionary<int, UM_Project.Models.Grade>();
+
+    var grades = ViewBag.Grades as Dictionary<int, UM_Project.Models.Grade>
+                 ?? new Dictionary<int, UM_Project.Models.Grade>();
+
     var studentName = ViewBag.StudentName as string ?? "Student";
     var studentNumber = ViewBag.StudentNumber as string ?? "N/A";
-    var studentDepartment = (Model.FirstOrDefault()?.Course?.Department?.DepartmentName) ?? "N/A";
+
+    var studentDepartment =
+        (Model.FirstOrDefault()?.Course?.Department?.DepartmentName)
+        ?? "N/A";
 }
 
 <style>
-   
     :root {
         --primary-dark: #011425;
         --primary-medium: #1F4959;
@@ -30,7 +36,6 @@
         font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Container fade-in */
     .fade-in {
         animation: fadeInUp 0.6s ease-out;
     }
@@ -40,25 +45,11 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
         }
-    }
-
-    /* Profile Card */
-    .profile-card {
-        background: var(--gradient);
-        border-radius: 40px;
-        padding: 30px;
-        margin-top: 24px;
-        margin-bottom: 40px;
-        color: white;
-        box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2);
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        animation: slideInLeft 0.7s ease-out;
     }
 
     @@keyframes slideInLeft {
@@ -66,13 +57,70 @@
             opacity: 0;
             transform: translateX(-30px);
         }
+
         to {
             opacity: 1;
             transform: translateX(0);
         }
     }
 
-    .profile-card::before {
+    @@keyframes pulseGlow {
+        0% {
+            transform: scale(0.9);
+            opacity: 0.4;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 0.7;
+        }
+
+        100% {
+            transform: scale(0.9);
+            opacity: 0.4;
+        }
+    }
+
+    @@keyframes modalScale {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @@keyframes goldPulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 6px rgba(255, 215, 0, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+        }
+    }
+
+    .profile-section {
+        margin-top: 24px;
+        margin-bottom: 40px;
+        padding: 25px;
+        background: linear-gradient(135deg, #1F4959, #011425);
+        border-radius: 32px;
+        color: white;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+        animation: slideInLeft 0.7s ease-out;
+    }
+
+    .profile-section::before {
         content: '';
         position: absolute;
         top: -30%;
@@ -84,29 +132,59 @@
         animation: pulseGlow 4s infinite;
     }
 
-    @@keyframes pulseGlow {
-        0% { transform: scale(0.9); opacity: 0.4; }
-        50% { transform: scale(1.1); opacity: 0.7; }
-        100% { transform: scale(0.9); opacity: 0.4; }
-    }
-
     .profile-avatar {
+        position: relative;
+        width: 100px;
+        height: 100px;
         background: rgba(255,255,255,0.2);
-        backdrop-filter: blur(6px);
-        width: 85px;
-        height: 85px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.8rem;
-        transition: transform 0.3s;
-        border: 2px solid rgba(255,255,255,0.3);
+        font-size: 3rem;
+        backdrop-filter: blur(4px);
+        border: 2px solid rgba(255,255,255,0.4);
+        transition: all 0.3s;
+        cursor: pointer;
     }
 
     .profile-avatar:hover {
-        transform: scale(1.05);
+        transform: scale(1.02);
         background: rgba(255,255,255,0.3);
+    }
+
+    .edit-avatar-icon {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: #ffffff;
+        color: #1F4959;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: 0.2s;
+    }
+
+    .edit-avatar-icon:hover {
+        transform: scale(1.1);
+        background: #f0f0f0;
+    }
+
+    .profile-info h2 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+    }
+
+    .profile-info p {
+        margin-bottom: 0.3rem;
+        font-size: 0.95rem;
+        opacity: 0.9;
     }
 
     .stats-card {
@@ -123,7 +201,6 @@
         transform: translateY(-3px);
         background: rgba(255,255,255,0.25);
     }
-
 
     .section-header {
         display: flex;
@@ -155,16 +232,25 @@
     }
 
     .action-buttons {
+        margin-top: 30px;
         display: flex;
-        gap: 16px;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     .btn-custom {
-        padding: 10px 26px;
-        border-radius: 60px;
+        padding: 10px 28px;
+        border-radius: 50px;
         font-weight: 600;
-        transition: all 0.25s ease;
-        letter-spacing: 0.3px;
+        transition: all 0.2s;
+        background: #1F4959;
+        color: white;
+        border: none;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
         position: relative;
         overflow: hidden;
         z-index: 1;
@@ -186,12 +272,19 @@
         left: 0;
     }
 
-    .btn-custom:hover {
+    .btn-custom:hover,
+    .btn-custom-outline:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 18px rgba(0,0,0,0.15);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        color: white;
     }
 
-    /* Course Cards Grid */
+    .btn-custom-outline {
+        background: transparent;
+        border: 2px solid #1F4959;
+        color: #1F4959;
+    }
+
     .courses-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -215,21 +308,21 @@
         animation: fadeInUp 0.5s ease-out backwards;
     }
 
-    @@keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .course-card:nth-child(1) {
+        animation-delay: 0.05s;
     }
 
-    .course-card:nth-child(1) { animation-delay: 0.05s; }
-    .course-card:nth-child(2) { animation-delay: 0.1s; }
-    .course-card:nth-child(3) { animation-delay: 0.15s; }
-    .course-card:nth-child(4) { animation-delay: 0.2s; }
+    .course-card:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .course-card:nth-child(3) {
+        animation-delay: 0.15s;
+    }
+
+    .course-card:nth-child(4) {
+        animation-delay: 0.2s;
+    }
 
     .course-card:hover {
         transform: scale(1.02) translateY(-6px);
@@ -273,7 +366,6 @@
         margin-top: 5px;
     }
 
-  
     .modal-glass .modal-content {
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(12px);
@@ -281,17 +373,6 @@
         border: none;
         box-shadow: 0 30px 40px rgba(0,0,0,0.2);
         animation: modalScale 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-
-    @@keyframes modalScale {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
     }
 
     .modal-glass .modal-header {
@@ -313,6 +394,7 @@
         display: flex;
         justify-content: space-between;
         font-size: 1rem;
+        gap: 10px;
     }
 
     .modal-detail-list li strong {
@@ -330,28 +412,29 @@
         animation: goldPulse 1.2s infinite;
     }
 
-    @@keyframes goldPulse {
-        0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
-        70% { box-shadow: 0 0 0 6px rgba(255, 215, 0, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+    .break-word {
+        word-break: break-word;
     }
-
 
     @@media (max-width: 768px) {
         .courses-grid {
             grid-template-columns: 1fr;
         }
+
         .section-header {
             flex-direction: column;
             align-items: stretch;
             gap: 15px;
         }
+
         .action-buttons {
             justify-content: center;
         }
-        .profile-card {
+
+        .profile-section {
             padding: 20px;
         }
+
         .stats-card {
             padding: 8px 18px;
         }
@@ -359,41 +442,67 @@
 </style>
 
 <div class="container-fluid fade-in">
-    <!-- Profile Card -->
-    <div class="profile-card">
-        <div class="row align-items-center gy-3">
+
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <div class="row align-items-center gy-4">
+
             <div class="col-auto">
-                <div class="profile-avatar">
-                    <i class="fas fa-user-astronaut"></i>
+                <div class="profile-avatar" id="avatarContainer">
+                    <i class="fas fa-user-circle"></i>
+
+                    <div class="edit-avatar-icon" id="editAvatarBtn">
+                        <i class="fas fa-pencil-alt fa-xs"></i>
+                    </div>
                 </div>
             </div>
+
             <div class="col">
-                <h2 class="fw-bold mb-1">@studentName</h2>
-                <p class="mb-0"><i class="fas fa-id-card me-2"></i>Student ID: @studentNumber</p>
-                <p class="mb-0"><i class="fas fa-building me-2"></i>Department: @studentDepartment</p>
+                <div class="profile-info">
+                    <h2>@studentName</h2>
+
+                    <p>
+                        <i class="fas fa-id-card me-2"></i>
+                        Student ID: @studentNumber
+                    </p>
+
+                    <p>
+                        <i class="fas fa-building me-2"></i>
+                        Department: @studentDepartment
+                    </p>
+                </div>
             </div>
+
             <div class="col-auto">
                 <div class="stats-card">
                     <div class="fs-1 fw-bold">@Model.Count()</div>
-                    <div class="small text-uppercase opacity-75">Courses</div>
+                    <div class="small text-uppercase">Courses</div>
                 </div>
             </div>
+
         </div>
     </div>
 
-
+    <!-- Header -->
     <div class="section-header">
+
         <div class="section-title">
             <i class="fas fa-graduation-cap"></i>
             <span>My Enrolled Courses</span>
         </div>
+
         <div class="action-buttons">
-            <a asp-action="MyGrades" class="btn btn-primary btn-custom">
-                <i class="fas fa-chart-line me-2"></i>View All Grades
+
+            <a asp-action="MyGrades" class="btn-custom">
+                <i class="fas fa-chart-simple"></i>
+                View All Grades
             </a>
-            <a asp-action="Schedules" class="btn btn-outline-primary btn-custom">
-                <i class="fas fa-calendar-week me-2"></i>My Schedule
+
+            <a asp-action="Schedules" class="btn-custom btn-custom-outline">
+                <i class="fas fa-calendar-week"></i>
+                My Schedule
             </a>
+
         </div>
     </div>
 
@@ -401,24 +510,38 @@
     {
         <div class="alert alert-info text-center py-5">
             <i class="fas fa-info-circle fa-3x mb-3 d-block"></i>
+
             <h5>You are not enrolled in any courses yet.</h5>
+
             <p>Please contact the administrator for enrollment.</p>
         </div>
     }
     else
     {
         <div class="courses-grid">
+
             @foreach (var enrollment in Model)
             {
                 var course = enrollment.Course;
-                var grade = grades.ContainsKey(course.CourseId) ? grades[course.CourseId] : null;
-                var gradeValue = grade?.Value ?? 0;
-                var isPass = grade != null && gradeValue >= 6;
-                var scheduleText = (course.Schedules != null && course.Schedules.Any())
-                    ? string.Join(" • ", course.Schedules.Select(s => $"{s.Day} {s.Time} (Room {s.Room})"))
-                    : "Not scheduled";
 
-                <div class="course-card" data-bs-toggle="modal" data-bs-target="#courseModal"
+                var grade = grades.ContainsKey(course.CourseId)
+                ? grades[course.CourseId]
+                : null;
+
+                var gradeValue = grade?.Value ?? 0;
+
+                var isPass = grade != null && gradeValue >= 6;
+
+                var scheduleText =
+                (course.Schedules != null && course.Schedules.Any())
+                ? string.Join(" • ",
+                course.Schedules.Select(s =>
+                $"{s.Day} {s.Time} (Room {s.Room})"))
+                : "Not scheduled";
+
+                <div class="course-card"
+                     data-bs-toggle="modal"
+                     data-bs-target="#courseModal"
                      data-course-code="@course.CourseCode"
                      data-course-name="@course.CourseName"
                      data-professor="@(course.Professor?.FullName ?? "Not assigned")"
@@ -428,66 +551,168 @@
                      data-status="@(grade != null ? (isPass ? "PASS" : "FAIL") : "Not graded")"
                      data-schedules="@scheduleText"
                      data-is-grade-10="@(gradeValue == 10)">
+
                     <div class="course-icon">
                         <i class="fas fa-book-open"></i>
                     </div>
+
                     <div class="course-info">
-                        <div class="course-code">@course.CourseCode</div>
-                        <div class="course-name">@course.CourseName</div>
+                        <div class="course-code">
+                            @course.CourseCode
+                        </div>
+
+                        <div class="course-name">
+                            @course.CourseName
+                        </div>
                     </div>
+
                 </div>
             }
+
         </div>
     }
+
 </div>
 
+<!-- Modal -->
+<div class="modal fade modal-glass"
+     id="courseModal"
+     tabindex="-1"
+     aria-labelledby="courseModalLabel"
+     aria-hidden="true">
 
-<div class="modal fade modal-glass" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
+
         <div class="modal-content">
+
             <div class="modal-header">
+
                 <h5 class="modal-title fw-bold" id="courseModalLabel">
-                    <i class="fas fa-info-circle me-2"></i>Course Details
+                    <i class="fas fa-info-circle me-2"></i>
+                    Course Details
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
             </div>
+
             <div class="modal-body p-4">
+
                 <ul class="modal-detail-list">
-                    <li><strong>📘 Course Code:</strong> <span id="modalCourseCode"></span></li>
-                    <li><strong>📖 Course Name:</strong> <span id="modalCourseName"></span></li>
-                    <li><strong>👨‍🏫 Professor:</strong> <span id="modalProfessor"></span></li>
-                    <li><strong>⚡ Credits:</strong> <span id="modalCredits"></span></li>
-                    <li><strong>📅 Enrolled:</strong> <span id="modalEnrolled"></span></li>
-                    <li><strong>⭐ Grade:</strong> <span id="modalGrade"></span></li>
-                    <li><strong>🏷️ Status:</strong> <span id="modalStatus"></span></li>
-                    <li><strong>⏰ Schedule:</strong> <span id="modalSchedules" class="break-word"></span></li>
+
+                    <li>
+                        <strong>Course Code:</strong>
+                        <span id="modalCourseCode"></span>
+                    </li>
+
+                    <li>
+                        <strong>Course Name:</strong>
+                        <span id="modalCourseName"></span>
+                    </li>
+
+                    <li>
+                        <strong>Professor:</strong>
+                        <span id="modalProfessor"></span>
+                    </li>
+
+                    <li>
+                        <strong>Credits:</strong>
+                        <span id="modalCredits"></span>
+                    </li>
+
+                    <li>
+                        <strong>Enrolled:</strong>
+                        <span id="modalEnrolled"></span>
+                    </li>
+
+                    <li>
+                        <strong>Grade:</strong>
+                        <span id="modalGrade"></span>
+                    </li>
+
+                    <li>
+                        <strong>Status:</strong>
+                        <span id="modalStatus"></span>
+                    </li>
+
+                    <li>
+                        <strong>Schedule:</strong>
+                        <span id="modalSchedules" class="break-word"></span>
+                    </li>
+
                 </ul>
+
             </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
             </div>
+
         </div>
+
     </div>
 </div>
 
 <script>
     var modal = document.getElementById('courseModal');
-    modal.addEventListener('show.bs.modal', function(event) {
-        var btn = event.relatedTarget;
-        document.getElementById('modalCourseCode').innerText = btn.getAttribute('data-course-code');
-        document.getElementById('modalCourseName').innerText = btn.getAttribute('data-course-name');
-        document.getElementById('modalProfessor').innerText = btn.getAttribute('data-professor');
-        document.getElementById('modalCredits').innerText = btn.getAttribute('data-credits');
-        document.getElementById('modalEnrolled').innerText = btn.getAttribute('data-enrolled');
-        var gradeVal = btn.getAttribute('data-grade');
-        var isGrade10 = btn.getAttribute('data-is-grade-10') === 'True';
-        var gradeSpan = document.getElementById('modalGrade');
-        if (isGrade10 && gradeVal !== 'Not graded') {
-            gradeSpan.innerHTML = '<span class="modal-grade-10"><i class="fas fa-trophy me-1"></i> ' + gradeVal + ' / 10 Perfect!</span>';
-        } else {
-            gradeSpan.innerText = gradeVal + (gradeVal !== 'Not graded' ? ' ' : '');
-        }
-        document.getElementById('modalStatus').innerText = btn.getAttribute('data-status');
-        document.getElementById('modalSchedules').innerHTML = btn.getAttribute('data-schedules');
-    });
+
+    if (modal) {
+
+        modal.addEventListener('show.bs.modal', function (event) {
+
+            var btn = event.relatedTarget;
+
+            document.getElementById('modalCourseCode').innerText =
+                btn.getAttribute('data-course-code');
+
+            document.getElementById('modalCourseName').innerText =
+                btn.getAttribute('data-course-name');
+
+            document.getElementById('modalProfessor').innerText =
+                btn.getAttribute('data-professor');
+
+            document.getElementById('modalCredits').innerText =
+                btn.getAttribute('data-credits');
+
+            document.getElementById('modalEnrolled').innerText =
+                btn.getAttribute('data-enrolled');
+
+            var gradeVal =
+                btn.getAttribute('data-grade');
+
+            var isGrade10 =
+                btn.getAttribute('data-is-grade-10') === 'True';
+
+            var gradeSpan =
+                document.getElementById('modalGrade');
+
+            if (isGrade10 && gradeVal !== 'Not graded') {
+
+                gradeSpan.innerHTML =
+                    '<span class="modal-grade-10">' +
+                    '<i class="fas fa-trophy me-1"></i> ' +
+                    gradeVal +
+                    ' / 10 Perfect!</span>';
+
+            } else {
+
+                gradeSpan.innerText =
+                    gradeVal + (gradeVal !== 'Not graded' ? ' ' : '');
+            }
+
+            document.getElementById('modalStatus').innerText =
+                btn.getAttribute('data-status');
+
+            document.getElementById('modalSchedules').innerText =
+                btn.getAttribute('data-schedules');
+
+        });
+    }
 </script>

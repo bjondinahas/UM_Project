@@ -1,3 +1,70 @@
 @model UM_Project.Models.Department
-<h1>Edit Department</h1>
-<form asp-action="Edit"><input type="hidden" asp-for="DepartmentId"/><div class="form-group"><label asp-for="DepartmentName"></label><input asp-for="DepartmentName" class="form-control"/></div><button type="submit">Save</button></form>
+
+@{
+    ViewData["Title"] = "Edit Department";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-header bg-warning text-white text-center py-3">
+                    <h3 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>Edit Department
+                    </h3>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form asp-action="Edit" method="post">
+
+                        <input type="hidden" asp-for="DepartmentId" />
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger">
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="DepartmentName"
+                                   class="form-control"
+                                   placeholder="Department Name"
+                                   required />
+
+                            <label asp-for="DepartmentName">
+                                Department Name
+                            </label>
+
+                            <span asp-validation-for="DepartmentName"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        
+
+                        <div class="d-grid gap-2 mt-4">
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                Save Changes
+                            </button>
+
+                            <a asp-action="Index"
+                               class="btn btn-secondary">
+                                Back to List
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

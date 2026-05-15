@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Models;
+using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
@@ -11,11 +12,13 @@ namespace UM_Project.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailService _emailService;
 
-        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
         public async Task<IActionResult> Index()
@@ -38,6 +41,7 @@ namespace UM_Project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicationUser model, string password, string role)
         {
             if (ModelState.IsValid)
@@ -55,7 +59,8 @@ namespace UM_Project.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, role);
-                    TempData["Success"] = $"User {user.Email} created!";
+                    await _emailService.SendWelcomeEmailAsync(user.Email, user.FullName, password, role);
+                    TempData["Success"] = $"User {user.Email} created! Email sent.";
                     return RedirectToAction(nameof(Index));
                 }
                 foreach (var error in result.Errors)
@@ -76,6 +81,7 @@ namespace UM_Project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, ApplicationUser model, string role)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -93,21 +99,21 @@ namespace UM_Project.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-       [HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> DeleteConfirmed(string id)
-{
-    var user = await _userManager.FindByIdAsync(id);
-    if (user != null && user.Email != "admin@umproject.com")
-    {
-        await _userManager.DeleteAsync(user);
-        TempData["Success"] = "User deleted successfully!";
-    }
-    else
-    {
-        TempData["Error"] = "Cannot delete the main admin!";
-    }
-    return RedirectToAction(nameof(Index));
-}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null && user.Email != "admin@umproject.com")
+            {
+                await _userManager.DeleteAsync(user);
+                TempData["Success"] = "User deleted successfully!";
+            }
+            else
+            {
+                TempData["Error"] = "Cannot delete the main admin!";
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

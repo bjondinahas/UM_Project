@@ -13,7 +13,6 @@ namespace UM_Project.Controllers
 
         public async Task<IActionResult> Dashboard()
         {
-            
             ViewBag.TotalUsers = await _context.Users.CountAsync();
             ViewBag.TotalDepartments = await _context.Departments.CountAsync();
             ViewBag.TotalCourses = await _context.Courses.CountAsync();
@@ -21,9 +20,9 @@ namespace UM_Project.Controllers
             ViewBag.TotalStudents = await _context.Students.CountAsync();
             ViewBag.TotalEnrollments = await _context.Enrollments.CountAsync();
             ViewBag.TotalGrades = await _context.Grades.CountAsync();
+            ViewBag.TotalSchedules = await _context.Schedules.CountAsync();  // Shto këtë rresht
             ViewBag.AverageGrade = await _context.Grades.AnyAsync() ? Math.Round(await _context.Grades.AverageAsync(g => g.Value), 2) : 0;
 
-           
             ViewBag.Grade10 = await _context.Grades.CountAsync(g => g.Value == 10);
             ViewBag.Grade9 = await _context.Grades.CountAsync(g => g.Value == 9);
             ViewBag.Grade8 = await _context.Grades.CountAsync(g => g.Value == 8);
@@ -31,15 +30,8 @@ namespace UM_Project.Controllers
             ViewBag.Grade6 = await _context.Grades.CountAsync(g => g.Value == 6);
             ViewBag.Grade5 = await _context.Grades.CountAsync(g => g.Value == 5);
 
-          
-            var passingStudentsCount = await _context.Grades.Where(g => g.Value >= 6).Select(g => g.StudentId).Distinct().CountAsync();
-            var failingStudentsCount = await _context.Grades.Where(g => g.Value == 5).Select(g => g.StudentId).Distinct().CountAsync();
-            var totalStudentsWithGrades = passingStudentsCount + failingStudentsCount;
-
-            ViewBag.PassingCount = passingStudentsCount;
-            ViewBag.FailingCount = failingStudentsCount;
-            ViewBag.PassingPercentage = totalStudentsWithGrades > 0 ? Math.Round((double)passingStudentsCount / totalStudentsWithGrades * 100, 1) : 0;
-            ViewBag.FailingPercentage = totalStudentsWithGrades > 0 ? Math.Round((double)failingStudentsCount / totalStudentsWithGrades * 100, 1) : 0;
+            ViewBag.PassingCount = await _context.Grades.Where(g => g.Value >= 6).Select(g => g.StudentId).Distinct().CountAsync();
+            ViewBag.FailingCount = await _context.Grades.Where(g => g.Value == 5).Select(g => g.StudentId).Distinct().CountAsync();
 
             return View();
         }

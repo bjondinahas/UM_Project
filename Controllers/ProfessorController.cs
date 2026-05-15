@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
@@ -10,20 +11,21 @@ namespace UM_Project.Controllers
     public class ProfessorController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public ProfessorController(ApplicationDbContext context) => _context = context;
+        private readonly IEmailService _emailService;
+
+        public ProfessorController(ApplicationDbContext context, IEmailService emailService)
+        {
+            _context = context;
+            _emailService = emailService;
+        }
 
         public async Task<IActionResult> Dashboard()
         {
             var userEmail = User.Identity?.Name;
             var professor = await _context.Professors.FirstOrDefaultAsync(p => p.Email == userEmail);
             if (professor == null) return View("NoProfile");
-            var courses = await _context.Courses
-                .Include(c => c.Department)
-                .Where(c => c.ProfessorId == professor.ProfessorId)
-                .ToListAsync();
+            var courses = await _context.Courses.Include(c => c.Department).Where(c => c.ProfessorId == professor.ProfessorId).ToListAsync();
             ViewBag.ProfessorName = professor.FullName;
-            ViewBag.ProfessorEmail = professor.Email;
-            ViewBag.ProfessorDepartment = professor.Department?.DepartmentName ?? "N/A";
             return View(courses);
         }
 
@@ -41,19 +43,41 @@ namespace UM_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> SetGrade(int studentId, int courseId, int gradeValue)
         {
-            var grade = await _context.Grades.FirstOrDefaultAsync(g => g.StudentId == studentId && g.CourseId == courseId);
-            if (grade != null)
+            // Validate grade value
+            if (gradeValue < 5 || gradeValue > 10)
             {
-                grade.Value = gradeValue;
-                grade.DateRecorded = DateTime.Now;
-                _context.Update(grade);
+                TempData["Error"] = "Grade must be between 5 and 10!";
+                return RedirectToAction(nameof(CourseStudents), new { id = courseId });
             }
-            else
+            
+            var existingGrade = await _context.Grades
+                .FirstOrDefaultAsync(g => g.StudentId == studentId && g.CourseId == courseId);
+            
+            if (existingGrade != null)
             {
-                _context.Add(new Grade { StudentId = studentId, CourseId = courseId, Value = gradeValue, DateRecorded = DateTime.Now });
+                TempData["Error"] = "You cannot change an already assigned grade. Please contact the administrator if correction is needed.";
+                return RedirectToAction(nameof(CourseStudents), new { id = courseId });
             }
+            
+            var newGrade = new Grade
+            {
+                StudentId = studentId,
+                CourseId = courseId,
+                Value = gradeValue,
+                DateRecorded = DateTime.Now
+            };
+            _context.Add(newGrade);
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Grade saved!";
+            
+            // Send email notification to student (optional)
+            var student = await _context.Students.FindAsync(studentId);
+            var course = await _context.Courses.FindAsync(courseId);
+            if (student != null && course != null && !string.IsNullOrEmpty(student.Email))
+            {
+                await _emailService.SendGradeNotificationAsync(student.Email, student.FullName, course.CourseName, gradeValue);
+            }
+            
+            TempData["Success"] = "Grade saved successfully! Email notification sent.";
             return RedirectToAction(nameof(CourseStudents), new { id = courseId });
         }
 
