@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UM_Project.Data;
 using Microsoft.Extensions.Options;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
@@ -13,6 +14,7 @@ namespace UM_Project.Controllers
     public class UsersController : Controller
     {
         private readonly IUiText _ui;
+        private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
@@ -20,6 +22,7 @@ namespace UM_Project.Controllers
         private readonly AccountProvisioningSettings _settings;
 
         public UsersController(
+            ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IEmailService emailService,
@@ -27,7 +30,7 @@ namespace UM_Project.Controllers
             IOptions<AccountProvisioningSettings> settings, IUiText ui)
         {
             _ui = ui;
-
+            _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
@@ -59,6 +62,14 @@ namespace UM_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicationUser model, string password, string role)
         {
+            if (ModelState.IsValid)
+            {
+                if (await _db.Users.AnyAsync(u => u.CustomId == model.CustomId))
+                {
+                    ModelState.AddModelError(nameof(model.CustomId), _ui.Format("Flash_CustomIdDuplicate", model.CustomId));
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -106,6 +117,16 @@ namespace UM_Project.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
 
+            if (await _db.Users.AnyAsync(u => u.CustomId == model.CustomId && u.Id != id))
+            {
+                ModelState.AddModelError(nameof(model.CustomId), _ui.Format("Flash_CustomIdDuplicate", model.CustomId));
+                ViewBag.CurrentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+                ViewBag.Roles = _roleManager.Roles.OrderBy(r => r.Name).ToList();
+                ViewBag.DefaultPassword = _settings.DefaultPassword;
+                ViewBag.CanEditRole = true;
+                return View(model);
+            }
+
             user.Email = model.Email;
             user.UserName = model.Email;
             user.FullName = model.FullName;
@@ -141,7 +162,7 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user != null && user.Email is not ("superadmin@shkollademo.edu" or "superadmin@umproject.com"))
+            if (user != null && !SystemAccountEmails.IsProtected(user.Email))
             {
                 await _userManager.DeleteAsync(user);
                 TempData["Success"] = _ui["Flash_UserDeleted"];

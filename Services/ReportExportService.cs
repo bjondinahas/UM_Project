@@ -418,14 +418,26 @@ public class ReportExportService : IReportExportService
         var absences = await _db.AttendanceRecords
             .CountAsync(a => !a.IsPresent && a.AttendanceDate >= term.StartDate && a.AttendanceDate <= term.EndDate);
 
-        var courseSummaries = await _db.Courses
-            .Select(c => new
+        var courses = await _db.Courses.AsNoTracking().ToListAsync();
+        var gradesByCourse = grades.GroupBy(g => g.CourseId).ToDictionary(g => g.Key, g => g.ToList());
+
+        var courseSummaries = courses
+            .Select(c =>
             {
-                c.CourseId,
-                c.CourseName,
-                Grades = grades.Where(g => g.CourseId == c.CourseId).ToList()
+                gradesByCourse.TryGetValue(c.CourseId, out var cg);
+                cg ??= [];
+                return new { c.CourseName, Grades = cg };
             })
-            .ToListAsync();
+            .Where(c => c.Grades.Count > 0)
+            .Select(c => new CourseStat
+            {
+                CourseName = c.CourseName,
+                EnrollmentCount = c.Grades.Count,
+                AverageGrade = c.Grades.Average(g => g.Value)
+            })
+            .OrderByDescending(c => c.AverageGrade)
+            .Take(15)
+            .ToList();
 
         return new TermSummaryData
         {
@@ -442,16 +454,6 @@ public class ReportExportService : IReportExportService
                 .Select(g => new GradeCountRow { Grade = g.Key, Count = g.Count() })
                 .ToList(),
             CourseSummaries = courseSummaries
-                .Where(c => c.Grades.Count > 0)
-                .Select(c => new CourseStat
-                {
-                    CourseName = c.CourseName,
-                    EnrollmentCount = c.Grades.Count,
-                    AverageGrade = c.Grades.Average(g => g.Value)
-                })
-                .OrderByDescending(c => c.AverageGrade)
-                .Take(15)
-                .ToList()
         };
     }
 

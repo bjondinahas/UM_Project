@@ -1,4 +1,4 @@
-@model IEnumerable<UM_Project.Models.Student>
+@model IEnumerable<UM_Project.Models.StudentIndexRow>
 @{
     ViewData["Title"] = Localizer["Nav_Students"];
     ViewData["PageTitle"] = Localizer["Nav_Students"];
@@ -6,16 +6,38 @@
     ViewData["PageIcon"] = "fa-user-graduate";
     ViewData["CreateController"] = "Students";
     ViewData["CreateText"] = Localizer["Students_Add"];
+    var departments = ViewBag.Departments as IEnumerable<UM_Project.Models.Department> ?? Enumerable.Empty<UM_Project.Models.Department>();
+    var passingMin = (int)(ViewBag.PassingMinimum ?? 3);
 }
 
 <div class="um-page">
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
-        <div class="um-panel-toolbar um-toolbar-row">
+        <div class="um-panel-toolbar um-toolbar-row um-toolbar-row--filters">
             <div class="um-search-wrap">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Students_SearchPlaceholder"]" />
             </div>
+            <div class="um-filter-wrap">
+                <label class="um-filter-label" for="classFilter">@Localizer["Students_FilterClass"]</label>
+                <select id="classFilter" class="form-select form-select-sm">
+                    <option value="">@Localizer["Students_FilterAll"]</option>
+                    @foreach (var d in departments)
+                    {
+                        <option value="@d.DepartmentId">@d.DepartmentName</option>
+                    }
+                </select>
+            </div>
+            <div class="um-filter-wrap">
+                <label class="um-filter-label" for="gradeFilter">@Localizer["Students_FilterGrade"]</label>
+                <select id="gradeFilter" class="form-select form-select-sm">
+                    <option value="">@Localizer["Students_FilterAll"]</option>
+                    <option value="graded">@Localizer["Students_FilterWithGrades"]</option>
+                    <option value="none">@Localizer["Students_FilterNoGrades"]</option>
+                    <option value="atrisk">@Localizer["Students_FilterAtRisk"]</option>
+                </select>
+            </div>
+            <span id="filterCount" class="um-filter-count text-muted small"></span>
         </div>
         <div class="table-responsive">
             <table class="um-table um-table--students" id="dataTable">
@@ -24,14 +46,21 @@
                         <th>@Localizer["Students_ColStudent"]</th>
                         <th>@Localizer["Students_ColEmail"]</th>
                         <th>@Localizer["Students_ColClass"]</th>
+                        <th>@Localizer["Students_ColEnrollments"]</th>
+                        <th>@Localizer["Students_ColAvgGrade"]</th>
                         <th>@Localizer["Common_Actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var s in Model)
+                    @foreach (var row in Model)
                     {
+                        var s = row.Student;
                         var initials = string.Join("", s.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(w => w[0]));
-                        <tr>
+                        var avg = row.AverageGrade;
+                        var gradeState = avg == null ? "none" : (avg < passingMin ? "atrisk" : "graded");
+                        <tr data-dept-id="@s.DepartmentId"
+                            data-grade-state="@gradeState"
+                            data-avg="@(avg?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "")">
                             <td>
                                 <div class="um-student-cell">
                                     <span class="um-student-avatar">@initials</span>
@@ -43,6 +72,18 @@
                             </td>
                             <td><code class="um-email">@s.Email</code></td>
                             <td><span class="um-link-pill">@(s.Department?.DepartmentName ?? "—")</span></td>
+                            <td><span class="um-badge um-badge-blue">@row.EnrollmentCount</span></td>
+                            <td>
+                                @if (row.AverageGrade.HasValue)
+                                {
+                                    <span class="um-grade-pill @(row.AverageGrade < passingMin ? "um-grade-pill--low" : "")">@row.AverageGrade.Value.ToString("0.0")</span>
+                                    <span class="text-muted small">(@row.GradeCount)</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">@Localizer["Students_NoGrades"]</span>
+                                }
+                            </td>
                             <td>
                                 <div class="um-actions">
                                     <a asp-action="Details" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-view">@Localizer["Common_View"]</a>
@@ -59,3 +100,36 @@
 </div>
 <partial name="_DeleteModal" />
 <partial name="_TableSearchScript" />
+<script>
+    (function () {
+        const passingMin = @passingMin;
+        const search = document.getElementById('searchInput');
+        const classFilter = document.getElementById('classFilter');
+        const gradeFilter = document.getElementById('gradeFilter');
+        const table = document.getElementById('dataTable');
+        const countEl = document.getElementById('filterCount');
+        if (!table) return;
+
+        function applyFilters() {
+            const q = (search?.value || '').toLowerCase().trim();
+            const dept = classFilter?.value || '';
+            const grade = gradeFilter?.value || '';
+            let visible = 0;
+            table.querySelectorAll('tbody tr').forEach(row => {
+                const textMatch = !q || row.textContent.toLowerCase().includes(q);
+                const deptMatch = !dept || row.dataset.deptId === dept;
+                const state = row.dataset.gradeState || '';
+                const gradeMatch = !grade || state === grade;
+                const show = textMatch && deptMatch && gradeMatch;
+                row.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+            if (countEl) countEl.textContent = visible + ' / ' + table.querySelectorAll('tbody tr').length;
+        }
+
+        search?.addEventListener('input', applyFilters);
+        classFilter?.addEventListener('change', applyFilters);
+        gradeFilter?.addEventListener('change', applyFilters);
+        applyFilters();
+    })();
+</script>

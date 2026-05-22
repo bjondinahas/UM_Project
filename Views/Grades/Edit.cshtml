@@ -1,4 +1,4 @@
-﻿@model UM_Project.Models.Grade
+@model UM_Project.Models.Grade
 @{
     ViewData["Title"] = Localizer["Page_EditGrade"];
     ViewData["FormTitle"] = Localizer["Page_EditGrade"];
@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label class="form-label">@Localizer["Form_SelectGradeRange"]</label>
+                <label class="form-label">@Localizer["Form_SelectGrade"]</label>
                 <input name="value" value="@Model.Value" type="number" min="@(ViewBag.GradeMin ?? 1)" max="@(ViewBag.GradeMax ?? 5)" class="form-control" required />
             </div>
             <div class="d-flex gap-2 flex-wrap">

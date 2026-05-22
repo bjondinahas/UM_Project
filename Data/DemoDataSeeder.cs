@@ -7,6 +7,8 @@ namespace UM_Project.Data
     public static class DemoDataSeeder
     {
         public const string DefaultPassword = "Admin@123";
+        private const string DemoEnrichmentVersionKey = "DemoDataEnrichmentVersion";
+        private const string DemoEnrichmentVersion = "2";
 
         public static async Task SeedAsync(
             ApplicationDbContext context,
@@ -21,13 +23,16 @@ namespace UM_Project.Data
                     await roleManager.CreateAsync(new IdentityRole(role));
             }
 
-            await EnsureUserAsync(userManager, "superadmin@shkollademo.edu", "Administrator Kryesor", "SA001", RoleNames.SuperAdmin, DefaultPassword);
-            await EnsureUserAsync(userManager, "admin@shkollademo.edu", "Administrator Sistemi", "ADMIN001", RoleNames.Admin, DefaultPassword);
+            await MigrateLegacyAdminEmailsAsync(userManager);
+
+            await EnsureUserAsync(userManager, SystemAccountEmails.SuperAdmin, "Administrator Kryesor", "SA001", RoleNames.SuperAdmin, DefaultPassword);
+            await EnsureUserAsync(userManager, SystemAccountEmails.Admin, "Administrator Sistemi", "ADMIN001", RoleNames.Admin, DefaultPassword);
 
             if (!reseedDemoData && await context.Departments.AnyAsync(cancellationToken))
             {
                 Console.WriteLine("  Demo data already present — skipping bulk seed (set Database:ReseedDemoData = true to replace).");
                 await SyncAllDemoPasswordsAsync(userManager);
+                await EnrichDemoDataAsync(context, userManager, cancellationToken);
                 return;
             }
 
@@ -68,26 +73,17 @@ namespace UM_Project.Data
                 ("nx.nora.rama@shkollademo.edu", "Nora Rama", "NX20250010", klasa5.DepartmentId),
                 ("nx.olen.hoxha@shkollademo.edu", "Olen Hoxha", "NX20250011", klasa3.DepartmentId),
                 ("nx.petra.krasniqi@shkollademo.edu", "Petra Krasniqi", "NX20250012", klasa2.DepartmentId),
+                ("nx.arben.morina@shkollademo.edu", "Arben Morina", "NX20250013", klasa1.DepartmentId),
+                ("nx.blerta.shala@shkollademo.edu", "Blerta Shala", "NX20250014", klasa2.DepartmentId),
+                ("nx.dren.gashi@shkollademo.edu", "Dren Gashi", "NX20250015", klasa3.DepartmentId),
+                ("nx.erza.krasniqi@shkollademo.edu", "Erza Krasniqi", "NX20250016", klasa4.DepartmentId),
+                ("nx.fisnik.berisha@shkollademo.edu", "Fisnik Berisha", "NX20250017", klasa5.DepartmentId),
+                ("nx.genta.hoxha@shkollademo.edu", "Genta Hoxha", "NX20250018", klasa1.DepartmentId),
             };
             foreach (var (email, name, number, deptId) in studentSpecs)
                 students.Add(await SeedStudentAsync(context, userManager, email, name, number, deptId));
 
-            var parentUser = await EnsureUserAsync(userManager, "pr.artan.gashi@shkollademo.edu", "Artan Gashi", "PR001", RoleNames.Parent, DefaultPassword);
-            context.ParentGuardians.Add(new ParentGuardian
-            {
-                FullName = "Artan Gashi",
-                Email = "pr.artan.gashi@shkollademo.edu",
-                UserId = parentUser.Id,
-                StudentId = students[0].StudentId
-            });
-            context.ParentGuardians.Add(new ParentGuardian
-            {
-                FullName = "Luljeta Hoxha",
-                Email = "pr.luljeta.hoxha@shkollademo.edu",
-                UserId = (await EnsureUserAsync(userManager, "pr.luljeta.hoxha@shkollademo.edu", "Luljeta Hoxha", "PR002", RoleNames.Parent, DefaultPassword)).Id,
-                StudentId = students[4].StudentId
-            });
-            await context.SaveChangesAsync(cancellationToken);
+            await SeedParentGuardiansAsync(context, userManager, students, cancellationToken);
 
             const string vitiShkollor = "Viti shkollor 2025-2026";
             var courses = new List<(Course course, string day, string time, string room)>
@@ -103,6 +99,10 @@ namespace UM_Project.Data
                 (new Course { CourseCode = "EDF5", CourseName = "Edukatë Fizike", Credits = 1, DepartmentId = klasa5.DepartmentId, ProfessorId = mesuesJon.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28 }, "Friday", "08:00", "Palestra"),
                 (new Course { CourseCode = "GJU5", CourseName = "Gjuhë Shqipe", Credits = 2, DepartmentId = klasa5.DepartmentId, ProfessorId = mesuesJon.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28 }, "Friday", "09:00", "Dhoma 505"),
                 (new Course { CourseCode = "ART3", CourseName = "Art", Credits = 1, DepartmentId = klasa3.DepartmentId, ProfessorId = mesuesArtan.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28 }, "Wednesday", "14:00", "Salla e artit"),
+                (new Course { CourseCode = "NAT1", CourseName = "Natyra", Credits = 1, DepartmentId = klasa1.DepartmentId, ProfessorId = mesuesElena.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28, Description = "Bimët dhe kafshët." }, "Monday", "10:00", "Dhoma 101"),
+                (new Course { CourseCode = "EDU2", CourseName = "Edukatë Qytetare", Credits = 1, DepartmentId = klasa2.DepartmentId, ProfessorId = mesuesDritan.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28 }, "Tuesday", "10:00", "Dhoma 202"),
+                (new Course { CourseCode = "INF4", CourseName = "Informatikë", Credits = 1, DepartmentId = klasa4.DepartmentId, ProfessorId = mesuesMira.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28 }, "Thursday", "10:00", "Dhoma 404"),
+                (new Course { CourseCode = "HIS5", CourseName = "Histori", Credits = 1, DepartmentId = klasa5.DepartmentId, ProfessorId = mesuesJon.ProfessorId, Semester = vitiShkollor, MaxEnrollment = 28 }, "Friday", "10:00", "Dhoma 505"),
             };
 
             var courseEntities = new List<Course>();
@@ -117,18 +117,24 @@ namespace UM_Project.Data
 
             var enrollmentMap = new Dictionary<string, string[]>
             {
-                [students[0].Email] = ["MAT1", "GJU1"],
-                [students[1].Email] = ["MAT1", "GJU1"],
-                [students[2].Email] = ["MAT2", "GJU2"],
-                [students[3].Email] = ["MAT2", "GJU2"],
+                [students[0].Email] = ["MAT1", "GJU1", "NAT1"],
+                [students[1].Email] = ["MAT1", "GJU1", "NAT1"],
+                [students[2].Email] = ["MAT2", "GJU2", "EDU2"],
+                [students[3].Email] = ["MAT2", "GJU2", "EDU2"],
                 [students[4].Email] = ["SHK3", "ANG3", "ART3"],
                 [students[5].Email] = ["SHK3", "ANG3"],
-                [students[6].Email] = ["MAT4", "MUS4"],
-                [students[7].Email] = ["MAT4", "MUS4"],
-                [students[8].Email] = ["EDF5", "GJU5"],
-                [students[9].Email] = ["EDF5", "GJU5"],
+                [students[6].Email] = ["MAT4", "MUS4", "INF4"],
+                [students[7].Email] = ["MAT4", "MUS4", "INF4"],
+                [students[8].Email] = ["EDF5", "GJU5", "HIS5"],
+                [students[9].Email] = ["EDF5", "GJU5", "HIS5"],
                 [students[10].Email] = ["SHK3", "ART3"],
-                [students[11].Email] = ["MAT2", "GJU2"],
+                [students[11].Email] = ["MAT2", "GJU2", "EDU2"],
+                [students[12].Email] = ["MAT1", "GJU1", "NAT1"],
+                [students[13].Email] = ["MAT2", "GJU2", "EDU2"],
+                [students[14].Email] = ["SHK3", "ANG3"],
+                [students[15].Email] = ["MAT4", "MUS4", "INF4"],
+                [students[16].Email] = ["EDF5", "GJU5", "HIS5"],
+                [students[17].Email] = ["MAT1", "GJU1", "NAT1"],
             };
 
             var courseByCode = courseEntities.ToDictionary(c => c.CourseCode, c => c);
@@ -150,29 +156,7 @@ namespace UM_Project.Data
             context.Enrollments.AddRange(enrollments);
             await context.SaveChangesAsync(cancellationToken);
 
-            if (!await context.LessonSlots.AnyAsync(cancellationToken))
-            {
-                var slotDefs = new[]
-                {
-                    (1, "Ora 1", "08:00", "08:45"),
-                    (2, "Ora 2", "08:50", "09:35"),
-                    (3, "Ora 3", "09:40", "10:25"),
-                    (4, "Ora 4", "10:30", "11:15"),
-                    (5, "Ora 5", "11:20", "12:05"),
-                    (6, "Ora 6", "12:10", "12:55"),
-                };
-                foreach (var (num, title, start, end) in slotDefs)
-                {
-                    context.LessonSlots.Add(new LessonSlot
-                    {
-                        SlotNumber = num,
-                        Title = title,
-                        StartTime = start,
-                        EndTime = end,
-                        IsActive = true
-                    });
-                }
-            }
+            await EnsureLessonSlotsAsync(context, cancellationToken);
 
             await EnsureSystemSettingsAsync(context, cancellationToken);
 
@@ -186,19 +170,11 @@ namespace UM_Project.Data
             context.AcademicTerms.Add(term);
             await context.SaveChangesAsync(cancellationToken);
 
-            var gradeValues = new[] { 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1 };
-            var gradeIndex = 0;
-            foreach (var enrollment in enrollments)
+            var atRiskStudentIds = new HashSet<int>
             {
-                context.Grades.Add(new Grade
-                {
-                    StudentId = enrollment.StudentId,
-                    CourseId = enrollment.CourseId,
-                    Value = gradeValues[gradeIndex % gradeValues.Length],
-                    DateRecorded = term.StartDate.AddDays(20 + (gradeIndex % 45))
-                });
-                gradeIndex++;
-            }
+                students[4].StudentId, students[5].StudentId, students[10].StudentId, students[11].StudentId
+            };
+            AddGradesForEnrollments(context, enrollments, term.StartDate, atRiskStudentIds, new Random(42));
             await context.SaveChangesAsync(cancellationToken);
 
             context.SchoolCalendarEvents.AddRange(
@@ -217,30 +193,58 @@ namespace UM_Project.Data
                 new CourseAssignment { CourseId = gju2.CourseId, Title = "Ese: Familja ime", DueDate = DateTime.UtcNow.AddDays(14), WeightPercent = 25, MaxPoints = 10 }
             );
 
-            var slots = await context.LessonSlots.OrderBy(l => l.SlotNumber).Take(3).ToListAsync(cancellationToken);
-            if (slots.Count >= 2)
+            var slots = await context.LessonSlots.Where(l => l.IsActive).OrderBy(l => l.SlotNumber).ToListAsync(cancellationToken);
+            var professors = new[] { mesuesElena, mesuesDritan, mesuesArtan, mesuesMira, mesuesJon };
+            if (slots.Count >= 1)
             {
-                for (var dayOffset = 1; dayOffset <= 60; dayOffset++)
+                var enrollmentsByStudent = enrollments.GroupBy(e => e.StudentId).ToDictionary(g => g.Key, g => g.ToList());
+                var attRnd = new Random(99);
+                for (var dayOffset = 1; dayOffset <= 45; dayOffset++)
                 {
                     var attendanceDate = DateTime.Today.AddDays(-dayOffset);
                     if (attendanceDate.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
                         continue;
-                    context.AttendanceRecords.Add(new AttendanceRecord { StudentId = students[0].StudentId, CourseId = mat1.CourseId, LessonSlotId = slots[0].LessonSlotId, AttendanceDate = attendanceDate, IsPresent = dayOffset % 4 != 0, ProfessorId = mesuesElena.ProfessorId });
-                    context.AttendanceRecords.Add(new AttendanceRecord { StudentId = students[1].StudentId, CourseId = mat1.CourseId, LessonSlotId = slots[0].LessonSlotId, AttendanceDate = attendanceDate, IsPresent = true, ProfessorId = mesuesElena.ProfessorId });
-                    context.AttendanceRecords.Add(new AttendanceRecord { StudentId = students[4].StudentId, CourseId = courseByCode["SHK3"].CourseId, LessonSlotId = slots[1].LessonSlotId, AttendanceDate = attendanceDate, IsPresent = dayOffset % 3 != 0, ProfessorId = mesuesArtan.ProfessorId, Notes = dayOffset % 3 == 0 ? "Mungesë" : null });
-                    context.AttendanceRecords.Add(new AttendanceRecord { StudentId = students[6].StudentId, CourseId = courseByCode["MAT4"].CourseId, LessonSlotId = slots[0].LessonSlotId, AttendanceDate = attendanceDate, IsPresent = dayOffset % 5 != 0, ProfessorId = mesuesMira.ProfessorId });
+
+                    foreach (var student in students)
+                    {
+                        if (!enrollmentsByStudent.TryGetValue(student.StudentId, out var studentEnrollments))
+                            continue;
+                        var enrollment = studentEnrollments[attRnd.Next(studentEnrollments.Count)];
+                        var course = courseEntities.First(c => c.CourseId == enrollment.CourseId);
+                        var professor = professors.First(p => p.ProfessorId == course.ProfessorId);
+                        var isAtRisk = atRiskStudentIds.Contains(student.StudentId);
+                        var present = isAtRisk ? attRnd.Next(0, 3) != 0 : attRnd.Next(0, 10) != 0;
+
+                        context.AttendanceRecords.Add(new AttendanceRecord
+                        {
+                            StudentId = student.StudentId,
+                            CourseId = enrollment.CourseId,
+                            LessonSlotId = slots[attRnd.Next(slots.Count)].LessonSlotId,
+                            AttendanceDate = attendanceDate,
+                            IsPresent = present,
+                            ProfessorId = professor.ProfessorId,
+                            Notes = !present ? "Mungesë" : null
+                        });
+                    }
                 }
             }
 
-            await SeedAuthAuditLogsAsync(context, students, new[] { mesuesElena, mesuesDritan, mesuesArtan, mesuesMira, mesuesJon }, cancellationToken);
+            context.CourseAssignments.AddRange(
+                new CourseAssignment { CourseId = courseByCode["SHK3"].CourseId, Title = "Projekt: Mjedisi lokal", DueDate = DateTime.UtcNow.AddDays(10), WeightPercent = 25, MaxPoints = 10 },
+                new CourseAssignment { CourseId = courseByCode["MAT4"].CourseId, Title = "Ushtrime: Thyesat", DueDate = DateTime.UtcNow.AddDays(5), WeightPercent = 20, MaxPoints = 10 },
+                new CourseAssignment { CourseId = courseByCode["GJU5"].CourseId, Title = "Lexim: Tregim i shkurtër", DueDate = DateTime.UtcNow.AddDays(12), WeightPercent = 15, MaxPoints = 10 }
+            );
 
-            var adminUser = await userManager.FindByEmailAsync("admin@shkollademo.edu");
-            if (adminUser != null)
+            await SeedAuthAuditLogsAsync(context, students, professors, cancellationToken);
+
+            var adminUser = await userManager.FindByEmailAsync(SystemAccountEmails.Admin);
+            var primaryParent = await userManager.FindByEmailAsync("pr.artan.gashi@shkollademo.edu");
+            if (adminUser != null && primaryParent != null)
             {
                 context.DocumentRequests.AddRange(
                     new DocumentRequest
                     {
-                        RequestedByUserId = parentUser.Id,
+                        RequestedByUserId = primaryParent.Id,
                         StudentId = students[0].StudentId,
                         RequestType = DocumentRequestTypes.Transcript,
                         Status = DocumentRequestStatuses.Pending,
@@ -249,7 +253,7 @@ namespace UM_Project.Data
                     },
                     new DocumentRequest
                     {
-                        RequestedByUserId = parentUser.Id,
+                        RequestedByUserId = primaryParent.Id,
                         StudentId = students[0].StudentId,
                         RequestType = DocumentRequestTypes.Transcript,
                         Status = DocumentRequestStatuses.Approved,
@@ -259,7 +263,7 @@ namespace UM_Project.Data
                     },
                     new DocumentRequest
                     {
-                        RequestedByUserId = parentUser.Id,
+                        RequestedByUserId = primaryParent.Id,
                         StudentId = students[4].StudentId,
                         RequestType = DocumentRequestTypes.Transcript,
                         Status = DocumentRequestStatuses.Pending,
@@ -267,18 +271,381 @@ namespace UM_Project.Data
                         RequestedAtUtc = DateTime.UtcNow.AddDays(-1)
                     });
 
-                context.InterventionNotes.Add(new InterventionNote
+                var atRiskNotes = new[]
                 {
-                    StudentId = students[4].StudentId,
-                    Note = "Vëzhgo mungesat — dy mungesa në Matematikë këtë javë.",
-                    CreatedByUserId = adminUser.Id,
-                    CreatedAtUtc = DateTime.UtcNow.AddDays(-1)
+                    (students[4].StudentId, "Vëzhgo mungesat — nota të ulëta në Shkencë."),
+                    (students[5].StudentId, "Kontakt me prindin — mungesa të shpeshta."),
+                    (students[10].StudentId, "Plan mbështetjeje në Matematikë."),
+                    (students[11].StudentId, "Takim me mësuesin e klasës — performancë e dobët.")
+                };
+                for (var ni = 0; ni < atRiskNotes.Length; ni++)
+                {
+                    var (sid, note) = atRiskNotes[ni];
+                    context.InterventionNotes.Add(new InterventionNote
+                    {
+                        StudentId = sid,
+                        Note = note,
+                        CreatedByUserId = adminUser.Id,
+                        CreatedAtUtc = DateTime.UtcNow.AddDays(-ni - 1)
+                    });
+                }
+
+                context.DocumentRequests.Add(new DocumentRequest
+                {
+                    RequestedByUserId = primaryParent.Id,
+                    StudentId = students[10].StudentId,
+                    RequestType = DocumentRequestTypes.Transcript,
+                    Status = DocumentRequestStatuses.Rejected,
+                    ParentNotes = "Dokument i paplotë.",
+                    RequestedAtUtc = DateTime.UtcNow.AddDays(-8),
+                    ProcessedAtUtc = DateTime.UtcNow.AddDays(-6)
                 });
+
+                await SeedDemoAdminActivityAsync(context, adminUser, students, professors, cancellationToken);
             }
 
             await context.SaveChangesAsync(cancellationToken);
             await SyncAllDemoPasswordsAsync(userManager);
             Console.WriteLine("  Demo data seed complete.");
+        }
+
+        private static async Task EnrichDemoDataAsync(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            CancellationToken cancellationToken)
+        {
+            var marker = await context.SystemSettings
+                .FirstOrDefaultAsync(s => s.SettingKey == DemoEnrichmentVersionKey, cancellationToken);
+            if (marker?.SettingValue == DemoEnrichmentVersion)
+                return;
+
+            Console.WriteLine("  Enriching demo data (parents, lessons, grades)...");
+
+            var students = await context.Students.OrderBy(s => s.StudentNumber).ToListAsync(cancellationToken);
+            if (students.Count > 0)
+                await SeedParentGuardiansAsync(context, userManager, students, cancellationToken);
+
+            await EnsureLessonSlotsAsync(context, cancellationToken);
+            await EnsureExtraCoursesAndEnrollmentsAsync(context, cancellationToken);
+
+            var term = await context.AcademicTerms.OrderByDescending(t => t.StartDate).FirstOrDefaultAsync(cancellationToken);
+            var termStart = term?.StartDate ?? new DateTime(2025, 9, 1);
+
+            var enrollments = await context.Enrollments.ToListAsync(cancellationToken);
+            if (enrollments.Count > 0)
+            {
+                var atRiskIds = new HashSet<int>(
+                    students.Where(s => s.StudentNumber is "NX20250005" or "NX20250006" or "NX20250011" or "NX20250012")
+                        .Select(s => s.StudentId));
+                await AddMissingGradesAsync(context, enrollments, termStart, atRiskIds, cancellationToken);
+            }
+
+            if (marker == null)
+            {
+                context.SystemSettings.Add(new SystemSetting
+                {
+                    SettingKey = DemoEnrichmentVersionKey,
+                    SettingValue = DemoEnrichmentVersion,
+                    Description = "Demo enrichment batch marker"
+                });
+            }
+            else
+                marker.SettingValue = DemoEnrichmentVersion;
+
+            await context.SaveChangesAsync(cancellationToken);
+            await SyncParentDemoPasswordsAsync(userManager);
+            Console.WriteLine("  Demo enrichment complete.");
+        }
+
+        private static async Task SeedParentGuardiansAsync(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            List<Student> students,
+            CancellationToken cancellationToken)
+        {
+            foreach (var (email, fullName, customId, studentIndex, extraStudentIndex) in GetParentSpecs())
+            {
+                if (studentIndex >= students.Count)
+                    continue;
+                if (await context.ParentGuardians.AnyAsync(
+                        p => p.Email == email && p.StudentId == students[studentIndex].StudentId, cancellationToken))
+                    continue;
+
+                var user = await EnsureUserAsync(userManager, email, fullName, customId, RoleNames.Parent, DefaultPassword);
+                context.ParentGuardians.Add(new ParentGuardian
+                {
+                    FullName = fullName,
+                    Email = email,
+                    UserId = user.Id,
+                    StudentId = students[studentIndex].StudentId
+                });
+
+                if (extraStudentIndex.HasValue
+                    && extraStudentIndex.Value < students.Count
+                    && !await context.ParentGuardians.AnyAsync(
+                        p => p.UserId == user.Id && p.StudentId == students[extraStudentIndex.Value].StudentId,
+                        cancellationToken))
+                {
+                    context.ParentGuardians.Add(new ParentGuardian
+                    {
+                        FullName = fullName,
+                        Email = email,
+                        UserId = user.Id,
+                        StudentId = students[extraStudentIndex.Value].StudentId
+                    });
+                }
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+        }
+
+        private static IEnumerable<(string Email, string FullName, string CustomId, int StudentIndex, int? ExtraStudentIndex)> GetParentSpecs() =>
+        [
+            ("pr.artan.gashi@shkollademo.edu", "Artan Gashi", "PR001", 0, 14),
+            ("pr.naim.krasniqi@shkollademo.edu", "Naim Krasniqi", "PR002", 1, null),
+            ("pr.valbona.berisha@shkollademo.edu", "Valbona Berisha", "PR003", 2, 13),
+            ("pr.agim.meta@shkollademo.edu", "Agim Meta", "PR004", 3, null),
+            ("pr.luljeta.hoxha@shkollademo.edu", "Luljeta Hoxha", "PR005", 4, 10),
+            ("pr.fatmir.rama@shkollademo.edu", "Fatmir Rama", "PR006", 5, 9),
+            ("pr.klea.meta@shkollademo.edu", "Klea Meta", "PR007", 6, null),
+            ("pr.luan.berisha@shkollademo.edu", "Luan Berisha", "PR008", 7, 16),
+            ("pr.mira.gashi@shkollademo.edu", "Mira Gashi", "PR009", 8, null),
+            ("pr.nora.rama@shkollademo.edu", "Nora Rama", "PR010", 9, null),
+            ("pr.olen.hoxha@shkollademo.edu", "Olen Hoxha", "PR011", 10, 17),
+            ("pr.petra.krasniqi@shkollademo.edu", "Petra Krasniqi", "PR012", 11, 15),
+            ("pr.arben.morina@shkollademo.edu", "Arben Morina", "PR013", 12, null),
+            ("pr.blerta.shala@shkollademo.edu", "Blerta Shala", "PR014", 13, null),
+            ("pr.dren.gashi@shkollademo.edu", "Dren Gashi", "PR015", 14, null),
+            ("pr.erza.krasniqi@shkollademo.edu", "Erza Krasniqi", "PR016", 15, null),
+            ("pr.fisnik.berisha@shkollademo.edu", "Fisnik Berisha", "PR017", 16, null),
+            ("pr.gentiana.hoxha@shkollademo.edu", "Gentiana Hoxha", "PR018", 17, null),
+        ];
+
+        private static async Task EnsureLessonSlotsAsync(ApplicationDbContext context, CancellationToken cancellationToken)
+        {
+            var slotDefs = new[]
+            {
+                (1, "Ora 1", "08:00", "08:45"),
+                (2, "Ora 2", "08:50", "09:35"),
+                (3, "Ora 3", "09:40", "10:25"),
+                (4, "Ora 4", "10:30", "11:15"),
+                (5, "Ora 5", "11:20", "12:05"),
+                (6, "Ora 6", "12:10", "12:55"),
+                (7, "Ora 7", "13:00", "13:45"),
+                (8, "Ora 8", "13:50", "14:35"),
+            };
+
+            foreach (var (num, title, start, end) in slotDefs)
+            {
+                var existing = await context.LessonSlots.FirstOrDefaultAsync(l => l.SlotNumber == num, cancellationToken);
+                if (existing == null)
+                {
+                    context.LessonSlots.Add(new LessonSlot
+                    {
+                        SlotNumber = num,
+                        Title = title,
+                        StartTime = start,
+                        EndTime = end,
+                        IsActive = true
+                    });
+                }
+                else
+                {
+                    existing.Title = title;
+                    existing.StartTime = start;
+                    existing.EndTime = end;
+                    existing.IsActive = true;
+                }
+            }
+
+            var lessonsSetting = await context.SystemSettings
+                .FirstOrDefaultAsync(s => s.SettingKey == SystemSettingKeys.LessonsPerDay, cancellationToken);
+            if (lessonsSetting == null)
+                context.SystemSettings.Add(new SystemSetting
+                {
+                    SettingKey = SystemSettingKeys.LessonsPerDay,
+                    SettingValue = "8",
+                    Description = "Lesson slots per school day"
+                });
+            else
+                lessonsSetting.SettingValue = "8";
+
+            await context.SaveChangesAsync(cancellationToken);
+        }
+
+        private static void AddGradesForEnrollments(
+            ApplicationDbContext context,
+            List<Enrollment> enrollments,
+            DateTime termStart,
+            HashSet<int> atRiskStudentIds,
+            Random gradeRnd)
+        {
+            var gradeIndex = 0;
+            foreach (var enrollment in enrollments)
+            {
+                var baseValue = atRiskStudentIds.Contains(enrollment.StudentId)
+                    ? gradeRnd.Next(1, 3)
+                    : gradeRnd.Next(3, 6);
+
+                context.Grades.Add(new Grade
+                {
+                    StudentId = enrollment.StudentId,
+                    CourseId = enrollment.CourseId,
+                    Value = baseValue,
+                    DateRecorded = termStart.AddDays(20 + (gradeIndex % 45))
+                });
+                context.Grades.Add(new Grade
+                {
+                    StudentId = enrollment.StudentId,
+                    CourseId = enrollment.CourseId,
+                    Value = Math.Clamp(baseValue + gradeRnd.Next(-1, 2), 1, 5),
+                    DateRecorded = termStart.AddDays(50 + (gradeIndex % 30))
+                });
+                context.Grades.Add(new Grade
+                {
+                    StudentId = enrollment.StudentId,
+                    CourseId = enrollment.CourseId,
+                    Value = Math.Clamp(baseValue + gradeRnd.Next(-1, 1), 1, 5),
+                    DateRecorded = termStart.AddDays(75 + (gradeIndex % 25))
+                });
+                if (gradeRnd.Next(0, 2) == 0)
+                {
+                    context.Grades.Add(new Grade
+                    {
+                        StudentId = enrollment.StudentId,
+                        CourseId = enrollment.CourseId,
+                        Value = Math.Clamp(baseValue + gradeRnd.Next(0, 2), 1, 5),
+                        DateRecorded = termStart.AddDays(95 + (gradeIndex % 20))
+                    });
+                }
+
+                gradeIndex++;
+            }
+        }
+
+        private static async Task AddMissingGradesAsync(
+            ApplicationDbContext context,
+            List<Enrollment> enrollments,
+            DateTime termStart,
+            HashSet<int> atRiskStudentIds,
+            CancellationToken cancellationToken)
+        {
+            var existingCounts = await context.Grades
+                .GroupBy(g => new { g.StudentId, g.CourseId })
+                .Select(g => new { g.Key.StudentId, g.Key.CourseId, Count = g.Count() })
+                .ToDictionaryAsync(x => (x.StudentId, x.CourseId), x => x.Count, cancellationToken);
+
+            var gradeRnd = new Random(84);
+            var gradeIndex = existingCounts.Count;
+            foreach (var enrollment in enrollments)
+            {
+                var key = (enrollment.StudentId, enrollment.CourseId);
+                var have = existingCounts.GetValueOrDefault(key, 0);
+                if (have >= 3)
+                    continue;
+
+                var baseValue = atRiskStudentIds.Contains(enrollment.StudentId)
+                    ? gradeRnd.Next(1, 3)
+                    : gradeRnd.Next(3, 6);
+
+                for (var i = have; i < 3; i++)
+                {
+                    context.Grades.Add(new Grade
+                    {
+                        StudentId = enrollment.StudentId,
+                        CourseId = enrollment.CourseId,
+                        Value = Math.Clamp(baseValue + gradeRnd.Next(-1, 2), 1, 5),
+                        DateRecorded = termStart.AddDays(30 + (gradeIndex % 60) + i * 15)
+                    });
+                }
+
+                gradeIndex++;
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+        }
+
+        private static async Task EnsureExtraCoursesAndEnrollmentsAsync(
+            ApplicationDbContext context,
+            CancellationToken cancellationToken)
+        {
+            var extraCourses = new[]
+            {
+                ("NAT1", "Natyra", 1, "Klasa 1", "mesues.elena@shkollademo.edu", "Monday", "10:00", "Dhoma 101"),
+                ("EDU2", "Edukatë Qytetare", 1, "Klasa 2", "mesues.dritan@shkollademo.edu", "Tuesday", "10:00", "Dhoma 202"),
+                ("INF4", "Informatikë", 1, "Klasa 4", "mesues.mira@shkollademo.edu", "Thursday", "10:00", "Dhoma 404"),
+                ("HIS5", "Histori", 1, "Klasa 5", "mesues.jon@shkollademo.edu", "Friday", "10:00", "Dhoma 505"),
+            };
+
+            var vitiShkollor = "Viti shkollor 2025-2026";
+            foreach (var (code, name, credits, className, profEmail, day, time, room) in extraCourses)
+            {
+                if (await context.Courses.AnyAsync(c => c.CourseCode == code, cancellationToken))
+                    continue;
+
+                var dept = await context.Departments.FirstOrDefaultAsync(d => d.DepartmentName == className, cancellationToken);
+                var prof = await context.Professors.FirstOrDefaultAsync(p => p.Email == profEmail, cancellationToken);
+
+                if (dept == null || prof == null)
+                    continue;
+
+                var course = new Course
+                {
+                    CourseCode = code,
+                    CourseName = name,
+                    Credits = credits,
+                    DepartmentId = dept.DepartmentId,
+                    ProfessorId = prof.ProfessorId,
+                    Semester = vitiShkollor,
+                    MaxEnrollment = 28
+                };
+                context.Courses.Add(course);
+                await context.SaveChangesAsync(cancellationToken);
+                context.Schedules.Add(new Schedule { CourseId = course.CourseId, Day = day, Time = time, Room = room });
+
+                var enrollmentAdds = new Dictionary<string, string[]>
+                {
+                    ["NAT1"] = ["nx.ana.gashi@shkollademo.edu", "nx.besnik.krasniqi@shkollademo.edu", "nx.arben.morina@shkollademo.edu", "nx.genta.hoxha@shkollademo.edu"],
+                    ["EDU2"] = ["nx.elira.berisha@shkollademo.edu", "nx.florian.meta@shkollademo.edu", "nx.petra.krasniqi@shkollademo.edu", "nx.blerta.shala@shkollademo.edu"],
+                    ["INF4"] = ["nx.klea.meta@shkollademo.edu", "nx.luan.berisha@shkollademo.edu", "nx.erza.krasniqi@shkollademo.edu"],
+                    ["HIS5"] = ["nx.mira.gashi@shkollademo.edu", "nx.nora.rama@shkollademo.edu", "nx.fisnik.berisha@shkollademo.edu"],
+                };
+
+                if (!enrollmentAdds.TryGetValue(code, out var studentEmails))
+                    continue;
+
+                foreach (var email in studentEmails)
+                {
+                    var student = await context.Students.FirstOrDefaultAsync(s => s.Email == email, cancellationToken);
+                    if (student == null)
+                        continue;
+                    if (await context.Enrollments.AnyAsync(
+                            e => e.StudentId == student.StudentId && e.CourseId == course.CourseId, cancellationToken))
+                        continue;
+
+                    context.Enrollments.Add(new Enrollment
+                    {
+                        StudentId = student.StudentId,
+                        CourseId = course.CourseId,
+                        EnrollmentDate = DateTime.UtcNow.AddDays(-25)
+                    });
+                }
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+        }
+
+        private static async Task SyncParentDemoPasswordsAsync(UserManager<ApplicationUser> userManager)
+        {
+            foreach (var (email, _, _, _, _) in GetParentSpecs())
+            {
+                var user = await userManager.FindByEmailAsync(email);
+                if (user == null)
+                    continue;
+                await SyncDemoPasswordAsync(userManager, user, DefaultPassword);
+                await userManager.ResetAccessFailedCountAsync(user);
+                await userManager.SetLockoutEndDateAsync(user, null);
+            }
         }
 
         private static async Task ClearDemoDataAsync(
@@ -354,8 +721,64 @@ namespace UM_Project.Data
             "nx.florian.meta@shkollademo.edu", "nx.gentiana.hoxha@shkollademo.edu", "nx.ilir.rama@shkollademo.edu",
             "nx.klea.meta@shkollademo.edu", "nx.luan.berisha@shkollademo.edu", "nx.mira.gashi@shkollademo.edu",
             "nx.nora.rama@shkollademo.edu", "nx.olen.hoxha@shkollademo.edu", "nx.petra.krasniqi@shkollademo.edu",
-            "pr.artan.gashi@shkollademo.edu", "pr.luljeta.hoxha@shkollademo.edu"
+            "pr.artan.gashi@shkollademo.edu", "pr.luljeta.hoxha@shkollademo.edu",
+            "pr.naim.krasniqi@shkollademo.edu", "pr.valbona.berisha@shkollademo.edu",
+            "pr.agim.meta@shkollademo.edu", "pr.fatmir.rama@shkollademo.edu",
+            "pr.klea.meta@shkollademo.edu", "pr.luan.berisha@shkollademo.edu",
+            "pr.mira.gashi@shkollademo.edu", "pr.nora.rama@shkollademo.edu",
+            "pr.olen.hoxha@shkollademo.edu", "pr.petra.krasniqi@shkollademo.edu",
+            "pr.arben.morina@shkollademo.edu", "pr.blerta.shala@shkollademo.edu",
+            "pr.dren.gashi@shkollademo.edu", "pr.erza.krasniqi@shkollademo.edu",
+            "pr.fisnik.berisha@shkollademo.edu", "pr.gentiana.hoxha@shkollademo.edu",
+            "nx.arben.morina@shkollademo.edu", "nx.blerta.shala@shkollademo.edu",
+            "nx.dren.gashi@shkollademo.edu", "nx.erza.krasniqi@shkollademo.edu",
+            "nx.fisnik.berisha@shkollademo.edu", "nx.genta.hoxha@shkollademo.edu"
         ];
+
+        private static async Task SeedDemoAdminActivityAsync(
+            ApplicationDbContext context,
+            ApplicationUser adminUser,
+            List<Student> students,
+            Professor[] professors,
+            CancellationToken cancellationToken)
+        {
+            if (await context.AdminActivityLogs.AnyAsync(cancellationToken))
+                return;
+
+            var rnd = new Random(77);
+            var actions = new[]
+            {
+                AdminActions.Create, AdminActions.Update, AdminActions.ReportExport,
+                AdminActions.GradeOverride, AdminActions.AtRiskNote, AdminActions.CalendarChange
+            };
+
+            for (var i = 0; i < 48; i++)
+            {
+                var student = students[rnd.Next(students.Count)];
+                var professor = professors[rnd.Next(professors.Length)];
+                var useStudent = rnd.Next(2) == 0;
+                context.AdminActivityLogs.Add(new AdminActivityLog
+                {
+                    UserId = adminUser.Id,
+                    Email = adminUser.Email,
+                    Action = actions[rnd.Next(actions.Length)],
+                    EntityType = rnd.Next(3) switch
+                    {
+                        0 => AuditEntityTypes.Grade,
+                        1 => AuditEntityTypes.Report,
+                        _ => AuditEntityTypes.InterventionNote
+                    },
+                    EntityId = useStudent ? student.StudentId.ToString() : professor.ProfessorId.ToString(),
+                    Details = useStudent
+                        ? $"Nxënës: {student.FullName} ({student.StudentNumber})"
+                        : $"Mësues: {professor.FullName}",
+                    IpAddress = "127.0.0.1",
+                    Country = "Kosovo",
+                    City = "Prishtinë",
+                    CreatedAtUtc = DateTime.UtcNow.AddHours(-rnd.Next(2, 240))
+                });
+            }
+        }
 
         private static async Task SeedAuthAuditLogsAsync(
             ApplicationDbContext context,
@@ -369,8 +792,8 @@ namespace UM_Project.Data
             var rnd = new Random(42);
             var emails = students.Select(s => s.Email)
                 .Concat(professors.Select(p => p.Email))
-                .Append("admin@shkollademo.edu")
-                .Append("superadmin@shkollademo.edu")
+                .Append(SystemAccountEmails.Admin)
+                .Append(SystemAccountEmails.SuperAdmin)
                 .ToList();
 
             for (var day = 6; day >= 0; day--)
@@ -431,7 +854,7 @@ namespace UM_Project.Data
             await Upsert(SystemSettingKeys.GradeMinimum, "1", "Lowest allowed grade value");
             await Upsert(SystemSettingKeys.GradeMaximum, "5", "Highest allowed grade value");
             await Upsert(SystemSettingKeys.GradePassingMinimum, "3", "Minimum grade to pass");
-            await Set(SystemSettingKeys.LessonsPerDay, "6", "Lesson slots per school day");
+            await Upsert(SystemSettingKeys.LessonsPerDay, "8", "Lesson slots per school day");
             await Set(SystemSettingKeys.AtRiskAbsenceDays, "14", "Days window for at-risk absence rule");
             await Set(SystemSettingKeys.AtRiskAbsenceCount, "3", "Absences in window to flag at-risk");
             await context.SaveChangesAsync(cancellationToken);
@@ -543,6 +966,39 @@ namespace UM_Project.Data
                 await userManager.SetLockoutEndDateAsync(user, null);
             }
             Console.WriteLine("  Demo account passwords synced to Admin@123 (where users exist).");
+        }
+
+        private static async Task MigrateLegacyAdminEmailsAsync(UserManager<ApplicationUser> userManager)
+        {
+            foreach (var (legacy, current) in SystemAccountEmails.GetLegacyMigrations())
+            {
+                var legacyUser = await userManager.FindByEmailAsync(legacy);
+                if (legacyUser == null)
+                    continue;
+
+                var currentUser = await userManager.FindByEmailAsync(current);
+                if (currentUser != null)
+                {
+                    var delete = await userManager.DeleteAsync(legacyUser);
+                    if (delete.Succeeded)
+                        Console.WriteLine($"  Removed legacy account {legacy} ({current} already exists).");
+                    continue;
+                }
+
+                legacyUser.Email = current;
+                legacyUser.UserName = current;
+                legacyUser.NormalizedEmail = current.ToUpperInvariant();
+                legacyUser.NormalizedUserName = current.ToUpperInvariant();
+                var update = await userManager.UpdateAsync(legacyUser);
+                if (!update.Succeeded)
+                {
+                    Console.WriteLine($"  Warning: could not migrate {legacy} to {current}: {string.Join("; ", update.Errors.Select(e => e.Description))}");
+                    continue;
+                }
+
+                await SyncDemoPasswordAsync(userManager, legacyUser, DefaultPassword);
+                Console.WriteLine($"  Migrated {legacy} -> {current}");
+            }
         }
 
         private static async Task SyncDemoPasswordAsync(

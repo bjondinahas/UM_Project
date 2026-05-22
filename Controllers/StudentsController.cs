@@ -45,8 +45,47 @@ namespace UM_Project.Controllers
             _settings = settings.Value;
         }
 
-        public async Task<IActionResult> Index() =>
-            View(await _context.Students.Include(s => s.Department).OrderBy(s => s.FullName).ToListAsync());
+        public async Task<IActionResult> Index()
+        {
+            var students = await _context.Students
+                .Include(s => s.Department)
+                .OrderBy(s => s.FullName)
+                .ToListAsync();
+
+            var studentIds = students.Select(s => s.StudentId).ToList();
+            var enrollmentCounts = await _context.Enrollments
+                .Where(e => studentIds.Contains(e.StudentId))
+                .GroupBy(e => e.StudentId)
+                .Select(g => new { StudentId = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.StudentId, x => x.Count);
+
+            var gradeStats = await _context.Grades
+                .Where(g => studentIds.Contains(g.StudentId))
+                .GroupBy(g => g.StudentId)
+                .Select(g => new
+                {
+                    StudentId = g.Key,
+                    Average = g.Average(x => x.Value),
+                    Count = g.Count()
+                })
+                .ToDictionaryAsync(x => x.StudentId, x => x);
+
+            var rows = students.Select(s =>
+            {
+                gradeStats.TryGetValue(s.StudentId, out var gs);
+                return new StudentIndexRow
+                {
+                    Student = s,
+                    EnrollmentCount = enrollmentCounts.GetValueOrDefault(s.StudentId),
+                    AverageGrade = gs?.Average,
+                    GradeCount = gs?.Count ?? 0
+                };
+            }).ToList();
+
+            ViewBag.Departments = await _context.Departments.OrderBy(d => d.DepartmentName).ToListAsync();
+            ViewBag.PassingMinimum = (await _academicSettings.GetAcademicSettingsAsync()).GradePassingMinimum;
+            return View(rows);
+        }
 
         public async Task<IActionResult> Details(int id)
         {

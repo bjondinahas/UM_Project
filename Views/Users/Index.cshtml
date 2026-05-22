@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UM_Project.Models.ApplicationUser>
+@model IEnumerable<UM_Project.Models.ApplicationUser>
 @using UM_Project.Models
 @{
     ViewData["Title"] = Localizer["Nav_UsersRoles"];
@@ -54,7 +54,7 @@
                             <td>
                                 <div class="um-actions">
                                     <a asp-action="Edit" asp-route-id="@user.Id" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> @Localizer["Common_Edit"]</a>
-                                    @if (user.Email is not ("admin@shkollademo.edu" or "superadmin@shkollademo.edu" or "admin@umproject.com" or "superadmin@umproject.com"))
+                                    @if (!SystemAccountEmails.IsProtected(user.Email))
                                     {
                                         <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@user.Id', '@user.FullName')"><i class="fas fa-trash"></i></button>
                                     }

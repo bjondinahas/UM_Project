@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = Localizer["Page_AssignGrade"];
     ViewData["FormTitle"] = Localizer["Page_AssignGrade"];
     ViewData["FormIcon"] = "fa-star";
@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label class="form-label">@Localizer["Form_SelectGradeRange"]</label>
+                <label class="form-label">@Localizer["Form_SelectGrade"]</label>
                 <select name="value" class="form-select" required>
                     <option value="">@Localizer["Form_SelectGrade"]</option>
                     @for (int i = (int)(ViewBag.GradeMax ?? 5); i >= (int)(ViewBag.GradeMin ?? 1); i--) { <option value="@i">@i</option> }

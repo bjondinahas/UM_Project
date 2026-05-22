@@ -48,11 +48,11 @@ namespace UM_Project.Services
 
                 var reasons = new List<string>();
                 if (avg < academic.GradePassingMinimum)
-                    reasons.Add($"Average grade {avg:0.0} below passing ({academic.GradePassingMinimum})");
+                    reasons.Add($"Nota mesatare {avg:0.0} — nën kalimin (min. {academic.GradePassingMinimum})");
                 if (lowCount >= 2)
-                    reasons.Add($"{lowCount} course(s) below passing grade");
+                    reasons.Add($"{lowCount} lëndë me notë nën kalimin");
                 if (absenceCount >= absenceThreshold)
-                    reasons.Add($"{absenceCount} absences in last {absenceDays} days");
+                    reasons.Add($"{absenceCount} mungesa në {absenceDays} ditët e fundit");
 
                 if (!reasons.Any()) continue;
 

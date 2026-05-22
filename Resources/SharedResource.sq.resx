@@ -252,7 +252,7 @@
     <value>Përdorues &amp; role</value>
   </data>
   <data name="Nav_People" xml:space="preserve">
-    <value>Njërëzit</value>
+    <value>Përdoruesit</value>
   </data>
   <data name="Nav_Students" xml:space="preserve">
     <value>Nxënësit</value>
@@ -374,6 +374,54 @@
   <data name="Login_Submit" xml:space="preserve">
     <value>Hyr</value>
   </data>
+  <data name="Auth_ChangePassword" xml:space="preserve">
+    <value>Ndrysho fjalëkalimin</value>
+  </data>
+  <data name="Auth_SetPassword" xml:space="preserve">
+    <value>Vendos fjalëkalimin</value>
+  </data>
+  <data name="Auth_ChangePasswordHint" xml:space="preserve">
+    <value>Përditëso fjalëkalimin e llogarisë tënde.</value>
+  </data>
+  <data name="Auth_SetPasswordHint" xml:space="preserve">
+    <value>Për siguri, duhet të zgjidhni një fjalëkalim të ri para se të vazhdoni.</value>
+  </data>
+  <data name="Auth_CurrentPassword" xml:space="preserve">
+    <value>Fjalëkalimi aktual</value>
+  </data>
+  <data name="Auth_NewPassword" xml:space="preserve">
+    <value>Fjalëkalimi i ri</value>
+  </data>
+  <data name="Auth_ConfirmPassword" xml:space="preserve">
+    <value>Konfirmo fjalëkalimin</value>
+  </data>
+  <data name="Auth_SavePassword" xml:space="preserve">
+    <value>Ruaj fjalëkalimin</value>
+  </data>
+  <data name="Auth_TempPasswordHint" xml:space="preserve">
+    <value>Përdorni fjalëkalimin e përkohshëm që morët nga administratori.</value>
+  </data>
+  <data name="Students_FilterClass" xml:space="preserve">
+    <value>Filtro sipas klasës</value>
+  </data>
+  <data name="Students_FilterGrade" xml:space="preserve">
+    <value>Filtro sipas notës</value>
+  </data>
+  <data name="Students_FilterAll" xml:space="preserve">
+    <value>Të gjitha</value>
+  </data>
+  <data name="Students_FilterWithGrades" xml:space="preserve">
+    <value>Me nota</value>
+  </data>
+  <data name="Students_FilterNoGrades" xml:space="preserve">
+    <value>Pa nota</value>
+  </data>
+  <data name="Students_FilterAtRisk" xml:space="preserve">
+    <value>Në rrezik (&lt; 3)</value>
+  </data>
+  <data name="Flash_CustomIdDuplicate" xml:space="preserve">
+    <value>ID-ja "{0}" përdoret tashmë nga përdoruesi tjetër.</value>
+  </data>
   <data name="Login_DemoTitle" xml:space="preserve">
     <value>Llogari demo — shkolla fillore</value>
   </data>
@@ -468,7 +516,7 @@
     <value>Performanca e klasës</value>
   </data>
   <data name="Reports_Term" xml:space="preserve">
-    <value>Përmbledhja e viti shkollort</value>
+    <value>Përmbledhja e vitit shkollor</value>
   </data>
   <data name="Reports_Course" xml:space="preserve">
     <value>Lënda</value>
@@ -1214,23 +1262,32 @@
   <data name="Table_Enrollments" xml:space="preserve">
     <value>Regjistrime</value>
   </data>
-  <data name="Nxënëss_CountSuffix" xml:space="preserve">
+  <data name="Students_CountSuffix" xml:space="preserve">
     <value>nxënës</value>
   </data>
-  <data name="Nxënëss_Add" xml:space="preserve">
+  <data name="Students_Add" xml:space="preserve">
     <value>Shto nxënës</value>
   </data>
-  <data name="Nxënëss_SearchPlaceholder" xml:space="preserve">
-    <value>Kërko nxënës...</value>
+  <data name="Students_SearchPlaceholder" xml:space="preserve">
+    <value>Kërko emër, email ose nr. nxënësi...</value>
   </data>
-  <data name="Nxënëss_ColNxënës" xml:space="preserve">
+  <data name="Students_ColStudent" xml:space="preserve">
     <value>Nxënësi</value>
   </data>
-  <data name="Nxënëss_ColClass" xml:space="preserve">
+  <data name="Students_ColClass" xml:space="preserve">
     <value>Klasa</value>
   </data>
-  <data name="Nxënëss_ColEmail" xml:space="preserve">
+  <data name="Students_ColEmail" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="Students_ColEnrollments" xml:space="preserve">
+    <value>Lëndë</value>
+  </data>
+  <data name="Students_ColAvgGrade" xml:space="preserve">
+    <value>Nota mes.</value>
+  </data>
+  <data name="Students_NoGrades" xml:space="preserve">
+    <value>—</value>
   </data>
   <data name="Common_View" xml:space="preserve">
     <value>Shiko</value>
@@ -1493,7 +1550,7 @@
   <data name="Form_SelectCourse" xml:space="preserve">
     <value>Zgjidh lëndën</value>
   </data>
-  <data name="Form_SelectNxënës" xml:space="preserve">
+  <data name="Form_SelectStudent" xml:space="preserve">
     <value>Zgjidh nxënësin</value>
   </data>
   <data name="Form_SelectParent" xml:space="preserve">
@@ -1568,7 +1625,7 @@
   <data name="Label_Course" xml:space="preserve">
     <value>Lënda</value>
   </data>
-  <data name="Label_Nxënës" xml:space="preserve">
+  <data name="Label_Student" xml:space="preserve">
     <value>Nxënësi</value>
   </data>
   <data name="Label_Department" xml:space="preserve">
@@ -1680,7 +1737,7 @@
     <value>Zgjidh mësuesin</value>
   </data>
   <data name="Form_SelectGradeRange" xml:space="preserve">
-    <value>Zgjidh notën (5�?"10)</value>
+    <value>Nota (1-5)</value>
   </data>
   <data name="Form_SelectNxënësDisambig" xml:space="preserve">
     <value>Zgjidh nxënësin �?" përdor nr. nëse emrat përputhen</value>

@@ -182,6 +182,12 @@ html, body {
     color: var(--navy-700, #1e3a5f);
 }
 
+.auth-field-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+}
+
 .field-validation-error,
 .validation-summary-errors {
     color: var(--danger);
