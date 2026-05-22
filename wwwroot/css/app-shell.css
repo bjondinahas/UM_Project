@@ -1,0 +1,63 @@
+/* App shell — main area + topbar */
+.app-main {
+    background: #f8fafc;
+}
+
+.app-main-content {
+    padding: 1.25rem 1.5rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.app-topbar {
+    display: none;
+    background: #fff;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    gap: 0.75rem;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    border-bottom: 1px solid #e5e7eb;
+    min-height: 52px;
+}
+
+.app-topbar-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.02em;
+}
+
+.app-topbar-toggle {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 0.35rem 0.55rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.app-topbar-toggle:hover {
+    background: var(--brand-50, #fff5f5);
+    border-color: #fecdd3;
+    color: var(--brand-700);
+}
+
+.app-topbar-actions .btn-light {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 991.98px) {
+    .app-topbar {
+        display: flex;
+    }
+    .app-main-content {
+        padding: 1rem;
+    }
+}

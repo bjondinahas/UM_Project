@@ -24,11 +24,11 @@
 .lang-dropdown.open .lang-dropdown-btn {
     border-color: #fca5a5;
     background: #fef2f2;
-    color: #991b1b;
+    color: var(--brand-700);
 }
 
 .lang-dropdown-icon {
-    color: #dc2626;
+    color: var(--brand-600);
     font-size: 1rem;
 }
 
@@ -76,12 +76,12 @@
 
 .lang-dropdown-item:hover {
     background: #fef2f2;
-    color: #991b1b;
+    color: var(--brand-700);
 }
 
 .lang-dropdown-item.active {
     background: #fef2f2;
-    color: #991b1b;
+    color: var(--brand-700);
     font-weight: 600;
 }
 
@@ -109,30 +109,30 @@
 }
 
 .pub-theme .home-header .lang-dropdown-btn {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.14);
-    color: #e8ebe6;
+    background: white;
+    border-color: var(--pub-border);
+    color: var(--brand-700);
 }
 
 .pub-theme .home-header .lang-dropdown-btn:hover,
 .pub-theme .home-header .lang-dropdown.open .lang-dropdown-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(198, 240, 74, 0.35);
-    color: #fff;
+    background: var(--pub-accent-soft);
+    border-color: var(--brand-400);
+    color: var(--brand-800);
 }
 
 .pub-theme .home-header .lang-dropdown-icon {
-    color: #c6f04a;
+    color: var(--brand-600);
 }
 
 .pub-theme .home-header .lang-dropdown-item {
-    color: #d1d9d4;
+    color: #374151;
 }
 
 .pub-theme .home-header .lang-dropdown-item:hover,
 .pub-theme .home-header .lang-dropdown-item.active {
-    background: rgba(198, 240, 74, 0.12);
-    color: #c6f04a;
+    background: var(--pub-accent-soft);
+    color: var(--brand-700);
 }
 
 .pub-theme .home-nav-panel-lang .lang-dropdown-menu {
@@ -145,8 +145,8 @@
 
 /* Sidebar placement */
 .app-sidebar-lang {
-    padding: 0.75rem 1rem;
-    border-top: 1px solid #f3f4f6;
+    padding: 0.45rem 0.6rem;
+    border-top: 1px solid #e8eaed;
 }
 
 .app-sidebar-lang .lang-dropdown {
@@ -156,6 +156,9 @@
 .app-sidebar-lang .lang-dropdown-btn {
     width: 100%;
     justify-content: center;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 8px;
 }
 
 .app-sidebar-lang .lang-dropdown-menu {

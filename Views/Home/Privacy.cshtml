@@ -1,14 +1,15 @@
 @{
     ViewData["Title"] = Localizer["Pub_Privacy_Title"];
+    var img = Url.Content;
 }
 
 <section class="pub-hero pub-page min-h-[32vh] flex items-center"
-         style="background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80');">
+         style="background-image: url('@img("~/images/home/privacy-hero.jpg")');">
     <div class="pub-hero-overlay w-full py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-            <i class="fas fa-shield-halved text-4xl mb-4 opacity-90"></i>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <i class="fas fa-shield-halved text-4xl mb-4 text-brand-600"></i>
             <h1 class="text-4xl font-extrabold">@Localizer["Pub_Privacy_Title"]</h1>
-            <p class="mt-4 text-red-100 max-w-xl mx-auto">@Localizer["Pub_Privacy_Intro"]</p>
+            <p class="mt-4 text-gray-700 max-w-xl mx-auto">@Localizer["Pub_Privacy_Intro"]</p>
         </div>
     </div>
 </section>

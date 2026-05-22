@@ -1,189 +1,380 @@
 @using UM_Project.Models
+
 @{
+
     ViewData["Title"] = Localizer["Home_Welcome"];
+
     var isAuthenticated = User.Identity!.IsAuthenticated;
+
+    var img = Url.Content;
+
 }
 
+
+
 <!-- Hero -->
+
 <section class="pub-hero-main">
+
     <div class="pub-hero-inner">
+
         <div class="pub-hero-grid home-animate">
+
             <div>
+
                 <div class="pub-badge">
+
                     <span class="pub-badge-dot"></span>
+
                     @Localizer["Home_TrustedPlatform"]
+
                 </div>
+
                 <h1 class="pub-hero-title">
+
                     @Localizer["Home_HeroTitle1"]
+
                     <span>@Localizer["Home_HeroTitle2"]</span>
+
                 </h1>
+
                 <p class="pub-hero-desc">@Localizer["Home_HeroDesc"]</p>
+
                 <div class="pub-hero-cta">
+
                     @if (!isAuthenticated)
+
                     {
+
                         <a asp-area="Identity" asp-page="/Account/Login" class="pub-btn pub-btn--accent">@Localizer["Home_LoginSystem"]</a>
+
                         <a asp-controller="Home" asp-action="Features" class="pub-btn pub-btn--ghost">@Localizer["Home_ExploreFeatures"]</a>
+
                     }
+
                     else
+
                     {
+
                         @if (User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.SuperAdmin))
+
                         {
+
                             <a asp-controller="Admin" asp-action="Dashboard" class="pub-btn pub-btn--accent">@Localizer["Home_GoDashboard"]</a>
+
                         }
+
                         else if (User.IsInRole(RoleNames.Professor))
+
                         {
+
                             <a asp-controller="Professor" asp-action="Dashboard" class="pub-btn pub-btn--accent">@Localizer["Home_GoDashboard"]</a>
+
                         }
+
                         else if (User.IsInRole(RoleNames.Student))
+
                         {
+
                             <a asp-controller="Student" asp-action="Dashboard" class="pub-btn pub-btn--accent">@Localizer["Home_GoDashboard"]</a>
+
                         }
+
                         else if (User.IsInRole(RoleNames.Parent))
+
                         {
+
                             <a asp-controller="Parent" asp-action="Dashboard" class="pub-btn pub-btn--accent">@Localizer["Home_GoDashboard"]</a>
+
                         }
+
                         <a asp-controller="Home" asp-action="Features" class="pub-btn pub-btn--ghost">@Localizer["Home_ExploreFeatures"]</a>
+
                     }
+
                 </div>
+
             </div>
+
+
 
             <div class="pub-hero-gallery home-animate home-animate-delay-1">
+
                 <div class="pub-hero-gallery-grid">
-                    <div class="pub-hero-img pub-hero-img--1"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80" alt="" loading="lazy" /></div>
-                    <div class="pub-hero-img pub-hero-img--2"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&q=80" alt="" loading="lazy" /></div>
-                    <div class="pub-hero-img pub-hero-img--3"><img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&q=80" alt="" loading="lazy" /></div>
-                    <div class="pub-hero-img pub-hero-img--4"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" alt="" loading="lazy" /></div>
-                    <div class="pub-hero-img pub-hero-img--5"><img src="https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80" alt="" loading="lazy" /></div>
-                    <div class="pub-hero-img pub-hero-img--6"><img src="https://images.unsplash.com/photo-1434030214721-48fb7898a48b?w=400&q=80" alt="" loading="lazy" /></div>
+
+                    <div class="pub-hero-img pub-hero-img--1"><img src="@img("~/images/home/students.jpg")" alt="@Localizer["Home_StatStudents"]" loading="lazy" /></div>
+
+                    <div class="pub-hero-img pub-hero-img--2"><img src="@img("~/images/home/lecture.jpg")" alt="@Localizer["Home_StatFaculty"]" loading="lazy" /></div>
+
+                    <div class="pub-hero-img pub-hero-img--3"><img src="@img("~/images/home/library.jpg")" alt="@Localizer["Home_StatCourses"]" loading="lazy" /></div>
+
+                    <div class="pub-hero-img pub-hero-img--4"><img src="@img("~/images/home/graduation.jpg")" alt="" loading="lazy" /></div>
+
+                    <div class="pub-hero-img pub-hero-img--5"><img src="@img("~/images/home/hero-campus.jpg")" alt="" loading="lazy" /></div>
+
+                    <div class="pub-hero-img pub-hero-img--6"><img src="@img("~/images/home/office.jpg")" alt="" loading="lazy" /></div>
+
                 </div>
+
                 <div class="pub-hero-stat-float">
+
                     <strong>@Localizer["Home_ThreeRoles"]</strong>
+
                     <span>@Localizer["Brand_Subtitle"]</span>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
+
+
 
 <!-- Stats -->
+
 <section class="pub-stats">
+
     <div class="pub-stats-inner">
+
         <div class="pub-stat-card home-animate home-animate-delay-1">
+
             <div class="pub-stat-icon"><i class="fas fa-user-graduate"></i></div>
+
             <h3>@Localizer["Home_StatStudents"]</h3>
+
             <p>@Localizer["Home_StatStudentsDesc"]</p>
+
         </div>
+
         <div class="pub-stat-card home-animate home-animate-delay-2">
+
             <div class="pub-stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+
             <h3>@Localizer["Home_StatFaculty"]</h3>
+
             <p>@Localizer["Home_StatFacultyDesc"]</p>
+
         </div>
+
         <div class="pub-stat-card home-animate home-animate-delay-2">
+
             <div class="pub-stat-icon"><i class="fas fa-book-open"></i></div>
+
             <h3>@Localizer["Home_StatCourses"]</h3>
+
             <p>@Localizer["Home_StatCoursesDesc"]</p>
+
         </div>
+
         <div class="pub-stat-card home-animate home-animate-delay-3">
+
             <div class="pub-stat-icon"><i class="fas fa-shield-halved"></i></div>
+
             <h3>@Localizer["Home_StatSecure"]</h3>
+
             <p>@Localizer["Home_StatSecureDesc"]</p>
+
         </div>
+
     </div>
+
 </section>
+
+
 
 <!-- Features bento -->
+
 <section id="features" class="pub-section--dark scroll-mt-28">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <span class="pub-section-label">@Localizer["Home_Features"]</span>
+
         <h2 class="pub-section-title">@Localizer["Home_FeaturesTitle"]</h2>
+
         <p class="pub-section-desc">@Localizer["Home_FeaturesDesc"]</p>
 
+
+
         <div class="pub-bento">
+
             <article class="pub-bento-card pub-bento-card--accent">
-                <div class="pub-bento-img"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&q=80" alt="" loading="lazy" /></div>
+
+                <div class="pub-bento-img"><img src="@img("~/images/home/students.jpg")" alt="@Localizer["Home_Feat1Title"]" loading="lazy" /></div>
+
                 <div class="pub-bento-body">
+
                     <h3>@Localizer["Home_Feat1Title"]</h3>
+
                     <p>@Localizer["Home_Feat1Desc"]</p>
+
                 </div>
+
             </article>
+
             <article class="pub-bento-card">
-                <div class="pub-bento-img"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&q=80" alt="" loading="lazy" /></div>
+
+                <div class="pub-bento-img"><img src="@img("~/images/home/lecture.jpg")" alt="@Localizer["Home_Feat2Title"]" loading="lazy" /></div>
+
                 <div class="pub-bento-body">
+
                     <h3>@Localizer["Home_Feat2Title"]</h3>
+
                     <p>@Localizer["Home_Feat2Desc"]</p>
+
                 </div>
+
             </article>
+
             <article class="pub-bento-card">
-                <div class="pub-bento-img"><img src="https://images.unsplash.com/photo-1434030214721-48fb7898a48b?w=600&q=80" alt="" loading="lazy" /></div>
+
+                <div class="pub-bento-img"><img src="@img("~/images/home/library.jpg")" alt="@Localizer["Home_Feat3Title"]" loading="lazy" /></div>
+
                 <div class="pub-bento-body">
+
                     <h3>@Localizer["Home_Feat3Title"]</h3>
+
                     <p>@Localizer["Home_Feat3Desc"]</p>
+
                     <a asp-controller="Home" asp-action="Features" class="pub-bento-link">@Localizer["Home_ViewAllFeatures"] →</a>
+
                 </div>
+
             </article>
+
         </div>
+
     </div>
+
 </section>
+
+
 
 <!-- About -->
+
 <section id="about" class="pub-section--light scroll-mt-28">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div class="rounded-2xl overflow-hidden shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80" alt="" class="w-full aspect-[4/3] object-cover" loading="lazy" />
+
+            <div class="rounded-2xl overflow-hidden shadow-2xl border border-red-100">
+
+                <img src="@img("~/images/home/graduation.jpg")" alt="@Localizer["Home_AboutTitle"]" class="w-full aspect-[4/3] object-cover" loading="lazy" />
+
             </div>
+
             <div>
+
                 <span class="pub-section-label">@Localizer["Home_AboutBadge"]</span>
+
                 <h2 class="pub-section-title text-gray-900">@Localizer["Home_AboutTitle"]</h2>
+
                 <p class="pub-section-desc">@Localizer["Home_AboutDesc"]</p>
+
                 <ul class="mt-8 space-y-3">
-                    <li class="flex gap-3 p-4 rounded-xl bg-white border border-gray-200 text-gray-700 text-sm">@Localizer["Home_AboutLi1"]</li>
-                    <li class="flex gap-3 p-4 rounded-xl bg-white border border-gray-200 text-gray-700 text-sm">@Localizer["Home_AboutLi2"]</li>
-                    <li class="flex gap-3 p-4 rounded-xl bg-white border border-gray-200 text-gray-700 text-sm">@Localizer["Home_AboutLi3"]</li>
+
+                    <li class="flex gap-3 p-4 rounded-xl bg-white border border-red-100 text-gray-700 text-sm">@Localizer["Home_AboutLi1"]</li>
+
+                    <li class="flex gap-3 p-4 rounded-xl bg-white border border-red-100 text-gray-700 text-sm">@Localizer["Home_AboutLi2"]</li>
+
+                    <li class="flex gap-3 p-4 rounded-xl bg-white border border-red-100 text-gray-700 text-sm">@Localizer["Home_AboutLi3"]</li>
+
                 </ul>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
+
+
 
 <!-- Roles -->
+
 <section id="roles" class="pub-section--dark scroll-mt-28">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
         <span class="pub-section-label">@Localizer["Home_RolesBadge"]</span>
+
         <h2 class="pub-section-title">@Localizer["Home_RolesTitle"]</h2>
+
         <p class="pub-section-desc mx-auto">@Localizer["Home_RolesDesc"]</p>
+
         <div class="grid sm:grid-cols-3 gap-6 mt-12 text-left">
+
             <div class="pub-bento-card p-8">
-                <h3 class="text-lg font-bold text-white mb-2">@Localizer["Home_RoleAdmin"]</h3>
-                <p class="text-sm text-[var(--pub-muted)] m-0">@Localizer["Home_RoleAdminDesc"]</p>
+
+                <h3 class="text-lg font-bold mb-2">@Localizer["Home_RoleAdmin"]</h3>
+
+                <p class="text-sm m-0">@Localizer["Home_RoleAdminDesc"]</p>
+
             </div>
+
             <div class="pub-bento-card p-8">
-                <h3 class="text-lg font-bold text-white mb-2">@Localizer["Home_RoleProf"]</h3>
-                <p class="text-sm text-[var(--pub-muted)] m-0">@Localizer["Home_RoleProfDesc"]</p>
+
+                <h3 class="text-lg font-bold mb-2">@Localizer["Home_RoleProf"]</h3>
+
+                <p class="text-sm m-0">@Localizer["Home_RoleProfDesc"]</p>
+
             </div>
+
             <div class="pub-bento-card p-8">
-                <h3 class="text-lg font-bold text-white mb-2">@Localizer["Home_RoleStudent"]</h3>
-                <p class="text-sm text-[var(--pub-muted)] m-0">@Localizer["Home_RoleStudentDesc"]</p>
+
+                <h3 class="text-lg font-bold mb-2">@Localizer["Home_RoleStudent"]</h3>
+
+                <p class="text-sm m-0">@Localizer["Home_RoleStudentDesc"]</p>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
 
+
+
 <!-- CTA -->
+
 <section class="pub-cta-band">
+
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
+
         <h2>@Localizer["Home_CtaTitle"]</h2>
+
         <p>@Localizer["Home_CtaDesc"]</p>
+
         @if (!isAuthenticated)
+
         {
+
             <div class="pub-hero-cta">
+
                 <a asp-area="Identity" asp-page="/Account/Login" class="pub-btn pub-btn--accent">@Localizer["Home_LoginNow"]</a>
+
                 <a asp-area="Identity" asp-page="/Account/Register" class="pub-btn pub-btn--ghost">@Localizer["Home_RegisterFree"]</a>
+
             </div>
+
         }
+
         else
+
         {
-            <p class="mt-6 text-[var(--pub-muted)]">@Localizer["Home_SignedInHint"]</p>
+
+            <p class="mt-6 text-white/90">@Localizer["Home_SignedInHint"]</p>
+
         }
+
     </div>
+
 </section>
+

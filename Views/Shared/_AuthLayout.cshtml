@@ -12,7 +12,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - University Manager</title>
-    <link rel="icon" type="image/png" href="https://img.icons8.com/fluent/48/DC2626/graduation-cap.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -20,8 +19,9 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#fef2f2', 100: '#fee2e2', 500: '#ef4444',
-                            600: '#dc2626', 700: '#b91c1c', 800: '#991b1b', 900: '#7f1d1d',
+                            50: '#fff5f5', 100: '#ffe4e6', 200: '#fecdd3', 300: '#fda4af',
+                            400: '#fb7185', 500: '#f87171', 600: '#ef4444', 700: '#f43f5e',
+                            800: '#e11d48', 900: '#be123c',
                         }
                     },
                     fontFamily: { sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'] }
@@ -33,6 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/brand-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/lang-switcher.css" asp-append-version="true" />
 </head>

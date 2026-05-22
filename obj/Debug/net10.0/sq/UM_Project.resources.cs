@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UM_Project")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute(" ")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9a6df5e4642bcebb0068b2dd3c004dfca5162fe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a022134c7df8cd2d7ae7c43247a617660f621630")]
 [assembly: System.Reflection.AssemblyProductAttribute("UM_Project")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UM_Project")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

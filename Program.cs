@@ -123,25 +123,69 @@ app.UseAuthentication();
 app.UseMiddleware<MustChangePasswordMiddleware>();
 app.UseAuthorization();
 
+var applyMigrations = builder.Configuration.GetValue("Database:ApplyMigrationsOnStartup", false);
+var applySchemaBootstrap = builder.Configuration.GetValue("Database:ApplySchemaBootstrapOnStartup", false);
+
+Console.WriteLine("UM Project — preparing database...");
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await DatabaseSchemaBootstrap.ApplyAsync(db);
+
+    if (applyMigrations)
+    {
+        Console.WriteLine("  Applying EF migrations...");
+        await db.Database.MigrateAsync();
+    }
+    else
+    {
+        Console.WriteLine("  EF migrations skipped (Database:ApplyMigrationsOnStartup = false).");
+    }
+
+    if (applySchemaBootstrap)
+    {
+        await DatabaseSchemaBootstrap.ApplyAsync(db);
+        Console.WriteLine("  Schema bootstrap applied.");
+    }
+    else
+    {
+        Console.WriteLine("  Schema bootstrap skipped (Database:ApplySchemaBootstrapOnStartup = false).");
+    }
+
+    Console.WriteLine("UM Project — database startup step done.");
 
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
     foreach (var role in RoleNames.All)
+    {
+        Console.WriteLine($"  Checking role: {role}...");
         if (!await roleManager.RoleExistsAsync(role))
             await roleManager.CreateAsync(new IdentityRole(role));
+    }
+    Console.WriteLine("UM Project — roles OK.");
 
     const string defaultPassword = "Admin@123";
+    Console.WriteLine("  Ensuring superadmin...");
     await EnsureUserAsync(userManager, "superadmin@umproject.com", "Super Administrator", "SA001", RoleNames.SuperAdmin, defaultPassword);
+    Console.WriteLine("  Ensuring admin...");
     await EnsureUserAsync(userManager, "admin@umproject.com", "System Administrator", "ADMIN001", RoleNames.Admin, defaultPassword);
+    Console.WriteLine("UM Project — default users OK.");
 }
+
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    Console.WriteLine();
+    Console.WriteLine("============================================");
+    Console.WriteLine("  UM Project is running. Open in browser:");
+    Console.WriteLine("  https://localhost:7059");
+    Console.WriteLine("  http://localhost:5199");
+    Console.WriteLine("============================================");
+    Console.WriteLine();
+});
 
 static async Task EnsureUserAsync(UserManager<ApplicationUser> userManager, string email, string fullName, string customId, string role, string password)
 {
+    Console.WriteLine($"    FindByEmail {email}...");
     var user = await userManager.FindByEmailAsync(email);
     if (user == null)
     {
@@ -155,25 +199,20 @@ static async Task EnsureUserAsync(UserManager<ApplicationUser> userManager, stri
             Address = "Main Campus",
             MustChangePassword = false
         };
-        await userManager.CreateAsync(user, password);
+        var create = await userManager.CreateAsync(user, password);
+        if (!create.Succeeded)
+            throw new InvalidOperationException($"Could not create {email}: {string.Join(", ", create.Errors.Select(e => e.Description))}");
         await userManager.AddToRoleAsync(user, role);
         return;
     }
 
+    Console.WriteLine($"    Role check {email}...");
+    if (!await userManager.IsInRoleAsync(user, role))
+        await userManager.AddToRoleAsync(user, role);
+
     await userManager.ResetAccessFailedCountAsync(user);
     await userManager.SetLockoutEndDateAsync(user, null);
-    if (!await userManager.CheckPasswordAsync(user, password))
-    {
-        var token = await userManager.GeneratePasswordResetTokenAsync(user);
-        await userManager.ResetPasswordAsync(user, token, password);
-    }
-
-    var roles = await userManager.GetRolesAsync(user);
-    if (!roles.Contains(role))
-    {
-        await userManager.RemoveFromRolesAsync(user, roles);
-        await userManager.AddToRoleAsync(user, role);
-    }
+    Console.WriteLine($"    Done {email}.");
 }
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}")

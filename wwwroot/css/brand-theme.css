@@ -1,0 +1,57 @@
+/* University Manager — red & white brand (lighter red accents) */
+
+:root {
+
+    --brand-50: #fff5f5;
+
+    --brand-100: #ffe4e6;
+
+    --brand-200: #fecdd3;
+
+    --brand-300: #fda4af;
+
+    --brand-400: #fb7185;
+
+    --brand-500: #f87171;
+
+    --brand-600: #ef4444;
+
+    --brand-700: #f43f5e;
+
+    --brand-800: #e11d48;
+
+    --brand-900: #be123c;
+
+
+
+    --primary-dark: var(--brand-800);
+
+    --primary-medium: var(--brand-500);
+
+    --primary-light: var(--brand-300);
+
+
+
+    --pub-bg: #ffffff;
+
+    --pub-bg-elevated: #fff5f5;
+
+    --pub-surface: #ffffff;
+
+    --pub-border: #fecdd3;
+
+    --pub-text: #1f2937;
+
+    --pub-muted: #6b7280;
+
+    --pub-accent: var(--brand-500);
+
+    --pub-accent-hover: var(--brand-600);
+
+    --pub-accent-text: #ffffff;
+
+    --pub-accent-soft: #fee2e2;
+
+}
+
+

@@ -4,7 +4,7 @@
 }
 
 .sa-hero {
-    background: linear-gradient(135deg, #1c1917 0%, #44403c 40%, #991b1b 100%);
+    background: linear-gradient(135deg, var(--brand-400) 0%, var(--brand-500) 50%, var(--brand-600) 100%);
     border-radius: 20px;
     padding: 2rem 2.25rem;
     color: #fff;
@@ -112,7 +112,7 @@
 .sa-card-meta {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #991b1b;
+    color: var(--brand-700);
     padding-top: 0.5rem;
     border-top: 1px solid #f3f4f6;
 }
@@ -143,5 +143,5 @@
 }
 
 .sa-back:hover {
-    color: #991b1b;
+    color: var(--brand-700);
 }

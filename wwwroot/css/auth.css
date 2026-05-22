@@ -11,24 +11,24 @@ html, body {
 }
 
 .auth-panel-overlay {
-    background: linear-gradient(145deg, rgba(127, 29, 29, 0.94) 0%, rgba(185, 28, 28, 0.88) 45%, rgba(153, 27, 27, 0.92) 100%);
+    background: linear-gradient(145deg, rgba(248, 113, 113, 0.92) 0%, rgba(239, 68, 68, 0.85) 50%, rgba(251, 113, 133, 0.88) 100%);
 }
 
 .auth-input-wrap:focus-within {
-    border-color: #dc2626;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2);
 }
 
 .auth-input-wrap:focus-within .auth-input-icon {
-    color: #dc2626;
+    color: var(--brand-600);
 }
 
 .field-validation-error,
 .validation-summary-errors {
-    color: #b91c1c;
+    color: var(--brand-700);
     font-size: 0.875rem;
 }
 
 .input-validation-error {
-    border-color: #dc2626 !important;
+    border-color: var(--brand-500) !important;
 }

@@ -1,46 +1,94 @@
 @{
+
     ViewData["Title"] = Localizer["Pub_Features_Title"];
+
+    var img = Url.Content;
+
     var features = new[]
+
     {
-        (Localizer["Home_Feat1Title"], Localizer["Home_Feat1Desc"], "fa-id-card", "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80"),
-        (Localizer["Home_Feat2Title"], Localizer["Home_Feat2Desc"], "fa-calendar-days", "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80"),
-        (Localizer["Home_Feat3Title"], Localizer["Home_Feat3Desc"], "fa-chart-line", "https://images.unsplash.com/photo-1434030214721-48fb7898a48b?w=800&q=80"),
-        (Localizer["Pub_Feat4Title"], Localizer["Pub_Feat4Desc"], "fa-chart-pie", "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"),
-        (Localizer["Pub_Feat5Title"], Localizer["Pub_Feat5Desc"], "fa-file-export", "https://images.unsplash.com/photo-1588196749597-f804d8e3f02e?w=800&q=80"),
-        (Localizer["Pub_Feat6Title"], Localizer["Pub_Feat6Desc"], "fa-people-roof", "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"),
-        (Localizer["Pub_Feat7Title"], Localizer["Pub_Feat7Desc"], "fa-calendar-check", "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80"),
-        (Localizer["Pub_Feat8Title"], Localizer["Pub_Feat8Desc"], "fa-triangle-exclamation", "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80"),
-        (Localizer["Pub_Feat9Title"], Localizer["Pub_Feat9Desc"], "fa-shield-halved", "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80"),
+
+        (Localizer["Home_Feat1Title"], Localizer["Home_Feat1Desc"], "fa-id-card", "~/images/home/students.jpg"),
+
+        (Localizer["Home_Feat2Title"], Localizer["Home_Feat2Desc"], "fa-calendar-days", "~/images/home/lecture.jpg"),
+
+        (Localizer["Home_Feat3Title"], Localizer["Home_Feat3Desc"], "fa-chart-line", "~/images/home/library.jpg"),
+
+        (Localizer["Pub_Feat4Title"], Localizer["Pub_Feat4Desc"], "fa-chart-pie", "~/images/home/hero-campus.jpg"),
+
+        (Localizer["Pub_Feat5Title"], Localizer["Pub_Feat5Desc"], "fa-file-export", "~/images/home/office.jpg"),
+
+        (Localizer["Pub_Feat6Title"], Localizer["Pub_Feat6Desc"], "fa-people-roof", "~/images/home/campus-team.jpg"),
+
+        (Localizer["Pub_Feat7Title"], Localizer["Pub_Feat7Desc"], "fa-calendar-check", "~/images/home/lecture.jpg"),
+
+        (Localizer["Pub_Feat8Title"], Localizer["Pub_Feat8Desc"], "fa-triangle-exclamation", "~/images/home/students.jpg"),
+
+        (Localizer["Pub_Feat9Title"], Localizer["Pub_Feat9Desc"], "fa-shield-halved", "~/images/home/graduation.jpg"),
+
     };
+
 }
 
+
+
 <section class="pub-hero pub-page min-h-[42vh] flex items-center"
-         style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80');">
+
+         style="background-image: url('@img("~/images/home/graduation.jpg")');">
+
     <div class="pub-hero-overlay w-full py-20 lg:py-28">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
             <span class="pub-badge mb-6"><span class="pub-badge-dot"></span> @Localizer["Home_Features"]</span>
-            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">@Localizer["Pub_Features_Title"]</h1>
-            <p class="mt-5 text-lg max-w-2xl mx-auto" style="color: var(--pub-muted)">@Localizer["Pub_Features_Subtitle"]</p>
+
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">@Localizer["Pub_Features_Title"]</h1>
+
+            <p class="mt-5 text-lg max-w-2xl mx-auto text-gray-700">@Localizer["Pub_Features_Subtitle"]</p>
+
         </div>
+
     </div>
+
 </section>
 
+
+
 <section class="pub-section--dark">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div class="pub-bento" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
-            @foreach (var (title, desc, icon, img) in features)
+
+            @foreach (var (title, desc, icon, imagePath) in features)
+
             {
+
                 <article class="pub-bento-card">
-                    <div class="pub-bento-img"><img src="@img" alt="" loading="lazy" /></div>
+
+                    <div class="pub-bento-img"><img src="@img(imagePath)" alt="@title" loading="lazy" /></div>
+
                     <div class="pub-bento-body">
+
                         <h2>@title</h2>
+
                         <p>@desc</p>
+
                     </div>
+
                 </article>
+
             }
+
         </div>
+
         <div class="mt-16 text-center">
+
             <a asp-area="Identity" asp-page="/Account/Login" class="pub-btn pub-btn--accent">@Localizer["Home_LoginNow"]</a>
+
         </div>
+
     </div>
+
 </section>
+

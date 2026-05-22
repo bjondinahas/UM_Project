@@ -1,9 +1,6 @@
 :root {
-    --primary-dark: #7f1d1d;
-    --primary-medium: #dc2626;
-    --primary-light: #f87171;
     --white: #FFFFFF;
-    --bg-gradient: linear-gradient(135deg, #e8f0f2 0%, #d4e4e8 100%);
+    --bg-gradient: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
     --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
     --hover-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
@@ -55,11 +52,18 @@ body {
     box-shadow: var(--hover-shadow);
 }
 .card-header {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
-    color: white;
+    background: #f8fafc;
+    color: #374151;
     border: none;
-    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.65rem 1rem;
     font-weight: 600;
+    font-size: 0.85rem;
+}
+
+body.app-layout .card-header {
+    background: #f9fafb;
+    color: #111827;
 }
 
 /* Dashboard Cards */
@@ -127,22 +131,27 @@ body {
     color: white;
 }
 
-/* Tables */
+/* Tables — legacy Bootstrap tables (non-app pages) */
 .table {
     background: white;
-    border-radius: 20px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e8eaed;
 }
 .table thead th {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
-    color: white;
+    background: #f8fafc;
+    color: #64748b;
     border: none;
-    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.5rem 0.85rem;
     font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 .table tbody tr:hover {
-    background: rgba(31,73,89,0.05);
+    background: #fffafb;
 }
 
 /* Forms */
@@ -184,7 +193,7 @@ body {
 
 /* Welcome Banner */
 .welcome-banner {
-    background: linear-gradient(135deg, #011425, #1F4959);
+    background: linear-gradient(135deg, var(--brand-500), var(--brand-600));
     border-radius: 24px;
     padding: 30px;
     color: white;
@@ -193,7 +202,7 @@ body {
 
 /* Quick Actions */
 .quick-action {
-    background: linear-gradient(135deg, #1F4959, #5C7C89);
+    background: linear-gradient(135deg, var(--brand-400), var(--brand-500));
     color: white;
     border-radius: 12px;
     padding: 15px;
@@ -203,7 +212,7 @@ body {
 }
 .quick-action:hover {
     transform: translateX(5px);
-    background: linear-gradient(135deg, #011425, #1F4959);
+    background: linear-gradient(135deg, var(--brand-500), var(--brand-600));
 }
 
 /* Responsive */

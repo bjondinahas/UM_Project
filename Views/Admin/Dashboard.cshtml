@@ -1,161 +1,352 @@
 @using System.Text.Json
+
 @{
+
     ViewData["Title"] = Localizer["Nav_Dashboard"];
+
     var gradeLabels = ViewBag.GradeLabels as List<string> ?? new List<string>();
+
     var gradeCounts = ViewBag.GradeCounts as List<int> ?? new List<int>();
+
     var deptLabels = ViewBag.DeptLabels as List<string> ?? new List<string>();
+
     var deptCounts = ViewBag.DeptStudentCounts as List<int> ?? new List<int>();
+
     var loginLabels = ViewBag.LoginChartLabels as List<string> ?? new List<string>();
+
     var loginData = ViewBag.LoginChartData as List<int> ?? new List<int>();
+
     var recent = ViewBag.RecentActivity as IEnumerable<UM_Project.Models.AdminActivityLog> ?? Enumerable.Empty<UM_Project.Models.AdminActivityLog>();
+
     var chartPassing = Localizer["Chart_Passing"];
+
     var chartFailing = Localizer["Chart_Failing"];
+
     var chartLogins = Localizer["Chart_Logins"];
+
+
+
+    var primaryKpis = new (string icon, string labelKey, object val)[]
+
+    {
+
+        ("fa-users", "Dash_KpiUsers", ViewBag.TotalUsers),
+
+        ("fa-user-graduate", "Dash_KpiStudents", ViewBag.TotalStudents),
+
+        ("fa-book", "Dash_KpiCourses", ViewBag.TotalCourses),
+
+        ("fa-percent", "Dash_KpiPassRate", $"{ViewBag.PassRate}%"),
+
+    };
+
+    var secondaryKpis = new (string icon, string labelKey, object val)[]
+
+    {
+
+        ("fa-chalkboard-teacher", "Dash_KpiProfessors", ViewBag.TotalProfessors),
+
+        ("fa-people-roof", "Dash_KpiParents", ViewBag.TotalParents),
+
+        ("fa-clipboard-list", "Dash_KpiEnrollments", ViewBag.TotalEnrollments),
+
+        ("fa-star", "Dash_KpiAvgGrade", ViewBag.AverageGrade),
+
+        ("fa-user-xmark", "Dash_KpiAbsencesMo", ViewBag.AbsencesThisMonth),
+
+        ("fa-clipboard-check", "Dash_KpiAttendanceRows", ViewBag.AttendanceRecordsTotal),
+
+        ("fa-arrow-trend-up", "Dash_KpiEnrollments7d", ViewBag.NewEnrollments7d),
+
+        ("fa-right-to-bracket", "Dash_KpiLoginsToday", ViewBag.LoginsToday),
+
+    };
+
 }
+
+
 
 <link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
 
-<div class="adm-dash">
-    <div class="adm-hero">
-        <div>
-            <p class="text-xs font-bold uppercase tracking-wider text-red-600 mb-1">@Localizer["Dash_AdminOverview"]</p>
-            <h1>@Localizer["Dash_WelcomeBack"]</h1>
-            <p class="adm-hero-sub">@DateTime.Now.ToString("dddd, MMMM d, yyyy") — @Localizer["Dash_Snapshot"]</p>
-        </div>
-        <div class="adm-hero-actions">
-            @if (User.IsInRole(UM_Project.Models.RoleNames.SuperAdmin))
-            {
-                <a asp-controller="SuperAdmin" asp-action="Hub" class="adm-btn adm-btn--gold"><i class="fas fa-crown"></i> @Localizer["Nav_ControlCenter"]</a>
-            }
-            <a asp-controller="Statistics" asp-action="Index" class="adm-btn adm-btn--primary"><i class="fas fa-chart-pie"></i> @Localizer["Dash_FullAnalytics"]</a>
-            <a asp-controller="Students" asp-action="Create" class="adm-btn adm-btn--outline"><i class="fas fa-user-plus"></i> @Localizer["Dash_RegisterStudent"]</a>
-        </div>
-    </div>
 
-    <div class="adm-kpi-grid">
-        @{
-            var kpis = new (string icon, string labelKey, object val, string color)[]
+
+<div class="adm-dash dash-shell">
+
+    <header class="adm-hero">
+
+        <div>
+
+            <p class="dash-page-header__eyebrow mb-0">@Localizer["Dash_AdminOverview"]</p>
+
+            <h1>@Localizer["Dash_WelcomeBack"]</h1>
+
+            <p class="adm-hero-sub">@DateTime.Now.ToString("dddd, MMMM d, yyyy") · @Localizer["Dash_Snapshot"]</p>
+
+        </div>
+
+        <div class="adm-hero-actions">
+
+            @if (User.IsInRole(UM_Project.Models.RoleNames.SuperAdmin))
+
             {
-                ("fa-users", "Dash_KpiUsers", ViewBag.TotalUsers, "#fee2e2"),
-                ("fa-user-graduate", "Dash_KpiStudents", ViewBag.TotalStudents, "#dbeafe"),
-                ("fa-chalkboard-teacher", "Dash_KpiProfessors", ViewBag.TotalProfessors, "#e0e7ff"),
-                ("fa-people-roof", "Dash_KpiParents", ViewBag.TotalParents, "#ffedd5"),
-                ("fa-book", "Dash_KpiCourses", ViewBag.TotalCourses, "#fce7f3"),
-                ("fa-clipboard-list", "Dash_KpiEnrollments", ViewBag.TotalEnrollments, "#d1fae5"),
-                ("fa-star", "Dash_KpiAvgGrade", ViewBag.AverageGrade, "#fef3c7"),
-                ("fa-percent", "Dash_KpiPassRate", $"{ViewBag.PassRate}%", "#dcfce7"),
-                ("fa-user-xmark", "Dash_KpiAbsencesMo", ViewBag.AbsencesThisMonth, "#fecaca"),
-                ("fa-clipboard-check", "Dash_KpiAttendanceRows", ViewBag.AttendanceRecordsTotal, "#f3e8ff"),
-                ("fa-arrow-trend-up", "Dash_KpiEnrollments7d", ViewBag.NewEnrollments7d, "#cffafe"),
-                ("fa-right-to-bracket", "Dash_KpiLoginsToday", ViewBag.LoginsToday, "#e5e7eb"),
-            };
-        }
-        @foreach (var k in kpis)
-        {
-            <div class="adm-kpi @(k.labelKey == "Dash_KpiPassRate" ? "adm-kpi--highlight" : "")">
-                <div class="adm-kpi-icon" style="background:@k.color;color:#374151"><i class="fas @k.icon"></i></div>
-                <div class="adm-kpi-value">@k.val</div>
-                <div class="adm-kpi-label">@Localizer[k.labelKey]</div>
-            </div>
-        }
-    </div>
+
+                <a asp-controller="SuperAdmin" asp-action="Hub" class="adm-btn adm-btn--gold"><i class="fas fa-crown"></i> @Localizer["Nav_ControlCenter"]</a>
+
+            }
+
+            <a asp-controller="Statistics" asp-action="Index" class="adm-btn adm-btn--primary"><i class="fas fa-chart-pie"></i> @Localizer["Dash_FullAnalytics"]</a>
+
+            <a asp-controller="Students" asp-action="Create" class="adm-btn adm-btn--outline"><i class="fas fa-user-plus"></i> @Localizer["Dash_RegisterStudent"]</a>
+
+        </div>
+
+    </header>
+
+
+
+    <section class="adm-kpi-section">
+
+        <p class="adm-kpi-section-title">@Localizer["Dash_Snapshot"]</p>
+
+        <div class="adm-kpi-grid adm-kpi-grid--primary">
+
+            @foreach (var k in primaryKpis)
+
+            {
+
+                <div class="adm-kpi adm-kpi--primary @(k.labelKey == "Dash_KpiPassRate" ? "adm-kpi--highlight" : "")">
+
+                    <div class="adm-kpi-icon"><i class="fas @k.icon"></i></div>
+
+                    <div class="adm-kpi-value">@k.val</div>
+
+                    <div class="adm-kpi-label">@Localizer[k.labelKey]</div>
+
+                </div>
+
+            }
+
+        </div>
+
+        <div class="adm-kpi-grid">
+
+            @foreach (var k in secondaryKpis)
+
+            {
+
+                <div class="adm-kpi">
+
+                    <div class="adm-kpi-icon"><i class="fas @k.icon"></i></div>
+
+                    <div class="adm-kpi-value">@k.val</div>
+
+                    <div class="adm-kpi-label">@Localizer[k.labelKey]</div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </section>
+
+
 
     <div class="adm-charts">
+
         <div class="adm-chart-card adm-chart-card--wide">
-            <h3><i class="fas fa-chart-line text-red-600 me-2"></i>@Localizer["Dash_Logins7Days"]</h3>
+
+            <h3><i class="fas fa-chart-line"></i> @Localizer["Dash_Logins7Days"]</h3>
+
             <div class="adm-chart-wrap"><canvas id="loginChart"></canvas></div>
+
         </div>
+
         <div class="adm-chart-card adm-chart-card--narrow">
-            <h3><i class="fas fa-chart-pie text-red-600 me-2"></i>@Localizer["Dash_PassVsFail"]</h3>
+
+            <h3><i class="fas fa-chart-pie"></i> @Localizer["Dash_PassVsFail"]</h3>
+
             <div class="adm-chart-wrap"><canvas id="passingChart"></canvas></div>
+
         </div>
+
         <div class="adm-chart-card adm-chart-card--half">
-            <h3><i class="fas fa-building text-red-600 me-2"></i>@Localizer["Dash_StudentsByDept"]</h3>
+
+            <h3><i class="fas fa-building"></i> @Localizer["Dash_StudentsByDept"]</h3>
+
             <div class="adm-chart-wrap"><canvas id="deptChart"></canvas></div>
+
         </div>
+
         <div class="adm-chart-card adm-chart-card--half">
-            <h3><i class="fas fa-star text-red-600 me-2"></i>@Localizer["Dash_GradeDistribution"] (@ViewBag.GradeMin–@ViewBag.GradeMax)</h3>
+
+            <h3><i class="fas fa-star"></i> @Localizer["Dash_GradeDistribution"] (@ViewBag.GradeMin–@ViewBag.GradeMax)</h3>
+
             <div class="adm-chart-wrap"><canvas id="gradeChart"></canvas></div>
+
         </div>
+
     </div>
+
+
 
     <div class="adm-insights">
+
         <div class="adm-chart-card">
-            <h3><i class="fas fa-clock-rotate-left text-red-600 me-2"></i>@Localizer["Dash_RecentAdminActivity"]</h3>
+
+            <h3><i class="fas fa-clock-rotate-left"></i> @Localizer["Dash_RecentAdminActivity"]</h3>
+
             @if (!recent.Any())
+
             {
+
                 <p class="text-muted small mb-0">@Localizer["Dash_NoAdminActivity"]</p>
+
             }
+
             else
+
             {
+
                 <ul class="adm-insight-list">
+
                     @foreach (var log in recent)
+
                     {
+
                         <li>
+
                             <span><strong>@log.Action</strong> @log.EntityType <span class="text-muted">@log.Email</span></span>
-                            <span class="text-muted small">@log.CreatedAtUtc.ToLocalTime().ToString("g")</span>
+
+                            <span class="text-muted small text-nowrap">@log.CreatedAtUtc.ToLocalTime().ToString("g")</span>
+
                         </li>
+
                     }
+
                 </ul>
-                <a asp-controller="Admin" asp-action="ActivityLogs" class="small fw-semibold text-danger">@Localizer["Dash_ViewAll"]</a>
+
+                <a asp-controller="Admin" asp-action="ActivityLogs" class="small fw-semibold text-decoration-none" style="color: var(--brand-600);">@Localizer["Dash_ViewAll"]</a>
+
             }
+
         </div>
+
         <div class="adm-chart-card">
-            <h3><i class="fas fa-bolt text-red-600 me-2"></i>@Localizer["Dash_QuickActions"]</h3>
+
+            <h3><i class="fas fa-bolt"></i> @Localizer["Dash_QuickActions"]</h3>
+
             <div class="adm-quick-links">
+
                 <a asp-controller="Students" asp-action="Index" class="adm-quick-link"><i class="fas fa-user-graduate"></i> @Localizer["Nav_Students"]</a>
+
                 <a asp-controller="Courses" asp-action="Index" class="adm-quick-link"><i class="fas fa-book"></i> @Localizer["Nav_Courses"]</a>
+
                 <a asp-controller="Parents" asp-action="Index" class="adm-quick-link"><i class="fas fa-people-roof"></i> @Localizer["Nav_Parents"]</a>
+
                 <a asp-controller="Enrollments" asp-action="Create" class="adm-quick-link"><i class="fas fa-plus"></i> @Localizer["Dash_Enroll"]</a>
+
                 <a asp-controller="Admin" asp-action="AuthLogs" class="adm-quick-link"><i class="fas fa-shield-halved"></i> @Localizer["Dash_AuthLogs"]</a>
+
                 <a asp-controller="Statistics" asp-action="Index" class="adm-quick-link"><i class="fas fa-filter"></i> @Localizer["Dash_Filters"]</a>
+
                 <a asp-controller="AtRisk" asp-action="Index" class="adm-quick-link"><i class="fas fa-triangle-exclamation"></i> @Localizer["Nav_AtRisk"]</a>
+
                 <a asp-controller="AcademicCalendar" asp-action="Index" class="adm-quick-link"><i class="fas fa-calendar-days"></i> @Localizer["Nav_AcademicCalendar"]</a>
+
                 <a asp-controller="DocumentRequests" asp-action="Admin" class="adm-quick-link"><i class="fas fa-file-pdf"></i> @Localizer["Nav_DocumentRequests"]</a>
+
             </div>
-            <p class="text-muted small mt-3 mb-0"><i class="fas fa-info-circle me-1"></i>@ViewBag.LoginsWeek @Localizer["Dash_LoginsWeekNote"]</p>
+
+            <p class="text-muted small mt-2 mb-0"><i class="fas fa-info-circle me-1"></i>@ViewBag.LoginsWeek @Localizer["Dash_LoginsWeekNote"]</p>
+
         </div>
+
     </div>
+
 </div>
 
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script src="~/js/um-charts.js" asp-append-version="true"></script>
+
 <script>
-    const red = '#dc2626', redDark = '#991b1b', redLight = '#fca5a5';
+
+    const red = '#f87171', redDark = '#e11d48', redLight = '#fecdd3';
+
     const lblPassing = @Html.Raw(JsonSerializer.Serialize(chartPassing));
+
     const lblFailing = @Html.Raw(JsonSerializer.Serialize(chartFailing));
+
     const lblLogins = @Html.Raw(JsonSerializer.Serialize(chartLogins));
+
     UmCharts.create('loginChart', {
+
         type: 'line',
+
         data: {
+
             labels: @Html.Raw(JsonSerializer.Serialize(loginLabels)),
+
             datasets: [{ label: lblLogins, data: @Html.Raw(JsonSerializer.Serialize(loginData)),
-                borderColor: red, backgroundColor: 'rgba(220,38,38,0.1)', fill: true, tension: 0.35 }]
+
+                borderColor: red, backgroundColor: 'rgba(248,113,113,0.12)', fill: true, tension: 0.35 }]
+
         },
+
         options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+
     });
+
     UmCharts.create('passingChart', {
+
         type: 'doughnut',
+
         data: {
+
             labels: [lblPassing, lblFailing],
+
             datasets: [{ data: [@ViewBag.PassingCount, @ViewBag.FailingCount], backgroundColor: [red, '#e5e7eb'], borderWidth: 0 }]
+
         },
-        options: { cutout: '60%' }
+
+        options: { cutout: '62%' }
+
     });
+
     UmCharts.create('deptChart', {
+
         type: 'bar',
+
         data: {
+
             labels: @Html.Raw(JsonSerializer.Serialize(deptLabels)),
-            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(deptCounts)), backgroundColor: red, borderRadius: 6 }]
+
+            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(deptCounts)), backgroundColor: red, borderRadius: 4 }]
+
         },
+
         options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+
     });
+
     UmCharts.create('gradeChart', {
+
         type: 'bar',
+
         data: {
+
             labels: @Html.Raw(JsonSerializer.Serialize(gradeLabels)),
-            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(gradeCounts)), backgroundColor: [redDark, red, '#ef4444', redLight, '#fecaca', '#fee2e2'], borderRadius: 6 }]
+
+            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(gradeCounts)), backgroundColor: [redDark, red, '#ef4444', redLight, '#fecaca', '#ffe4e6'], borderRadius: 4 }]
+
         },
+
         options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+
     });
+
 </script>
+

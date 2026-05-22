@@ -7,11 +7,117 @@ namespace UM_Project.Data
     {
         public static async Task ApplyAsync(ApplicationDbContext context)
         {
+            await EnsureAspNetUserColumnsAsync(context);
             await EnsureCourseColumnsAsync(context);
             await EnsureCourseDocumentsTableAsync(context);
             await EnsureAttendanceAndSettingsAsync(context);
+            await EnsureAuthAndAuditTablesAsync(context);
+            await EnsureParentGuardiansTableAsync(context);
             await EnsureExtendedFeaturesAsync(context);
             await SeedDefaultsAsync(context);
+        }
+
+        private static async Task EnsureAspNetUserColumnsAsync(ApplicationDbContext context)
+        {
+            if (!await ColumnExistsAsync(context, "AspNetUsers", "MustChangePassword"))
+                await context.Database.ExecuteSqlRawAsync(
+                    "ALTER TABLE `AspNetUsers` ADD COLUMN `MustChangePassword` tinyint(1) NOT NULL DEFAULT 0");
+        }
+
+        private static async Task EnsureAuthAndAuditTablesAsync(ApplicationDbContext context)
+        {
+            if (!await TableExistsAsync(context, "AuthAuditLogs"))
+            {
+                await context.Database.ExecuteSqlRawAsync("""
+                    CREATE TABLE `AuthAuditLogs` (
+                        `Id` int NOT NULL AUTO_INCREMENT,
+                        `UserId` longtext NULL,
+                        `Email` longtext NULL,
+                        `EventType` longtext NOT NULL,
+                        `Success` tinyint(1) NOT NULL,
+                        `FailureReason` longtext NULL,
+                        `IpAddress` longtext NULL,
+                        `Country` longtext NULL,
+                        `Region` longtext NULL,
+                        `City` longtext NULL,
+                        `UserAgent` longtext NULL,
+                        `CreatedAtUtc` datetime(6) NOT NULL,
+                        PRIMARY KEY (`Id`),
+                        KEY `IX_AuthAuditLogs_CreatedAtUtc` (`CreatedAtUtc`)
+                    )
+                    """);
+            }
+            else
+            {
+                if (!await ColumnExistsAsync(context, "AuthAuditLogs", "Country"))
+                    await context.Database.ExecuteSqlRawAsync("ALTER TABLE `AuthAuditLogs` ADD COLUMN `Country` longtext NULL");
+                if (!await ColumnExistsAsync(context, "AuthAuditLogs", "Region"))
+                    await context.Database.ExecuteSqlRawAsync("ALTER TABLE `AuthAuditLogs` ADD COLUMN `Region` longtext NULL");
+                if (!await ColumnExistsAsync(context, "AuthAuditLogs", "City"))
+                    await context.Database.ExecuteSqlRawAsync("ALTER TABLE `AuthAuditLogs` ADD COLUMN `City` longtext NULL");
+            }
+
+            if (!await TableExistsAsync(context, "RefreshTokens"))
+            {
+                await context.Database.ExecuteSqlRawAsync("""
+                    CREATE TABLE `RefreshTokens` (
+                        `Id` int NOT NULL AUTO_INCREMENT,
+                        `UserId` longtext NOT NULL,
+                        `TokenHash` varchar(64) NOT NULL,
+                        `JwtId` longtext NOT NULL,
+                        `CreatedAtUtc` datetime(6) NOT NULL,
+                        `ExpiresAtUtc` datetime(6) NOT NULL,
+                        `RevokedAtUtc` datetime(6) NULL,
+                        `ReplacedByTokenHash` longtext NULL,
+                        `RevokedReason` longtext NULL,
+                        `CreatedByIp` longtext NULL,
+                        PRIMARY KEY (`Id`),
+                        UNIQUE KEY `IX_RefreshTokens_TokenHash` (`TokenHash`)
+                    )
+                    """);
+            }
+
+            if (!await TableExistsAsync(context, "AdminActivityLogs"))
+            {
+                await context.Database.ExecuteSqlRawAsync("""
+                    CREATE TABLE `AdminActivityLogs` (
+                        `Id` int NOT NULL AUTO_INCREMENT,
+                        `UserId` longtext NULL,
+                        `Email` longtext NULL,
+                        `Action` longtext NOT NULL,
+                        `EntityType` longtext NOT NULL,
+                        `EntityId` longtext NULL,
+                        `Details` longtext NULL,
+                        `IpAddress` longtext NULL,
+                        `Country` longtext NULL,
+                        `Region` longtext NULL,
+                        `City` longtext NULL,
+                        `UserAgent` longtext NULL,
+                        `CreatedAtUtc` datetime(6) NOT NULL,
+                        PRIMARY KEY (`Id`),
+                        KEY `IX_AdminActivityLogs_CreatedAtUtc` (`CreatedAtUtc`)
+                    )
+                    """);
+            }
+        }
+
+        private static async Task EnsureParentGuardiansTableAsync(ApplicationDbContext context)
+        {
+            if (await TableExistsAsync(context, "ParentGuardians"))
+                return;
+
+            await context.Database.ExecuteSqlRawAsync("""
+                CREATE TABLE `ParentGuardians` (
+                    `ParentId` int NOT NULL AUTO_INCREMENT,
+                    `FullName` longtext NOT NULL,
+                    `Email` longtext NOT NULL,
+                    `UserId` longtext NOT NULL,
+                    `StudentId` int NOT NULL,
+                    PRIMARY KEY (`ParentId`),
+                    KEY `IX_ParentGuardians_StudentId` (`StudentId`),
+                    CONSTRAINT `FK_ParentGuardians_Students_StudentId` FOREIGN KEY (`StudentId`) REFERENCES `Students` (`StudentId`) ON DELETE CASCADE
+                )
+                """);
         }
 
         private static async Task EnsureCourseColumnsAsync(ApplicationDbContext context)

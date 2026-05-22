@@ -8,60 +8,40 @@
     var lblNotScheduled = Localizer["Dash_NotScheduled"];
 }
 
-<div class="max-w-7xl mx-auto">
-    <div class="mb-6 rounded-2xl bg-gradient-to-br from-red-900 via-red-700 to-red-500 p-6 text-white shadow-lg">
-        <div class="flex flex-wrap justify-between gap-4">
-            <div>
-                <p class="text-sm opacity-80"><i class="fas fa-user-graduate mr-1"></i> @Localizer["Dash_StudentPortal"]</p>
-                <h1 class="text-2xl font-extrabold">@ViewBag.StudentName</h1>
-                <p class="text-sm opacity-90 mt-1">ID: @ViewBag.StudentNumber · @ViewBag.Department</p>
-            </div>
-            <div class="flex gap-3">
-                <div class="rounded-xl bg-white/20 px-4 py-2 text-center">
-                    <div class="text-2xl font-extrabold">@Model.Count()</div>
-                    <div class="text-[10px] uppercase font-bold opacity-80">@Localizer["Nav_Courses"]</div>
-                </div>
-                <div class="rounded-xl bg-white/20 px-4 py-2 text-center">
-                    <div class="text-2xl font-extrabold">@ViewBag.AverageGrade</div>
-                    <div class="text-[10px] uppercase font-bold opacity-80">@Localizer["Table_AvgGrade"]</div>
-                </div>
-            </div>
+<div class="role-dash dash-shell">
+    <header class="role-dash-header">
+        <div>
+            <p class="role-dash-eyebrow"><i class="fas fa-user-graduate"></i> @Localizer["Dash_StudentPortal"]</p>
+            <h1>@ViewBag.StudentName</h1>
+            <p class="dash-hero-sub mb-0">ID: @ViewBag.StudentNumber · @ViewBag.Department</p>
         </div>
+        <div class="role-stat-row">
+            <div class="role-stat-pill"><div class="num">@Model.Count()</div><div class="lbl">@Localizer["Nav_Courses"]</div></div>
+            <div class="role-stat-pill"><div class="num">@ViewBag.AverageGrade</div><div class="lbl">@Localizer["Table_AvgGrade"]</div></div>
+        </div>
+    </header>
+
+    <div class="role-metrics">
+        <div class="role-metric role-metric--pass"><div class="val">@ViewBag.PassedCourses</div><div class="lbl">@Localizer["Dash_Passed"]</div></div>
+        <div class="role-metric role-metric--fail"><div class="val">@ViewBag.FailedCourses</div><div class="lbl">@Localizer["Dash_Failed"]</div></div>
+        <div class="role-metric"><div class="val">@ViewBag.GradedCount</div><div class="lbl">@Localizer["Dash_Graded"]</div></div>
     </div>
 
-    <div class="grid grid-cols-3 gap-3 mb-6">
-        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-center">
-            <div class="text-xl font-bold text-green-800">@ViewBag.PassedCourses</div>
-            <div class="text-xs text-green-700 font-semibold">@Localizer["Dash_Passed"]</div>
-        </div>
-        <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-center">
-            <div class="text-xl font-bold text-red-800">@ViewBag.FailedCourses</div>
-            <div class="text-xs text-red-700 font-semibold">@Localizer["Dash_Failed"]</div>
-        </div>
-        <div class="rounded-xl border border-gray-200 bg-white p-4 text-center">
-            <div class="text-xl font-bold text-gray-800">@ViewBag.GradedCount</div>
-            <div class="text-xs text-gray-600 font-semibold">@Localizer["Dash_Graded"]</div>
-        </div>
-    </div>
-
-    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
-        <h2 class="text-lg font-extrabold text-red-900"><i class="fas fa-book-open mr-2"></i>@Localizer["Dash_MyCourses"]</h2>
-        <div class="flex gap-2">
-            <a asp-action="MyGrades" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700"><i class="fas fa-star"></i> @Localizer["Dash_AllGrades"]</a>
-            <a asp-action="Schedules" class="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-2 text-sm font-bold text-red-800 hover:bg-red-50"><i class="fas fa-calendar"></i> @Localizer["Dash_Schedule"]</a>
+    <div class="section-head">
+        <h2><i class="fas fa-book-open"></i> @Localizer["Dash_MyCourses"]</h2>
+        <div class="dash-page-header__actions">
+            <a asp-action="MyGrades" class="dash-btn dash-btn--primary"><i class="fas fa-star"></i> @Localizer["Dash_AllGrades"]</a>
+            <a asp-action="Schedules" class="dash-btn dash-btn--soft"><i class="fas fa-calendar"></i> @Localizer["Dash_Schedule"]</a>
         </div>
     </div>
 
     @if (!Model.Any())
     {
-        <div class="rounded-2xl border border-dashed border-red-200 bg-red-50/50 p-10 text-center text-gray-600">
-            <i class="fas fa-info-circle text-3xl text-red-500 mb-2"></i>
-            <p class="font-semibold">@Localizer["Dash_NoEnrollments"]</p>
-        </div>
+        <div class="role-empty"><i class="fas fa-info-circle d-block"></i><p class="mb-0 fw-semibold">@Localizer["Dash_NoEnrollments"]</p></div>
     }
     else
     {
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="role-course-grid">
             @foreach (var enrollment in Model)
             {
                 var course = enrollment.Course!;
@@ -71,7 +51,7 @@
                     ? string.Join(" · ", course.Schedules.Select(s => $"{s.Day} {s.Time}"))
                     : lblNotScheduled;
 
-                <div class="rounded-2xl border border-red-100 bg-white p-4 shadow-sm hover:shadow-md hover:border-red-300 transition cursor-pointer"
+                <div class="role-course-card"
                      data-bs-toggle="modal" data-bs-target="#courseModal"
                      data-course-code="@course.CourseCode"
                      data-course-name="@course.CourseName"
@@ -81,18 +61,14 @@
                      data-grade="@(grade != null ? grade.Value.ToString() : lblNotGraded)"
                      data-status="@(grade != null ? (pass ? lblPass : lblFail) : "—")"
                      data-schedules="@scheduleText">
-                    <div class="flex gap-3 items-start">
-                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-red-600 to-red-800 text-white">
-                            <i class="fas fa-book"></i>
-                        </span>
-                        <div>
-                            <div class="font-extrabold text-red-900">@course.CourseCode</div>
-                            <div class="text-sm text-gray-500">@course.CourseName</div>
-                            @if (grade != null)
-                            {
-                                <span class="inline-block mt-2 rounded-full px-2 py-0.5 text-xs font-bold @(pass ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")">@Localizer["Table_Grade"] @grade.Value</span>
-                            }
-                        </div>
+                    <span class="icon-box"><i class="fas fa-book"></i></span>
+                    <div>
+                        <div class="code">@course.CourseCode</div>
+                        <div class="name">@course.CourseName</div>
+                        @if (grade != null)
+                        {
+                            <span class="badge mt-1 @(pass ? "text-bg-success" : "text-bg-danger")" style="font-size:0.65rem;">@Localizer["Table_Grade"] @grade.Value</span>
+                        }
                     </div>
                 </div>
             }
@@ -103,7 +79,7 @@
 <div class="modal fade" id="courseModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-2xl border-0 overflow-hidden">
-            <div class="modal-header text-white bg-gradient-to-r from-red-800 to-red-600">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--brand-500), var(--brand-600));">
                 <h5 class="modal-title font-bold">@Localizer["Dash_CourseDetails"]</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
