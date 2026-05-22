@@ -6,13 +6,14 @@
 }
 
 <h2>@Localizer["Login_SignIn"]</h2>
+<p class="auth-subtitle">@Localizer["Login_Subtitle"]</p>
 
 <form method="post" class="auth-form">
     <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
 
     <div class="auth-field">
         <label asp-for="Input.Email">@Localizer["Login_Email"] <span class="req">*</span></label>
-        <input asp-for="Input.Email" type="email" autocomplete="username" placeholder="admin@umproject.com" />
+        <input asp-for="Input.Email" type="email" autocomplete="username" placeholder="@Localizer["Login_EmailPlaceholder"]" />
         <span asp-validation-for="Input.Email" class="field-validation-error"></span>
     </div>
 
@@ -39,7 +40,16 @@
         <span class="auth-demo-badge auth-demo-badge--student">@Localizer["Role_Student"]</span>
         <span class="auth-demo-badge auth-demo-badge--parent">@Localizer["Role_Parent"]</span>
     </div>
-    <p class="auth-demo-hint">Fjalëkalimi: <strong>Admin@123</strong> — superadmin@umproject.com, admin@umproject.com, prof.elena.marku@umproject.edu, stu.ana.gashi@umproject.edu, par.artan.gashi@umproject.edu</p>
+    <p class="auth-demo-hint">
+        @Localizer["Login_Demo_Password"] <strong>Admin@123</strong>
+    </p>
+    <ul class="auth-demo-accounts">
+        <li><span class="auth-demo-role">@Localizer["Role_SuperAdmin"]</span> <code>@Localizer["Login_Demo_SuperAdmin"]</code></li>
+        <li><span class="auth-demo-role">@Localizer["Role_Admin"]</span> <code>@Localizer["Login_Demo_Admin"]</code></li>
+        <li><span class="auth-demo-role">@Localizer["Role_Professor"]</span> <code>@Localizer["Login_Demo_Teacher"]</code></li>
+        <li><span class="auth-demo-role">@Localizer["Role_Student"]</span> <code>@Localizer["Login_Demo_Student"]</code></li>
+        <li><span class="auth-demo-role">@Localizer["Role_Parent"]</span> <code>@Localizer["Login_Demo_Parent"]</code></li>
+    </ul>
 </div>
 
 @section Scripts {

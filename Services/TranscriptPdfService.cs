@@ -40,14 +40,14 @@ namespace UM_Project.Services
 
                     page.Header().Column(col =>
                     {
-                        col.Item().Text("University Manager — Official Transcript").Bold().FontSize(18).FontColor(Colors.Red.Darken2);
-                        col.Item().PaddingTop(8).Text($"Issued: {DateTime.Now:MMMM d, yyyy}");
+                        col.Item().Text("Menaxheri i Shkollës — Dëftesë Notash").Bold().FontSize(18).FontColor(Colors.Blue.Darken2);
+                        col.Item().PaddingTop(8).Text($"Data: {DateTime.Now:dd MMMM yyyy}");
                     });
 
                     page.Content().PaddingVertical(20).Column(col =>
                     {
-                        col.Item().Text($"Student: {student.FullName}").Bold();
-                        col.Item().Text($"Student #: {student.StudentNumber}");
+                        col.Item().Text($"Nxënësi: {student.FullName}").Bold();
+                        col.Item().Text($"Numri: {student.StudentNumber}");
                         col.Item().Text($"Department: {student.Department?.DepartmentName ?? "—"}");
                         col.Item().Text($"Email: {student.Email}");
                         col.Item().PaddingTop(16).Text("Course grades").Bold().FontSize(14);

@@ -235,7 +235,7 @@ namespace UM_Project.Services
                 EmailConfirmed = true,
                 FullName = fullName.Trim(),
                 CustomId = customId,
-                Address = "Main Campus",
+                Address = "Shkolla Fillore \"Drita\", Prishtinë",
                 MustChangePassword = true
             };
 

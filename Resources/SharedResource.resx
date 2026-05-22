@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -57,10 +57,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="App_Title" xml:space="preserve">
-    <value>UM Project</value>
+    <value>Menaxhimi Shkollor</value>
   </data>
   <data name="Brand_Title" xml:space="preserve">
-    <value>UM Project</value>
+    <value>Menaxhimi Shkollor</value>
   </data>
   <data name="Brand_Subtitle" xml:space="preserve">
     <value>Platforma e Menaxhimit Shkollor</value>
@@ -81,13 +81,13 @@
     <value>Platformë Akademike e Besuar</value>
   </data>
   <data name="Home_HeroTitle1" xml:space="preserve">
-    <value>Menaxhoni Universitetin Tuaj</value>
+    <value>Menaxhoni Shkollën Tuaj</value>
   </data>
   <data name="Home_HeroTitle2" xml:space="preserve">
     <value>Me Besim</value>
   </data>
   <data name="Home_HeroDesc" xml:space="preserve">
-    <value>Menaxheri Universitar bashkon studentët, profesorët dhe administratorët — regjistrime, orare, nota dhe departamente në një vend të sigurt.</value>
+    <value>Menaxhimi Shkollor bashkon nxënësit, mësuesit dhe administratorët — regjistrime, orare, nota dhe klasa në një vend të sigurt.</value>
   </data>
   <data name="Home_Bullet1" xml:space="preserve">
     <value>Panele sipas roleve</value>
@@ -113,10 +113,10 @@
   <data name="Home_ThreeRoles" xml:space="preserve">
     <value>3 Role</value>
   </data>
-  <data name="Home_StatStudents" xml:space="preserve">
-    <value>Studentë</value>
+  <data name="Home_StatNxënëss" xml:space="preserve">
+    <value>Nxënës</value>
   </data>
-  <data name="Home_StatStudentsDesc" xml:space="preserve">
+  <data name="Home_StatNxënëssDesc" xml:space="preserve">
     <value>Profile &amp; nota</value>
   </data>
   <data name="Home_StatFaculty" xml:space="preserve">
@@ -144,7 +144,7 @@
     <value>Nga regjistrimi deri te diplomimi — thjeshtoni operacionet akademike me mjete të fuqishme sipas roleve.</value>
   </data>
   <data name="Home_Feat1Title" xml:space="preserve">
-    <value>Menaxhimi i studentëve</value>
+    <value>Menaxhimi i nxënësëve</value>
   </data>
   <data name="Home_Feat1Desc" xml:space="preserve">
     <value>Ndiqni profilet, regjistrimet dhe të dhënat akademike në një sistem të organizuar.</value>
@@ -153,13 +153,13 @@
     <value>Oraret &amp; lëndët</value>
   </data>
   <data name="Home_Feat2Desc" xml:space="preserve">
-    <value>Menaxhoni departamentet, katalogët e lëndëve dhe oraret e klasave për çdo semestër.</value>
+    <value>Menaxhoni klasat, katalogët e lëndëve dhe oraret e klasave për çdo semestër.</value>
   </data>
   <data name="Home_Feat3Title" xml:space="preserve">
     <value>Notat &amp; raportet</value>
   </data>
   <data name="Home_Feat3Desc" xml:space="preserve">
-    <value>Profesorët vendosin notat; studentët shohin rezultatet. Adminët mbikëqyrin të gjithë pamjen akademike.</value>
+    <value>Mësuesit vendosin notat; nxënësit shohin rezultatet. Adminët mbikëqyrin të gjithë pamjen akademike.</value>
   </data>
   <data name="Home_LearnMore" xml:space="preserve">
     <value>Mëso më shumë</value>
@@ -168,16 +168,16 @@
     <value>Rreth sistemit</value>
   </data>
   <data name="Home_AboutTitle" xml:space="preserve">
-    <value>Ndërtuar për universitete moderne</value>
+    <value>Ndërtuar për shkollat fillore</value>
   </data>
   <data name="Home_AboutDesc" xml:space="preserve">
-    <value>Menaxheri Universitar është një platformë e plotë për menaxhimin e studentëve, e dizajnuar për arsimin e lartë. Qoftë administrator, profesor apo student — mjetet e duhura janë gjithmonë në dorë.</value>
+    <value>Menaxhimi Shkollor është një platformë e plotë për menaxhimin e nxënësëve, e dizajnuar për arsimin fillor. Qoftë administrator, mësues apo nxënës — mjetet e duhura janë gjithmonë në dorë.</value>
   </data>
   <data name="Home_AboutLi1" xml:space="preserve">
-    <value>Panele sipas roleve — pamje të përshtatura për Admin, Profesor dhe Student.</value>
+    <value>Panele sipas roleve — pamje të përshtatura për Admin, Mësues dhe Nxënës.</value>
   </data>
   <data name="Home_AboutLi2" xml:space="preserve">
-    <value>Rrjedha e regjistrimit — lidhni studentët me lëndët dhe oraret pa pengesa.</value>
+    <value>Rrjedha e regjistrimit — lidhni nxënësit me lëndët dhe oraret pa pengesa.</value>
   </data>
   <data name="Home_AboutLi3" xml:space="preserve">
     <value>Dizajn responsiv — funksionon në desktop, tablet dhe celular.</value>
@@ -198,25 +198,25 @@
     <value>Administrator</value>
   </data>
   <data name="Home_RoleAdminDesc" xml:space="preserve">
-    <value>Menaxhoni përdoruesit, departamentet, lëndët dhe gjithë institucionin.</value>
+    <value>Menaxhoni përdoruesit, klasat, lëndët dhe gjithë institucionin.</value>
   </data>
   <data name="Home_RoleProf" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
   <data name="Home_RoleProfDesc" xml:space="preserve">
-    <value>Shikoni lëndët e caktuara, listat e studentëve dhe vendosni notat.</value>
+    <value>Shikoni lëndët e caktuara, listat e nxënësëve dhe vendosni notat.</value>
   </data>
-  <data name="Home_RoleStudent" xml:space="preserve">
-    <value>Student</value>
+  <data name="Home_RoleNxënës" xml:space="preserve">
+    <value>Nxënës</value>
   </data>
-  <data name="Home_RoleStudentDesc" xml:space="preserve">
+  <data name="Home_RoleNxënësDesc" xml:space="preserve">
     <value>Kontrolloni oraret, regjistrimet dhe raportet e notave kur të doni.</value>
   </data>
   <data name="Home_CtaTitle" xml:space="preserve">
     <value>Gati për të filluar?</value>
   </data>
   <data name="Home_CtaDesc" xml:space="preserve">
-    <value>Bashkohuni me Menaxherin Universitar dhe merrni kontrollin e rrjedhës së punës akademike sot.</value>
+    <value>Bashkohuni me Menaxhimin Shkollor dhe merrni kontrollin e punës ditore në shkollë sot.</value>
   </data>
   <data name="Home_LoginNow" xml:space="preserve">
     <value>Hyr tani</value>
@@ -237,7 +237,7 @@
     <value>Analitika</value>
   </data>
   <data name="Nav_AtRisk" xml:space="preserve">
-    <value>Studentë në rrezik</value>
+    <value>Nxënës në rrezik</value>
   </data>
   <data name="Nav_HowItWorks" xml:space="preserve">
     <value>Si funksionon</value>
@@ -255,10 +255,10 @@
     <value>Njërëzit</value>
   </data>
   <data name="Nav_Students" xml:space="preserve">
-    <value>Studentët</value>
+    <value>Nxënësit</value>
   </data>
   <data name="Nav_Professors" xml:space="preserve">
-    <value>Profesorët</value>
+    <value>Mësuesit</value>
   </data>
   <data name="Nav_Parents" xml:space="preserve">
     <value>Prindërit</value>
@@ -267,7 +267,7 @@
     <value>Akademik</value>
   </data>
   <data name="Nav_Departments" xml:space="preserve">
-    <value>Departamentet</value>
+    <value>Klasat</value>
   </data>
   <data name="Nav_Courses" xml:space="preserve">
     <value>Lëndët</value>
@@ -303,13 +303,13 @@
     <value>Ndryshimet e adminit</value>
   </data>
   <data name="Nav_Professor" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
   <data name="Nav_MySchedules" xml:space="preserve">
     <value>Oraret e mia</value>
   </data>
   <data name="Nav_Student" xml:space="preserve">
-    <value>Student</value>
+    <value>Nxënës</value>
   </data>
   <data name="Nav_MySchedule" xml:space="preserve">
     <value>Orari im</value>
@@ -375,7 +375,28 @@
     <value>Hyr</value>
   </data>
   <data name="Login_DemoTitle" xml:space="preserve">
-    <value>Hyrje demo (fjalëkalimi: Admin@123)</value>
+    <value>Llogari demo — shkolla fillore</value>
+  </data>
+  <data name="Login_EmailPlaceholder" xml:space="preserve">
+    <value>admin@shkollademo.edu</value>
+  </data>
+  <data name="Login_Demo_Password" xml:space="preserve">
+    <value>Fjalëkalimi për të gjitha llogaritë demo:</value>
+  </data>
+  <data name="Login_Demo_SuperAdmin" xml:space="preserve">
+    <value>superadmin@shkollademo.edu</value>
+  </data>
+  <data name="Login_Demo_Admin" xml:space="preserve">
+    <value>admin@shkollademo.edu</value>
+  </data>
+  <data name="Login_Demo_Teacher" xml:space="preserve">
+    <value>mesues.elena@shkollademo.edu</value>
+  </data>
+  <data name="Login_Demo_Student" xml:space="preserve">
+    <value>nx.ana.gashi@shkollademo.edu</value>
+  </data>
+  <data name="Login_Demo_Parent" xml:space="preserve">
+    <value>pr.artan.gashi@shkollademo.edu</value>
   </data>
   <data name="Login_InvalidCredentials" xml:space="preserve">
     <value>Email ose fjalëkalim i pavlefshëm.</value>
@@ -444,7 +465,7 @@
     <value>Raporti i prezencës së klasës</value>
   </data>
   <data name="Reports_Department" xml:space="preserve">
-    <value>Performanca e departamentit</value>
+    <value>Performanca e klasës</value>
   </data>
   <data name="Reports_Term" xml:space="preserve">
     <value>Përmbledhja e semestrit</value>
@@ -453,7 +474,7 @@
     <value>Lënda</value>
   </data>
   <data name="Reports_DepartmentLabel" xml:space="preserve">
-    <value>Departamenti</value>
+    <value>Klasa</value>
   </data>
   <data name="Reports_TermLabel" xml:space="preserve">
     <value>Semestri akademik</value>
@@ -510,10 +531,10 @@
     <value>Admin</value>
   </data>
   <data name="Role_Professor" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
-  <data name="Role_Student" xml:space="preserve">
-    <value>Student</value>
+  <data name="Role_Nxënës" xml:space="preserve">
+    <value>Nxënës</value>
   </data>
   <data name="Role_Parent" xml:space="preserve">
     <value>Prind</value>
@@ -522,7 +543,7 @@
     <value>Shkarkim transkripti</value>
   </data>
   <data name="Audit_AtRiskNote" xml:space="preserve">
-    <value>Shënim ndërhyrjeje për student në rrezik</value>
+    <value>Shënim ndërhyrjeje për nxënës në rrezik</value>
   </data>
   <data name="Audit_CalendarChange" xml:space="preserve">
     <value>Ndryshim kalendari</value>
@@ -558,7 +579,7 @@
     <value>Regjistrohu</value>
   </data>
   <data name="Footer_Tagline" xml:space="preserve">
-    <value>Menaxhim modern i studentëve për universitete — regjistrime, nota, orare dhe akses i sigurt sipas roleve.</value>
+    <value>Menaxhim modern i nxënësëve për shkolla fillore — regjistrime, nota, orare dhe akses i sigurt sipas roleve.</value>
   </data>
   <data name="Footer_Explore" xml:space="preserve">
     <value>Eksploro</value>
@@ -573,13 +594,13 @@
     <value>Karakteristikat e platformës</value>
   </data>
   <data name="Pub_Features_Subtitle" xml:space="preserve">
-    <value>Zbuloni çdo mjet që ofron Menaxheri Universitar — nga të dhënat e studentëve te analitika dhe raportimi i sigurt.</value>
+    <value>Zbuloni çdo mjet që ofron Menaxhimi Shkollor — nga të dhënat e nxënësëve te analitika dhe raportimi i sigurt.</value>
   </data>
   <data name="Pub_Feat4Title" xml:space="preserve">
     <value>Analitika &amp; njohuri</value>
   </data>
   <data name="Pub_Feat4Desc" xml:space="preserve">
-    <value>Panele vizuale për trendet e regjistrimit, kalueshmërinë, mungesat dhe performancën e departamenteve.</value>
+    <value>Panele vizuale për trendet e regjistrimit, kalueshmërinë, mungesat dhe performancën e klasave.</value>
   </data>
   <data name="Pub_Feat5Title" xml:space="preserve">
     <value>Raporte PDF &amp; Excel</value>
@@ -591,7 +612,7 @@
     <value>Portali i prindërve</value>
   </data>
   <data name="Pub_Feat6Desc" xml:space="preserve">
-    <value>Prindërit ndjekin notat, mungesat dhe progresin akademik të studentëve të lidhur.</value>
+    <value>Prindërit ndjekin notat, mungesat dhe progresin akademik të nxënësëve të lidhur.</value>
   </data>
   <data name="Pub_Feat7Title" xml:space="preserve">
     <value>Kalendari akademik</value>
@@ -603,7 +624,7 @@
     <value>Monitorimi i rrezikut</value>
   </data>
   <data name="Pub_Feat8Desc" xml:space="preserve">
-    <value>Identifikoni studentët në vështirësi herët dhe regjistroni shënime ndërhyrjeje për këshilltarët.</value>
+    <value>Identifikoni nxënësit në vështirësi herët dhe regjistroni shënime ndërhyrjeje për këshilltarët.</value>
   </data>
   <data name="Pub_Feat9Title" xml:space="preserve">
     <value>Auditim &amp; siguri</value>
@@ -612,16 +633,16 @@
     <value>Ndiqni veprime sensitive, hyrje dhe akses sipas roleve në të gjithë institucionin.</value>
   </data>
   <data name="Pub_About_Title" xml:space="preserve">
-    <value>Rreth Menaxherit Universitar</value>
+    <value>Rreth Menaxhimit Shkollor</value>
   </data>
   <data name="Pub_About_Subtitle" xml:space="preserve">
-    <value>Ndihmojmë universitetet të funksionojnë më mirë — duke lidhur administratorët, fakultetin, studentët dhe prindërit në një platformë të besueshme.</value>
+    <value>Ndihmojmë shkolla filloret të funksionojnë më mirë — duke lidhur administratorët, stafin mësimor, nxënësit dhe prindërit në një platformë të besueshme.</value>
   </data>
   <data name="Pub_About_Mission" xml:space="preserve">
     <value>Misioni ynë</value>
   </data>
   <data name="Pub_About_MissionDesc" xml:space="preserve">
-    <value>Të thjeshtojmë operacionet akademike që stafi të kalojë më pak kohë me dokumente dhe më shumë me studentët.</value>
+    <value>Të thjeshtojmë operacionet akademike që stafi të kalojë më pak kohë me dokumente dhe më shumë me nxënësit.</value>
   </data>
   <data name="Pub_About_Vision" xml:space="preserve">
     <value>Vizioni ynë</value>
@@ -699,7 +720,7 @@
     <value>Kthehu në kryefaqe</value>
   </data>
   <data name="Footer_Copyright" xml:space="preserve">
-    <value>Menaxheri Universitar. Të gjitha të drejtat e rezervuara.</value>
+    <value>Menaxhimi Shkollor. Të gjitha të drejtat e rezervuara.</value>
   </data>
   <data name="Dash_AdminOverview" xml:space="preserve">
     <value>Përmbledhje admin</value>
@@ -708,22 +729,22 @@
     <value>Mirë se u ktheve</value>
   </data>
   <data name="Dash_Snapshot" xml:space="preserve">
-    <value>pamje e sistemit universitar.</value>
+    <value>pamje e sistemit shkollor.</value>
   </data>
   <data name="Dash_FullAnalytics" xml:space="preserve">
     <value>Analitika e plotë</value>
   </data>
   <data name="Dash_RegisterStudent" xml:space="preserve">
-    <value>Regjistro student</value>
+    <value>Regjistro nxënës</value>
   </data>
   <data name="Dash_KpiUsers" xml:space="preserve">
     <value>Përdorues</value>
   </data>
   <data name="Dash_KpiStudents" xml:space="preserve">
-    <value>Studentë</value>
+    <value>Nxënës</value>
   </data>
   <data name="Dash_KpiProfessors" xml:space="preserve">
-    <value>Profesorë</value>
+    <value>Mësues</value>
   </data>
   <data name="Dash_KpiParents" xml:space="preserve">
     <value>Prindër</value>
@@ -758,8 +779,8 @@
   <data name="Dash_PassVsFail" xml:space="preserve">
     <value>Kalim vs dështim</value>
   </data>
-  <data name="Dash_StudentsByDept" xml:space="preserve">
-    <value>Studentë sipas departamentit</value>
+  <data name="Dash_NxënëssByDept" xml:space="preserve">
+    <value>Nxënës sipas klasës</value>
   </data>
   <data name="Dash_GradeDistribution" xml:space="preserve">
     <value>Shpërndarja e notave</value>
@@ -798,19 +819,19 @@
     <value>Dështojnë</value>
   </data>
   <data name="Analytics_Subtitle" xml:space="preserve">
-    <value>Filtro, kërko dhe eksploro të dhënat universitare</value>
+    <value>Filtro, kërko dhe eksploro të dhënat e shkollës</value>
   </data>
   <data name="Analytics_ClearAll" xml:space="preserve">
     <value>Pastro të gjitha</value>
   </data>
   <data name="Analytics_AllDepartments" xml:space="preserve">
-    <value>Të gjitha departamentet</value>
+    <value>Të gjitha klasat</value>
   </data>
   <data name="Analytics_AllCourses" xml:space="preserve">
     <value>Të gjitha lëndët</value>
   </data>
   <data name="Analytics_AllProfessors" xml:space="preserve">
-    <value>Të gjithë profesorët</value>
+    <value>Të gjithë mësuesit</value>
   </data>
   <data name="Analytics_AnyGrade" xml:space="preserve">
     <value>Çdo notë</value>
@@ -848,17 +869,17 @@
   <data name="Analytics_NoGradesMatch" xml:space="preserve">
     <value>Asnjë notë nuk përputhet me filtrat.</value>
   </data>
-  <data name="Analytics_SearchStudents" xml:space="preserve">
-    <value>Kërko studentë…</value>
+  <data name="Analytics_SearchNxënëss" xml:space="preserve">
+    <value>Kërko nxënësë…</value>
   </data>
   <data name="Analytics_SearchPlaceholder" xml:space="preserve">
-    <value>Emër, nr. studenti, lëndë…</value>
+    <value>Emër, nr. nxënësi, lëndë…</value>
   </data>
   <data name="Table_Student" xml:space="preserve">
-    <value>Student</value>
+    <value>Nxënës</value>
   </data>
   <data name="Table_StudentNum" xml:space="preserve">
-    <value>Nr. studenti</value>
+    <value>Nr. nxënësi</value>
   </data>
   <data name="Table_Course" xml:space="preserve">
     <value>Lënda</value>
@@ -867,7 +888,7 @@
     <value>Dept.</value>
   </data>
   <data name="Table_Professor" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
   <data name="Table_Grade" xml:space="preserve">
     <value>Nota</value>
@@ -893,11 +914,11 @@
   <data name="Dash_ClassAvgGrade" xml:space="preserve">
     <value>Nota mes. klase</value>
   </data>
-  <data name="Dash_PassingStudents" xml:space="preserve">
-    <value>Studentë që kalojnë</value>
+  <data name="Dash_PassingNxënëss" xml:space="preserve">
+    <value>Nxënës që kalojnë</value>
   </data>
-  <data name="Dash_FailingStudents" xml:space="preserve">
-    <value>Studentë që dështojnë</value>
+  <data name="Dash_FailingNxënëss" xml:space="preserve">
+    <value>Nxënës që dështojnë</value>
   </data>
   <data name="Dash_MyCourses" xml:space="preserve">
     <value>Lëndët e mia</value>
@@ -917,8 +938,8 @@
   <data name="Dash_Credits" xml:space="preserve">
     <value>kredite</value>
   </data>
-  <data name="Dash_StudentPortal" xml:space="preserve">
-    <value>Portali i studentit</value>
+  <data name="Dash_NxënësPortal" xml:space="preserve">
+    <value>Portali i nxënësit</value>
   </data>
   <data name="Dash_Passed" xml:space="preserve">
     <value>Kaluar</value>
@@ -960,7 +981,7 @@
     <value>Emri</value>
   </data>
   <data name="Modal_Professor" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
   <data name="Modal_Credits" xml:space="preserve">
     <value>Kredite</value>
@@ -1020,7 +1041,7 @@
     <value>Kërko transkript</value>
   </data>
   <data name="Dash_OnlyLinkedChild" xml:space="preserve">
-    <value>Shihni vetëm të dhënat për fëmijën tuaj të lidhur — studentët e tjerë nuk janë të dukshëm.</value>
+    <value>Shihni vetëm të dhënat për fëmijën tuaj të lidhur — nxënësit e tjerë nuk janë të dukshëm.</value>
   </data>
   <data name="SA_Only" xml:space="preserve">
     <value>Vetëm SuperAdmin</value>
@@ -1053,7 +1074,7 @@
     <value>Orari ditor i mësimit</value>
   </data>
   <data name="SA_DailyLessonDesc" xml:space="preserve">
-    <value>Ndrysho periudhat (ora fillimit/mbarimit). Profesorët shënojnë prezencën sipas këtyre orëve.</value>
+    <value>Ndrysho periudhat (ora fillimit/mbarimit). Mësuesit shënojnë prezencën sipas këtyre orëve.</value>
   </data>
   <data name="SA_ActivePeriods" xml:space="preserve">
     <value>{0} periudha aktive</value>
@@ -1074,7 +1095,7 @@
     <value>Regjistri i ndryshimeve të adminit</value>
   </data>
   <data name="SA_AdminChangeDesc" xml:space="preserve">
-    <value>Kush ndryshoi studentë, lëndë, nota dhe regjistra të tjerë.</value>
+    <value>Kush ndryshoi nxënësë, lëndë, nota dhe regjistra të tjerë.</value>
   </data>
   <data name="SA_AuditTrail" xml:space="preserve">
     <value>Gjurmë auditimi</value>
@@ -1088,8 +1109,8 @@
   <data name="SA_AtRiskDesc" xml:space="preserve">
     <value>Lista e ndërhyrjes për nota të ulëta dhe mungesa të larta.</value>
   </data>
-  <data name="SA_StudentSuccess" xml:space="preserve">
-    <value>Suksesi i studentit</value>
+  <data name="SA_NxënësSuccess" xml:space="preserve">
+    <value>Suksesi i nxënësit</value>
   </data>
   <data name="SA_DocumentDesc" xml:space="preserve">
     <value>Aprovo kërkesat e prindërve për transkript dhe shkarko PDF.</value>
@@ -1098,7 +1119,7 @@
     <value>Transkripte</value>
   </data>
   <data name="SA_FullAnalyticsDesc" xml:space="preserve">
-    <value>Filtra të thellë sipas departamenteve, lëndëve, profesorëve dhe notave.</value>
+    <value>Filtra të thellë sipas klasave, lëndëve, mësuesëve dhe notave.</value>
   </data>
   <data name="SA_Reporting" xml:space="preserve">
     <value>Raportimi</value>
@@ -1107,7 +1128,7 @@
     <value>Nota të ulëta + mungesa të larta — lista e ndërhyrjes</value>
   </data>
   <data name="AtRisk_None" xml:space="preserve">
-    <value>Asnjë student në rrezik me pragjet aktuale.</value>
+    <value>Asnjë nxënës në rrezik me pragjet aktuale.</value>
   </data>
   <data name="AtRisk_Profile" xml:space="preserve">
     <value>Profili</value>
@@ -1193,22 +1214,22 @@
   <data name="Table_Enrollments" xml:space="preserve">
     <value>Regjistrime</value>
   </data>
-  <data name="Students_CountSuffix" xml:space="preserve">
+  <data name="Nxënëss_CountSuffix" xml:space="preserve">
     <value>nxënës</value>
   </data>
-  <data name="Students_Add" xml:space="preserve">
+  <data name="Nxënëss_Add" xml:space="preserve">
     <value>Shto nxënës</value>
   </data>
-  <data name="Students_SearchPlaceholder" xml:space="preserve">
+  <data name="Nxënëss_SearchPlaceholder" xml:space="preserve">
     <value>Kërko nxënës...</value>
   </data>
-  <data name="Students_ColStudent" xml:space="preserve">
+  <data name="Nxënëss_ColNxënës" xml:space="preserve">
     <value>Nxënësi</value>
   </data>
-  <data name="Students_ColClass" xml:space="preserve">
-    <value>Departamenti</value>
+  <data name="Nxënëss_ColClass" xml:space="preserve">
+    <value>Klasa</value>
   </data>
-  <data name="Students_ColEmail" xml:space="preserve">
+  <data name="Nxënëss_ColEmail" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="Common_View" xml:space="preserve">
@@ -1278,7 +1299,7 @@
     <value>Shënimi i prindit</value>
   </data>
   <data name="Table_DepartmentName" xml:space="preserve">
-    <value>Emri i departamentit</value>
+    <value>Emri i klasës</value>
   </data>
   <data name="Search_Professors" xml:space="preserve">
     <value>Kërko emër, email, titull...</value>
@@ -1290,7 +1311,7 @@
     <value>Kërko...</value>
   </data>
   <data name="Page_Enrollments_Subtitle" xml:space="preserve">
-    <value>Regjistrimet e studentëve në lëndë</value>
+    <value>Regjistrimet e nxënësëve në lëndë</value>
   </data>
   <data name="Page_Enrollments_Create" xml:space="preserve">
     <value>Regjistrim i ri</value>
@@ -1302,19 +1323,19 @@
     <value>Prind i ri</value>
   </data>
   <data name="Page_Grades_Subtitle" xml:space="preserve">
-    <value>Notat e studentëve dhe statusi kalues</value>
+    <value>Notat e nxënësëve dhe statusi kalues</value>
   </data>
   <data name="Page_Grades_Create" xml:space="preserve">
     <value>Cakto notë</value>
   </data>
   <data name="Page_Professors_Subtitle" xml:space="preserve">
-    <value>Anëtarët e fakultetit dhe departamentet</value>
+    <value>Anëtarët e fakultetit dhe klasat</value>
   </data>
   <data name="Page_Departments_Subtitle" xml:space="preserve">
-    <value>Organizoni departamentet akademike</value>
+    <value>Organizoni klasat akademike</value>
   </data>
   <data name="Page_Courses_Subtitle" xml:space="preserve">
-    <value>Katalogu i lëndëve, kreditë dhe profesorët</value>
+    <value>Katalogu i lëndëve, kreditë dhe mësuesit</value>
   </data>
   <data name="Page_Schedules_Subtitle" xml:space="preserve">
     <value>Kohët e mësimit, sallat dhe orari javor</value>
@@ -1331,7 +1352,7 @@
   <data name="Page_Documents_Subtitle" xml:space="preserve">
     <value>Miratoni transkriptet dhe gjeneroni PDF</value>
   </data>
-  <data name="Page_StudentSchedules" xml:space="preserve">
+  <data name="Page_NxënësSchedules" xml:space="preserve">
     <value>Orari im i klasave</value>
   </data>
   <data name="Page_ProfessorSchedules" xml:space="preserve">
@@ -1353,7 +1374,7 @@
     <value>Krijo departament</value>
   </data>
   <data name="Page_EditDepartment" xml:space="preserve">
-    <value>Ndrysho departamentin</value>
+    <value>Ndrysho klasën</value>
   </data>
   <data name="Page_CreateCourse" xml:space="preserve">
     <value>Krijo lëndë</value>
@@ -1362,16 +1383,16 @@
     <value>Ndrysho lëndën</value>
   </data>
   <data name="Page_CreateProfessor" xml:space="preserve">
-    <value>Krijo profesor</value>
+    <value>Krijo mësues</value>
   </data>
   <data name="Page_EditProfessor" xml:space="preserve">
-    <value>Ndrysho profesorin</value>
+    <value>Ndrysho mësuesin</value>
   </data>
-  <data name="Page_CreateStudent" xml:space="preserve">
-    <value>Regjistro student</value>
+  <data name="Page_CreateNxënës" xml:space="preserve">
+    <value>Regjistro nxënës</value>
   </data>
-  <data name="Page_EditStudent" xml:space="preserve">
-    <value>Ndrysho studentin</value>
+  <data name="Page_EditNxënës" xml:space="preserve">
+    <value>Ndrysho nxënësin</value>
   </data>
   <data name="Page_CreateSchedule" xml:space="preserve">
     <value>Krijo orar</value>
@@ -1409,8 +1430,8 @@
   <data name="Page_ParentProfile" xml:space="preserve">
     <value>Profili i prindit</value>
   </data>
-  <data name="Page_NoStudentLinked" xml:space="preserve">
-    <value>Nuk ka student të lidhur</value>
+  <data name="Page_NoNxënësLinked" xml:space="preserve">
+    <value>Nuk ka nxënës të lidhur</value>
   </data>
   <data name="Page_ProfileNotFound" xml:space="preserve">
     <value>Profili nuk u gjet</value>
@@ -1460,11 +1481,11 @@
   <data name="Msg_NoActivityLogged" xml:space="preserve">
     <value>Nuk ka aktivitet të regjistruar ende.</value>
   </data>
-  <data name="Msg_NoStudentsCourse" xml:space="preserve">
-    <value>Nuk ka studentë të regjistruar në këtë lëndë.</value>
+  <data name="Msg_NoNxënëssCourse" xml:space="preserve">
+    <value>Nuk ka nxënësë të regjistruar në këtë lëndë.</value>
   </data>
   <data name="Default_ProfessorTitle" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
   <data name="Form_SelectRole" xml:space="preserve">
     <value>Zgjidh rolin</value>
@@ -1472,14 +1493,14 @@
   <data name="Form_SelectCourse" xml:space="preserve">
     <value>Zgjidh lëndën</value>
   </data>
-  <data name="Form_SelectStudent" xml:space="preserve">
-    <value>Zgjidh studentin</value>
+  <data name="Form_SelectNxënës" xml:space="preserve">
+    <value>Zgjidh nxënësin</value>
   </data>
   <data name="Form_SelectParent" xml:space="preserve">
     <value>Zgjidh prindin</value>
   </data>
   <data name="Form_SelectDepartment" xml:space="preserve">
-    <value>Zgjidh departamentin</value>
+    <value>Zgjidh klasën</value>
   </data>
   <data name="Form_SelectGrade" xml:space="preserve">
     <value>Zgjidh notën</value>
@@ -1547,14 +1568,14 @@
   <data name="Label_Course" xml:space="preserve">
     <value>Lënda</value>
   </data>
-  <data name="Label_Student" xml:space="preserve">
-    <value>Studenti</value>
+  <data name="Label_Nxënës" xml:space="preserve">
+    <value>Nxënësi</value>
   </data>
   <data name="Label_Department" xml:space="preserve">
-    <value>Departamenti</value>
+    <value>Klasa</value>
   </data>
   <data name="Label_Professor" xml:space="preserve">
-    <value>Profesori</value>
+    <value>Mësuesi</value>
   </data>
   <data name="Label_Day" xml:space="preserve">
     <value>Dita</value>
@@ -1592,8 +1613,8 @@
   <data name="Label_ParentAccount" xml:space="preserve">
     <value>Llogaria e prindit</value>
   </data>
-  <data name="Label_StudentChild" xml:space="preserve">
-    <value>Studenti (fëmija)</value>
+  <data name="Label_NxënësChild" xml:space="preserve">
+    <value>Nxënësi (fëmija)</value>
   </data>
   <data name="Label_ParentEmailOptional" xml:space="preserve">
     <value>Email i prindit (opsionale)</value>
@@ -1601,8 +1622,8 @@
   <data name="Label_ParentFullName" xml:space="preserve">
     <value>Emri i plotë i prindit</value>
   </data>
-  <data name="Label_StudentNumber" xml:space="preserve">
-    <value>Numri i studentit</value>
+  <data name="Label_NxënësNumber" xml:space="preserve">
+    <value>Numri i nxënësit</value>
   </data>
   <data name="Label_AddDocuments" xml:space="preserve">
     <value>Shto dokumente</value>
@@ -1635,7 +1656,7 @@
     <value>Detyro ndryshimin në hyrje</value>
   </data>
   <data name="Label_CoursesAndProfessors" xml:space="preserve">
-    <value>Lëndët dhe profesorët</value>
+    <value>Lëndët dhe mësuesit</value>
   </data>
   <data name="Label_ParentsGuardians" xml:space="preserve">
     <value>Prindërit / kujdestarët</value>
@@ -1652,35 +1673,35 @@
   <data name="Label_CoursesCount" xml:space="preserve">
     <value>Lëndët</value>
   </data>
-  <data name="Label_LinkThisStudent" xml:space="preserve">
-    <value>Lidh këtë student me këtë prind?</value>
+  <data name="Label_LinkThisNxënës" xml:space="preserve">
+    <value>Lidh këtë nxënës me këtë prind?</value>
   </data>
   <data name="Form_SelectProfessor" xml:space="preserve">
-    <value>Zgjidh profesorin</value>
+    <value>Zgjidh mësuesin</value>
   </data>
   <data name="Form_SelectGradeRange" xml:space="preserve">
     <value>Zgjidh notën (5�?"10)</value>
   </data>
-  <data name="Form_SelectStudentDisambig" xml:space="preserve">
-    <value>Zgjidh studentin �?" përdor nr. nëse emrat përputhen</value>
+  <data name="Form_SelectNxënësDisambig" xml:space="preserve">
+    <value>Zgjidh nxënësin �?" përdor nr. nëse emrat përputhen</value>
   </data>
   <data name="Search_Users" xml:space="preserve">
     <value>Kërko emër, email ose rol...</value>
   </data>
   <data name="Search_Enrollments" xml:space="preserve">
-    <value>Kërko student ose lëndë...</value>
+    <value>Kërko nxënës ose lëndë...</value>
   </data>
   <data name="Search_Grades" xml:space="preserve">
-    <value>Kërko student ose lëndë...</value>
+    <value>Kërko nxënës ose lëndë...</value>
   </data>
   <data name="Search_Schedules" xml:space="preserve">
     <value>Kërko lëndë, ditë, sallë...</value>
   </data>
   <data name="Search_Departments" xml:space="preserve">
-    <value>Kërko departamente...</value>
+    <value>Kërko klasa...</value>
   </data>
   <data name="Search_Parents" xml:space="preserve">
-    <value>Kërko prind, email ose student...</value>
+    <value>Kërko prind, email ose nxënës...</value>
   </data>
   <data name="Confirm_Delete" xml:space="preserve">
     <value>Fshi?</value>
@@ -1715,8 +1736,8 @@
   <data name="Page_ProfileNotFoundTitle" xml:space="preserve">
     <value>Profili nuk u gjet</value>
   </data>
-  <data name="Page_NoProfileStudent" xml:space="preserve">
-    <value>Nuk ka student të lidhur</value>
+  <data name="Page_NoProfileNxënës" xml:space="preserve">
+    <value>Nuk ka nxënës të lidhur</value>
   </data>
   <data name="Msg_NoRecords" xml:space="preserve">
     <value>Nuk u gjetën regjistra.</value>
@@ -1733,29 +1754,29 @@
   <data name="Msg_ParentEmailHint" xml:space="preserve">
     <value>Duhet të përputhet me email ekzistues të prindit; përndryshe krijohet llogari e re.</value>
   </data>
-  <data name="Msg_StudentEmailLocked" xml:space="preserve">
-    <value>Email dhe numri i studentit nuk ndryshohen këtu (lidhur me llogarinë).</value>
+  <data name="Msg_NxënësEmailLocked" xml:space="preserve">
+    <value>Email dhe numri i nxënësit nuk ndryshohen këtu (lidhur me llogarinë).</value>
   </data>
   <data name="Msg_ParentEditHint" xml:space="preserve">
     <value>Emri dhe email vlejnë për të gjithë fëmijët e këtij prindi.</value>
   </data>
   <data name="Msg_ParentLinkHint" xml:space="preserve">
-    <value>Ndryshon studentin për këtë rresht. Përdor Cakto fëmijën për të shtuar më shumë.</value>
+    <value>Ndryshon nxënësin për këtë rresht. Përdor Cakto fëmijën për të shtuar më shumë.</value>
   </data>
   <data name="Msg_AssignChildHint" xml:space="preserve">
-    <value>Duke caktuar studentin: zgjidh rreshtin e saktë më poshtë.</value>
+    <value>Duke caktuar nxënësin: zgjidh rreshtin e saktë më poshtë.</value>
   </data>
   <data name="Msg_AddParentCheck" xml:space="preserve">
     <value>Shto prind / kujdestar tani</value>
   </data>
   <data name="Msg_ParentLinkAdmin" xml:space="preserve">
-    <value>Admini lidh prindin me studentin te menuja Prindërit.</value>
+    <value>Admini lidh prindin me nxënësin te menuja Prindërit.</value>
   </data>
   <data name="Guide_Admin1" xml:space="preserve">
     <value>Menaxho përdoruesit dhe cakto rolet</value>
   </data>
   <data name="Guide_Admin2" xml:space="preserve">
-    <value>Studentë, profesorë, prindër</value>
+    <value>Nxënës, mësuesë, prindër</value>
   </data>
   <data name="Guide_Admin3" xml:space="preserve">
     <value>Lëndë, regjistrime, orare</value>
@@ -1772,10 +1793,10 @@
   <data name="Guide_Prof3" xml:space="preserve">
     <value>Dërgo dhe menaxho notat</value>
   </data>
-  <data name="Guide_Student1" xml:space="preserve">
+  <data name="Guide_Nxënës1" xml:space="preserve">
     <value>Shiko orarin</value>
   </data>
-  <data name="Guide_Student2" xml:space="preserve">
+  <data name="Guide_Nxënës2" xml:space="preserve">
     <value>Shiko notat</value>
   </data>
   <data name="Guide_Parent1" xml:space="preserve">
@@ -1785,13 +1806,13 @@
     <value>Shiko orarin e fëmijës</value>
   </data>
   <data name="Guide_Flow1" xml:space="preserve">
-    <value>Profesori jep mësimin dhe regjistron notat.</value>
+    <value>Mësuesi jep mësimin dhe regjistron notat.</value>
   </data>
   <data name="Guide_Flow2" xml:space="preserve">
-    <value>Studenti hyn për të parë orarin dhe notat.</value>
+    <value>Nxënësi hyn për të parë orarin dhe notat.</value>
   </data>
   <data name="Guide_Flow3" xml:space="preserve">
-    <value>Prindi lidhet me studentin nga Admini �?" pastaj ndjek progresin.</value>
+    <value>Prindi lidhet me nxënësin nga Admini �?" pastaj ndjek progresin.</value>
   </data>
   <data name="Doc_RequestsTitle" xml:space="preserve">
     <value>Kërkesat për dokumente</value>
@@ -1839,19 +1860,19 @@
     <value>Dokumenti u hoq.</value>
   </data>
   <data name="Flash_Enrolled" xml:space="preserve">
-    <value>Studenti u regjistrua në lëndë.</value>
+    <value>Nxënësi u regjistrua në lëndë.</value>
   </data>
   <data name="Flash_EnrolledSuccess" xml:space="preserve">
-    <value>Studenti u regjistrua me sukses!</value>
+    <value>Nxënësi u regjistrua me sukses!</value>
   </data>
   <data name="Flash_EnrollmentDeleted" xml:space="preserve">
     <value>Regjistrimi u fshi!</value>
   </data>
   <data name="Flash_AlreadyEnrolled" xml:space="preserve">
-    <value>Studenti është tashmë i regjistruar në këtë lëndë!</value>
+    <value>Nxënësi është tashmë i regjistruar në këtë lëndë!</value>
   </data>
   <data name="Flash_ScheduleConflict" xml:space="preserve">
-    <value>Nuk mund të regjistrohet: studenti ka lëndë tjetër në të njëjtën ditë/kohë.</value>
+    <value>Nuk mund të regjistrohet: nxënësi ka lëndë tjetër në të njëjtën ditë/kohë.</value>
   </data>
   <data name="Flash_UserUpdated" xml:space="preserve">
     <value>Përdoruesi dhe roli u përditësuan.</value>
@@ -1896,7 +1917,7 @@
     <value>Mund të kërkoni dokumente vetëm për fëmijët e lidhur.</value>
   </data>
   <data name="Flash_PendingTranscript" xml:space="preserve">
-    <value>Ekziston tashmë kërkesë transkripti në pritje për këtë student.</value>
+    <value>Ekziston tashmë kërkesë transkripti në pritje për këtë nxënës.</value>
   </data>
   <data name="Flash_ParentUpdated" xml:space="preserve">
     <value>Prindi u përditësua.</value>
@@ -1908,13 +1929,13 @@
     <value>Lidhja me prindin u hoq.</value>
   </data>
   <data name="Flash_ProfessorUpdated" xml:space="preserve">
-    <value>Profesori u përditësua!</value>
+    <value>Mësuesi u përditësua!</value>
   </data>
   <data name="Flash_ProfessorDeleted" xml:space="preserve">
-    <value>Profesori dhe llogaria u fshinë.</value>
+    <value>Mësuesi dhe llogaria u fshinë.</value>
   </data>
   <data name="Flash_ProfessorNoLogin" xml:space="preserve">
-    <value>Profesori nuk ka llogari hyrjeje.</value>
+    <value>Mësuesi nuk ka llogari hyrjeje.</value>
   </data>
   <data name="Flash_TermAdded" xml:space="preserve">
     <value>Semestri u shtua.</value>
@@ -1958,470 +1979,23 @@
   <data name="Flash_GradeDeleted" xml:space="preserve">
     <value>Nota u fshi!</value>
   </data>
-  <data name="Flash_StudentUpdated" xml:space="preserve">
-    <value>Studenti u përditësua!</value>
+  <data name="Flash_NxënësUpdated" xml:space="preserve">
+    <value>Nxënësi u përditësua!</value>
   </data>
-  <data name="Flash_StudentDeleted" xml:space="preserve">
-    <value>Studenti dhe llogaritë e lidhura u fshinë.</value>
+  <data name="Flash_NxënësDeleted" xml:space="preserve">
+    <value>Nxënësi dhe llogaritë e lidhura u fshinë.</value>
   </data>
   <data name="Flash_ParentNameRequired" xml:space="preserve">
     <value>Emri i prindit kërkohet.</value>
   </data>
   <data name="Flash_DepartmentCreated" xml:space="preserve">
-    <value>Departamenti u krijua!</value>
+    <value>Klasa u krijua!</value>
   </data>
   <data name="Flash_DepartmentUpdated" xml:space="preserve">
-    <value>Departamenti u përditësua!</value>
+    <value>Klasa u përditësua!</value>
   </data>
   <data name="Flash_DepartmentDeleted" xml:space="preserve">
-    <value>Departamenti u fshi me sukses!</value>
-  </data>
-  <data name="Flash_NoteRequired" xml:space="preserve">
-    <value>Shënimi kërkohet.</value>
-  </data>
-  <data name="Flash_InterventionSaved" xml:space="preserve">
-    <value>Shënimi i ndërhyrjes u ruajt.</value>
-  </data>
-  <data name="Flash_GradeAlreadyAssigned" xml:space="preserve">
-    <value>Nota është caktuar. Kontaktoni adminin për ndryshim.</value>
-  </data>
-  <data name="Flash_FileTooLarge" xml:space="preserve">
-    <value>Kaloi {0}: skedari shumë i madh (max 15 MB).</value>
-  </data>
-  <data name="Flash_FileTypeNotAllowed" xml:space="preserve">
-    <value>Kaloi {0}: lloji i skedarit nuk lejohet.</value>
-  </data>
-  <data name="Label_Course" xml:space="preserve">
-    <value>Lënda</value>
-  </data>
-  <data name="Label_Student" xml:space="preserve">
-    <value>Studenti</value>
-  </data>
-  <data name="Label_Department" xml:space="preserve">
-    <value>Departamenti</value>
-  </data>
-  <data name="Label_Professor" xml:space="preserve">
-    <value>Profesori</value>
-  </data>
-  <data name="Label_Day" xml:space="preserve">
-    <value>Dita</value>
-  </data>
-  <data name="Label_Time" xml:space="preserve">
-    <value>Koha</value>
-  </data>
-  <data name="Label_Room" xml:space="preserve">
-    <value>Salla</value>
-  </data>
-  <data name="Label_Status" xml:space="preserve">
-    <value>Statusi</value>
-  </data>
-  <data name="Label_Dept" xml:space="preserve">
-    <value>Dept.</value>
-  </data>
-  <data name="Label_Due" xml:space="preserve">
-    <value>Afati</value>
-  </data>
-  <data name="Label_Weight" xml:space="preserve">
-    <value>Pesha</value>
-  </data>
-  <data name="Label_Blocks" xml:space="preserve">
-    <value>Bllokon</value>
-  </data>
-  <data name="Label_Type" xml:space="preserve">
-    <value>Lloji</value>
-  </data>
-  <data name="Label_Description" xml:space="preserve">
-    <value>Përshkrimi</value>
-  </data>
-  <data name="Label_Optional" xml:space="preserve">
-    <value>(opsionale)</value>
-  </data>
-  <data name="Label_ParentAccount" xml:space="preserve">
-    <value>Llogaria e prindit</value>
-  </data>
-  <data name="Label_StudentChild" xml:space="preserve">
-    <value>Studenti (fëmija)</value>
-  </data>
-  <data name="Label_ParentEmailOptional" xml:space="preserve">
-    <value>Email i prindit (opsionale)</value>
-  </data>
-  <data name="Label_ParentFullName" xml:space="preserve">
-    <value>Emri i plotë i prindit</value>
-  </data>
-  <data name="Label_StudentNumber" xml:space="preserve">
-    <value>Numri i studentit</value>
-  </data>
-  <data name="Label_AddDocuments" xml:space="preserve">
-    <value>Shto dokumente</value>
-  </data>
-  <data name="Label_DocumentsHint" xml:space="preserve">
-    <value>Dokumentet (PDF, Word, PPT, TXT �?" max 15 MB secili)</value>
-  </data>
-  <data name="Label_MinGrade" xml:space="preserve">
-    <value>Nota minimale</value>
-  </data>
-  <data name="Label_MaxGrade" xml:space="preserve">
-    <value>Nota maksimale</value>
-  </data>
-  <data name="Label_PassingGrade" xml:space="preserve">
-    <value>Nota kaluese</value>
-  </data>
-  <data name="Label_LessonsPerDay" xml:space="preserve">
-    <value>Ore mësimore në ditë</value>
-  </data>
-  <data name="Label_GradeRules" xml:space="preserve">
-    <value>Rregullat e notave dhe prezencës</value>
-  </data>
-  <data name="Label_ResetPassword" xml:space="preserve">
-    <value>Rivendos fjalëkalimin</value>
-  </data>
-  <data name="Label_NewPassword" xml:space="preserve">
-    <value>Fjalëkalimi i ri</value>
-  </data>
-  <data name="Label_ForceChangeLogin" xml:space="preserve">
-    <value>Detyro ndryshimin në hyrje</value>
-  </data>
-  <data name="Label_CoursesAndProfessors" xml:space="preserve">
-    <value>Lëndët dhe profesorët</value>
-  </data>
-  <data name="Label_ParentsGuardians" xml:space="preserve">
-    <value>Prindërit / kujdestarët</value>
-  </data>
-  <data name="Label_GradesSection" xml:space="preserve">
-    <value>Notat</value>
-  </data>
-  <data name="Label_Scheduled" xml:space="preserve">
-    <value>Të planifikuara</value>
-  </data>
-  <data name="Label_Absent" xml:space="preserve">
-    <value>Mungon</value>
-  </data>
-  <data name="Label_CoursesCount" xml:space="preserve">
-    <value>Lëndët</value>
-  </data>
-  <data name="Label_LinkThisStudent" xml:space="preserve">
-    <value>Lidh këtë student me këtë prind?</value>
-  </data>
-  <data name="Form_SelectProfessor" xml:space="preserve">
-    <value>Zgjidh profesorin</value>
-  </data>
-  <data name="Form_SelectGradeRange" xml:space="preserve">
-    <value>Zgjidh notën (5�?"10)</value>
-  </data>
-  <data name="Form_SelectStudentDisambig" xml:space="preserve">
-    <value>Zgjidh studentin �?" përdor nr. nëse emrat përputhen</value>
-  </data>
-  <data name="Search_Users" xml:space="preserve">
-    <value>Kërko emër, email ose rol...</value>
-  </data>
-  <data name="Search_Enrollments" xml:space="preserve">
-    <value>Kërko student ose lëndë...</value>
-  </data>
-  <data name="Search_Grades" xml:space="preserve">
-    <value>Kërko student ose lëndë...</value>
-  </data>
-  <data name="Search_Schedules" xml:space="preserve">
-    <value>Kërko lëndë, ditë, sallë...</value>
-  </data>
-  <data name="Search_Departments" xml:space="preserve">
-    <value>Kërko departamente...</value>
-  </data>
-  <data name="Search_Parents" xml:space="preserve">
-    <value>Kërko prind, email ose student...</value>
-  </data>
-  <data name="Confirm_Delete" xml:space="preserve">
-    <value>Fshi?</value>
-  </data>
-  <data name="Confirm_Reject" xml:space="preserve">
-    <value>Refuzo?</value>
-  </data>
-  <data name="Confirm_RemoveDocument" xml:space="preserve">
-    <value>Hiq këtë dokument?</value>
-  </data>
-  <data name="Confirm_RemoveSlot" xml:space="preserve">
-    <value>Hiq këtë orën?</value>
-  </data>
-  <data name="Confirm_ResetPasswordDefault" xml:space="preserve">
-    <value>Rivendos fjalëkalimin e parazgjedhur?</value>
-  </data>
-  <data name="Title_Details" xml:space="preserve">
-    <value>Detajet</value>
-  </data>
-  <data name="Title_AddChild" xml:space="preserve">
-    <value>Shto fëmijë tjetër</value>
-  </data>
-  <data name="Title_EditParent" xml:space="preserve">
-    <value>Ndrysho prindin</value>
-  </data>
-  <data name="Title_RemoveLink" xml:space="preserve">
-    <value>Hiq lidhjen</value>
-  </data>
-  <data name="Title_RemoveEnrollment" xml:space="preserve">
-    <value>Hiq regjistrimin</value>
-  </data>
-  <data name="Page_ProfileNotFoundTitle" xml:space="preserve">
-    <value>Profili nuk u gjet</value>
-  </data>
-  <data name="Page_NoProfileStudent" xml:space="preserve">
-    <value>Nuk ka student të lidhur</value>
-  </data>
-  <data name="Msg_NoRecords" xml:space="preserve">
-    <value>Nuk u gjetën regjistra.</value>
-  </data>
-  <data name="Msg_NoScheduleFound" xml:space="preserve">
-    <value>Nuk u gjet orar.</value>
-  </data>
-  <data name="Msg_NoSchedulesEnrolled" xml:space="preserve">
-    <value>Nuk ka orare për lëndët ku jeni regjistruar.</value>
-  </data>
-  <data name="Msg_ParentCreateHint" xml:space="preserve">
-    <value>Emri i plotë është i detyrueshëm. Email është opsional:</value>
-  </data>
-  <data name="Msg_ParentEmailHint" xml:space="preserve">
-    <value>Duhet të përputhet me email ekzistues të prindit; përndryshe krijohet llogari e re.</value>
-  </data>
-  <data name="Msg_StudentEmailLocked" xml:space="preserve">
-    <value>Email dhe numri i studentit nuk ndryshohen këtu (lidhur me llogarinë).</value>
-  </data>
-  <data name="Msg_ParentEditHint" xml:space="preserve">
-    <value>Emri dhe email vlejnë për të gjithë fëmijët e këtij prindi.</value>
-  </data>
-  <data name="Msg_ParentLinkHint" xml:space="preserve">
-    <value>Ndryshon studentin për këtë rresht. Përdor Cakto fëmijën për të shtuar më shumë.</value>
-  </data>
-  <data name="Msg_AssignChildHint" xml:space="preserve">
-    <value>Duke caktuar studentin: zgjidh rreshtin e saktë më poshtë.</value>
-  </data>
-  <data name="Msg_AddParentCheck" xml:space="preserve">
-    <value>Shto prind / kujdestar tani</value>
-  </data>
-  <data name="Msg_ParentLinkAdmin" xml:space="preserve">
-    <value>Admini lidh prindin me studentin te menuja Prindërit.</value>
-  </data>
-  <data name="Guide_Admin1" xml:space="preserve">
-    <value>Menaxho përdoruesit dhe cakto rolet</value>
-  </data>
-  <data name="Guide_Admin2" xml:space="preserve">
-    <value>Studentë, profesorë, prindër</value>
-  </data>
-  <data name="Guide_Admin3" xml:space="preserve">
-    <value>Lëndë, regjistrime, orare</value>
-  </data>
-  <data name="Guide_Admin4" xml:space="preserve">
-    <value>Nota dhe statistika</value>
-  </data>
-  <data name="Guide_Prof1" xml:space="preserve">
-    <value>Shiko lëndët e caktuara</value>
-  </data>
-  <data name="Guide_Prof2" xml:space="preserve">
-    <value>Regjistro prezencën</value>
-  </data>
-  <data name="Guide_Prof3" xml:space="preserve">
-    <value>Dërgo dhe menaxho notat</value>
-  </data>
-  <data name="Guide_Student1" xml:space="preserve">
-    <value>Shiko orarin</value>
-  </data>
-  <data name="Guide_Student2" xml:space="preserve">
-    <value>Shiko notat</value>
-  </data>
-  <data name="Guide_Parent1" xml:space="preserve">
-    <value>Shiko notat e fëmijës</value>
-  </data>
-  <data name="Guide_Parent2" xml:space="preserve">
-    <value>Shiko orarin e fëmijës</value>
-  </data>
-  <data name="Guide_Flow1" xml:space="preserve">
-    <value>Profesori jep mësimin dhe regjistron notat.</value>
-  </data>
-  <data name="Guide_Flow2" xml:space="preserve">
-    <value>Studenti hyn për të parë orarin dhe notat.</value>
-  </data>
-  <data name="Guide_Flow3" xml:space="preserve">
-    <value>Prindi lidhet me studentin nga Admini �?" pastaj ndjek progresin.</value>
-  </data>
-  <data name="Doc_RequestsTitle" xml:space="preserve">
-    <value>Kërkesat për dokumente</value>
-  </data>
-  <data name="Doc_RequestsSubtitle" xml:space="preserve">
-    <value>Kërkoni transkripte zyrtare për fëmijët e lidhur.</value>
-  </data>
-  <data name="Doc_RequestTranscript" xml:space="preserve">
-    <value>Kërko transkript</value>
-  </data>
-  <data name="Doc_YourRequests" xml:space="preserve">
-    <value>Kërkesat tuaja</value>
-  </data>
-  <data name="Placeholder_Note" xml:space="preserve">
-    <value>Shënim</value>
-  </data>
-  <data name="Placeholder_OptionalNote" xml:space="preserve">
-    <value>Shënim opsional</value>
-  </data>
-  <data name="Placeholder_Semester" xml:space="preserve">
-    <value>Vjeshtë 2026</value>
-  </data>
-  <data name="Placeholder_Lesson1" xml:space="preserve">
-    <value>Ora 1</value>
-  </data>
-  <data name="Placeholder_Monday" xml:space="preserve">
-    <value>E hënë</value>
-  </data>
-  <data name="Placeholder_Room" xml:space="preserve">
-    <value>A-101</value>
-  </data>
-  <data name="Dash_Empty" xml:space="preserve">
-    <value>�?"</value>
-  </data>
-  <data name="Flash_CourseCreated" xml:space="preserve">
-    <value>Lënda u krijua.</value>
-  </data>
-  <data name="Flash_CourseUpdated" xml:space="preserve">
-    <value>Lënda u përditësua.</value>
-  </data>
-  <data name="Flash_CourseDeleted" xml:space="preserve">
-    <value>Lënda u fshi.</value>
-  </data>
-  <data name="Flash_DocumentRemoved" xml:space="preserve">
-    <value>Dokumenti u hoq.</value>
-  </data>
-  <data name="Flash_Enrolled" xml:space="preserve">
-    <value>Studenti u regjistrua në lëndë.</value>
-  </data>
-  <data name="Flash_EnrolledSuccess" xml:space="preserve">
-    <value>Studenti u regjistrua me sukses!</value>
-  </data>
-  <data name="Flash_EnrollmentDeleted" xml:space="preserve">
-    <value>Regjistrimi u fshi!</value>
-  </data>
-  <data name="Flash_AlreadyEnrolled" xml:space="preserve">
-    <value>Studenti është tashmë i regjistruar në këtë lëndë!</value>
-  </data>
-  <data name="Flash_ScheduleConflict" xml:space="preserve">
-    <value>Nuk mund të regjistrohet: studenti ka lëndë tjetër në të njëjtën ditë/kohë.</value>
-  </data>
-  <data name="Flash_UserUpdated" xml:space="preserve">
-    <value>Përdoruesi dhe roli u përditësuan.</value>
-  </data>
-  <data name="Flash_UserDeleted" xml:space="preserve">
-    <value>Përdoruesi u fshi.</value>
-  </data>
-  <data name="Flash_CannotDeleteSuperAdmin" xml:space="preserve">
-    <value>Nuk mund të fshihet llogaria kryesore SuperAdmin.</value>
-  </data>
-  <data name="Flash_AssignmentAdded" xml:space="preserve">
-    <value>Detyra u shtua.</value>
-  </data>
-  <data name="Flash_AssignmentRemoved" xml:space="preserve">
-    <value>Detyra u hoq.</value>
-  </data>
-  <data name="Flash_AssignmentInvalid" xml:space="preserve">
-    <value>Titulli kërkohet; pesha 0�?"100%.</value>
-  </data>
-  <data name="Flash_ScheduleCreated" xml:space="preserve">
-    <value>Orari u krijua me sukses!</value>
-  </data>
-  <data name="Flash_ScheduleUpdated" xml:space="preserve">
-    <value>Orari u përditësua!</value>
-  </data>
-  <data name="Flash_ScheduleDeleted" xml:space="preserve">
-    <value>Orari u fshi me sukses!</value>
-  </data>
-  <data name="Flash_TranscriptSubmitted" xml:space="preserve">
-    <value>Kërkesa për transkript u dërgua. Administratori do ta shqyrtojë.</value>
-  </data>
-  <data name="Flash_RequestApproved" xml:space="preserve">
-    <value>Kërkesa u miratua. Mund të shkarkoni PDF.</value>
-  </data>
-  <data name="Flash_RequestRejected" xml:space="preserve">
-    <value>Kërkesa u refuzua.</value>
-  </data>
-  <data name="Flash_ApproveBeforePdf" xml:space="preserve">
-    <value>Miratoni kërkesën para se të gjeneroni PDF.</value>
-  </data>
-  <data name="Flash_OnlyLinkedChildren" xml:space="preserve">
-    <value>Mund të kërkoni dokumente vetëm për fëmijët e lidhur.</value>
-  </data>
-  <data name="Flash_PendingTranscript" xml:space="preserve">
-    <value>Ekziston tashmë kërkesë transkripti në pritje për këtë student.</value>
-  </data>
-  <data name="Flash_ParentUpdated" xml:space="preserve">
-    <value>Prindi u përditësua.</value>
-  </data>
-  <data name="Flash_ParentNoLogin" xml:space="preserve">
-    <value>Prindi nuk ka llogari hyrjeje.</value>
-  </data>
-  <data name="Flash_ParentLinkRemoved" xml:space="preserve">
-    <value>Lidhja me prindin u hoq.</value>
-  </data>
-  <data name="Flash_ProfessorUpdated" xml:space="preserve">
-    <value>Profesori u përditësua!</value>
-  </data>
-  <data name="Flash_ProfessorDeleted" xml:space="preserve">
-    <value>Profesori dhe llogaria u fshinë.</value>
-  </data>
-  <data name="Flash_ProfessorNoLogin" xml:space="preserve">
-    <value>Profesori nuk ka llogari hyrjeje.</value>
-  </data>
-  <data name="Flash_TermAdded" xml:space="preserve">
-    <value>Semestri u shtua.</value>
-  </data>
-  <data name="Flash_EventAdded" xml:space="preserve">
-    <value>Ngjarja e kalendarit u shtua.</value>
-  </data>
-  <data name="Flash_EventRemoved" xml:space="preserve">
-    <value>Ngjarja u hoq.</value>
-  </data>
-  <data name="Flash_TermNameRequired" xml:space="preserve">
-    <value>Emri i semestrit kërkohet.</value>
-  </data>
-  <data name="Flash_EventTitleRequired" xml:space="preserve">
-    <value>Titulli i ngjarjes kërkohet.</value>
-  </data>
-  <data name="Flash_SettingsSaved" xml:space="preserve">
-    <value>Cilësimet akademike u ruajtën.</value>
-  </data>
-  <data name="Flash_LessonSlotSaved" xml:space="preserve">
-    <value>Ora mësimore u ruajt.</value>
-  </data>
-  <data name="Flash_LessonSlotRemoved" xml:space="preserve">
-    <value>Ora mësimore u hoq.</value>
-  </data>
-  <data name="Flash_LessonSlotInactive" xml:space="preserve">
-    <value>Ora ka histori prezence �?" u çaktivizua në vend që të fshihej.</value>
-  </data>
-  <data name="Flash_TitleTimesRequired" xml:space="preserve">
-    <value>Titulli dhe kohët kërkohen.</value>
-  </data>
-  <data name="Flash_GradeSaved" xml:space="preserve">
-    <value>Nota u ruajt me sukses.</value>
-  </data>
-  <data name="Flash_GradeExists" xml:space="preserve">
-    <value>Nota ekziston! Përdorni Ndrysho.</value>
-  </data>
-  <data name="Flash_GradeUpdated" xml:space="preserve">
-    <value>Nota u përditësua!</value>
-  </data>
-  <data name="Flash_GradeDeleted" xml:space="preserve">
-    <value>Nota u fshi!</value>
-  </data>
-  <data name="Flash_StudentUpdated" xml:space="preserve">
-    <value>Studenti u përditësua!</value>
-  </data>
-  <data name="Flash_StudentDeleted" xml:space="preserve">
-    <value>Studenti dhe llogaritë e lidhura u fshinë.</value>
-  </data>
-  <data name="Flash_ParentNameRequired" xml:space="preserve">
-    <value>Emri i prindit kërkohet.</value>
-  </data>
-  <data name="Flash_DepartmentCreated" xml:space="preserve">
-    <value>Departamenti u krijua!</value>
-  </data>
-  <data name="Flash_DepartmentUpdated" xml:space="preserve">
-    <value>Departamenti u përditësua!</value>
-  </data>
-  <data name="Flash_DepartmentDeleted" xml:space="preserve">
-    <value>Departamenti u fshi me sukses!</value>
+    <value>Klasa u fshi me sukses!</value>
   </data>
   <data name="Flash_NoteRequired" xml:space="preserve">
     <value>Shënimi kërkohet.</value>
@@ -2451,9 +2025,9 @@
     <value>Përdoruesi {0} u krijua me rolin {1}.</value>
   </data>
   <data name="Flash_ProfessorCreated" xml:space="preserve">
-    <value>Profesori u krijua. Hyrje: {0} · ID stafi: {1} · Fjalëkalimi: {2} (ndrysho në hyrjen e parë).</value>
+    <value>Mësuesi u krijua. Hyrje: {0} · ID stafi: {1} · Fjalëkalimi: {2} (ndrysho në hyrjen e parë).</value>
   </data>
-  <data name="Flash_LinkedStudent" xml:space="preserve">
+  <data name="Flash_LinkedNxënës" xml:space="preserve">
     <value>U lidh {0} ({1}) me prindin.</value>
   </data>
   <data name="Flash_CouldNotCreateParent" xml:space="preserve">
@@ -2469,7 +2043,7 @@
     <value>Si funksionon sistemi</value>
   </data>
   <data name="Guide_Subtitle" xml:space="preserve">
-    <value>UM Project ka {0} role �?" çdo përdorues sheh vetëm atë që i nevojitet.</value>
+    <value>Menaxhimi Shkollor ka {0} role �?" çdo përdorues sheh vetëm atë që i nevojitet.</value>
   </data>
   <data name="Guide_SuperAdmin_Desc" xml:space="preserve">
     <value>Kontroll i plotë i sistemit.</value>
@@ -2489,29 +2063,29 @@
   <data name="Guide_Prof_Desc" xml:space="preserve">
     <value>Stafi mësimdhënës.</value>
   </data>
-  <data name="Guide_Prof_SeeStudents" xml:space="preserve">
-    <value>Shiko studentët e regjistruar</value>
+  <data name="Guide_Prof_SeeNxënëss" xml:space="preserve">
+    <value>Shiko nxënësit e regjistruar</value>
   </data>
-  <data name="Guide_Student_Desc" xml:space="preserve">
-    <value>Studentë të regjistruar.</value>
+  <data name="Guide_Nxënës_Desc" xml:space="preserve">
+    <value>Nxënës të regjistruar.</value>
   </data>
-  <data name="Guide_Student_Dashboard" xml:space="preserve">
+  <data name="Guide_Nxënës_Dashboard" xml:space="preserve">
     <value>Paneli personal</value>
   </data>
-  <data name="Guide_Student_Schedule" xml:space="preserve">
+  <data name="Guide_Nxënës_Schedule" xml:space="preserve">
     <value>Orari i klasave</value>
   </data>
-  <data name="Guide_Student_Grades" xml:space="preserve">
+  <data name="Guide_Nxënës_Grades" xml:space="preserve">
     <value>Notat dhe regjistrimet</value>
   </data>
   <data name="Guide_Parent_Desc" xml:space="preserve">
-    <value>Kujdestar i lidhur me studentin.</value>
+    <value>Kujdestar i lidhur me nxënësin.</value>
   </data>
   <data name="Guide_Parent_ReadOnly" xml:space="preserve">
     <value>Akses vetëm për lexim</value>
   </data>
   <data name="Guide_Parent_LinkHint" xml:space="preserve">
-    <value>Admini lidh prindin me studentin te menuja Prindërit.</value>
+    <value>Admini lidh prindin me nxënësin te menuja Prindërit.</value>
   </data>
   <data name="Guide_Flow_Title" xml:space="preserve">
     <value>Rrjedha tipike</value>
@@ -2520,16 +2094,16 @@
     <value>krijon përdoruesit dhe cakton rolin.</value>
   </data>
   <data name="Guide_Flow_Admin" xml:space="preserve">
-    <value>konfiguron departamentet, lëndët, profesorët dhe regjistron studentët.</value>
+    <value>konfiguron klasat, lëndët, mësuesit dhe regjistron nxënësit.</value>
   </data>
   <data name="Guide_Flow_Professor" xml:space="preserve">
     <value>jep mësimin dhe regjistron notat.</value>
   </data>
-  <data name="Guide_Flow_Student" xml:space="preserve">
+  <data name="Guide_Flow_Nxënës" xml:space="preserve">
     <value>hyn për të parë orarin dhe notat.</value>
   </data>
   <data name="Guide_Flow_Parent" xml:space="preserve">
-    <value>lidhet me studentin nga Admini �?" pastaj ndjek progresin.</value>
+    <value>lidhet me nxënësin nga Admini �?" pastaj ndjek progresin.</value>
   </data>
   <data name="Common_Login" xml:space="preserve">
     <value>Hyrja:</value>
@@ -2546,17 +2120,14 @@
   <data name="Common_Password" xml:space="preserve">
     <value>Fjalëkalimi</value>
   </data>
-  <data name="Common_Reset" xml:space="preserve">
-    <value>Rivendos</value>
-  </data>
   <data name="Common_Add" xml:space="preserve">
     <value>Shto</value>
   </data>
   <data name="Common_Enroll" xml:space="preserve">
     <value>Regjistro</value>
   </data>
-  <data name="Common_AllStudents" xml:space="preserve">
-    <value>Të gjithë studentët</value>
+  <data name="Common_AllNxënëss" xml:space="preserve">
+    <value>Të gjithë nxënësit</value>
   </data>
   <data name="Label_Semester" xml:space="preserve">
     <value>Semestri</value>
@@ -2585,8 +2156,8 @@
   <data name="Label_EmailLogin" xml:space="preserve">
     <value>Email (hyrje)</value>
   </data>
-  <data name="Label_ThisLinkStudent" xml:space="preserve">
-    <value>Kjo lidhje �?" studenti</value>
+  <data name="Label_ThisLinkNxënës" xml:space="preserve">
+    <value>Kjo lidhje �?" nxënësi</value>
   </data>
   <data name="Label_SetGrade" xml:space="preserve">
     <value>Cakto notën</value>
@@ -2618,9 +2189,6 @@
   <data name="Label_NewPasswordDefault" xml:space="preserve">
     <value>Fjalëkalimi i ri (bosh = parazgjedhur)</value>
   </data>
-  <data name="Label_ForceChangeLogin" xml:space="preserve">
-    <value>Detyro ndryshimin në hyrje</value>
-  </data>
   <data name="Label_MustChangeLogin" xml:space="preserve">
     <value>Duhet ndryshuar në hyrje</value>
   </data>
@@ -2639,8 +2207,8 @@
   <data name="Label_NoRole" xml:space="preserve">
     <value>Pa rol</value>
   </data>
-  <data name="Placeholder_SearchStudents" xml:space="preserve">
-    <value>Kërko studentë...</value>
+  <data name="Placeholder_SearchNxënëss" xml:space="preserve">
+    <value>Kërko nxënësë...</value>
   </data>
   <data name="Placeholder_CourseSummary" xml:space="preserve">
     <value>Përmbledhje e lëndës, tema...</value>
@@ -2652,7 +2220,7 @@
     <value>Lëreni bosh për gjenerim automatik</value>
   </data>
   <data name="Placeholder_ProfessorTitle" xml:space="preserve">
-    <value>Profesor</value>
+    <value>Mësues</value>
   </data>
   <data name="Msg_NoDocumentsEdit" xml:space="preserve">
     <value>Nuk ka dokumente. Shtoni skedarë te Ndrysho.</value>
@@ -2681,8 +2249,8 @@
   <data name="Msg_ParentCreateRequired" xml:space="preserve">
     <value>Emri i plotë kërkohet. Email opsional:</value>
   </data>
-  <data name="Confirm_LinkStudentParent" xml:space="preserve">
-    <value>Lidh këtë student me këtë prind?</value>
+  <data name="Confirm_LinkNxënësParent" xml:space="preserve">
+    <value>Lidh këtë nxënës me këtë prind?</value>
   </data>
   <data name="Flash_ScheduleDuplicate" xml:space="preserve">
     <value>Kjo lëndë ka tashmë orar në të njëjtën ditë dhe kohë.</value>
@@ -2691,7 +2259,7 @@
     <value>Lënda nuk u gjet.</value>
   </data>
   <data name="Flash_ProfessorBusy" xml:space="preserve">
-    <value>Profesori jep tashmë lëndë tjetër në këtë ditë dhe kohë.</value>
+    <value>Mësuesi jep tashmë lëndë tjetër në këtë ditë dhe kohë.</value>
   </data>
   <data name="Flash_ParentLinked" xml:space="preserve">
     <value>Prindi u lidh. Hyrja: {0}</value>
@@ -2709,10 +2277,10 @@
     <value>Fjalëkalimi u rivendos për {0}. I ri: {1}</value>
   </data>
   <data name="Flash_ParentRequiredFields" xml:space="preserve">
-    <value>Emri i prindit dhe studenti kërkohen.</value>
+    <value>Emri i prindit dhe nxënësi kërkohen.</value>
   </data>
-  <data name="Flash_StudentNotFound" xml:space="preserve">
-    <value>Studenti nuk u gjet.</value>
+  <data name="Flash_NxënësNotFound" xml:space="preserve">
+    <value>Nxënësi nuk u gjet.</value>
   </data>
   <data name="Flash_AssignChildFailed" xml:space="preserve">
     <value>Nuk u caktua fëmija.</value>
@@ -2723,11 +2291,11 @@
   <data name="Flash_EmailInUse" xml:space="preserve">
     <value>Emaili përdoret nga llogari tjetër.</value>
   </data>
-  <data name="Flash_CouldNotCreateStudent" xml:space="preserve">
-    <value>Nuk u krijua llogaria e studentit.</value>
+  <data name="Flash_CouldNotCreateNxënës" xml:space="preserve">
+    <value>Nuk u krijua llogaria e nxënësit.</value>
   </data>
   <data name="Flash_CouldNotCreateProfessor" xml:space="preserve">
-    <value>Nuk u krijua llogaria e profesorit.</value>
+    <value>Nuk u krijua llogaria e mësuesit.</value>
   </data>
   <data name="Flash_ParentWhenAdding" xml:space="preserve">
     <value>Emri i prindit kërkohet kur shtoni prind.</value>
@@ -2750,8 +2318,8 @@
   <data name="Stat_Fail" xml:space="preserve">
     <value>Dështon</value>
   </data>
-  <data name="Flash_StudentCreated" xml:space="preserve">
-    <value>Studenti {0}: hyrja {1}, fjalëkalimi {2}</value>
+  <data name="Flash_NxënësCreated" xml:space="preserve">
+    <value>Nxënësi {0}: hyrja {1}, fjalëkalimi {2}</value>
   </data>
   <data name="Label_LoginEmail" xml:space="preserve">
     <value>Email i hyrjes:</value>
@@ -2772,22 +2340,22 @@
     <value>Orari ditor i orëve</value>
   </data>
   <data name="Msg_LessonSlotsHint" xml:space="preserve">
-    <value>Deri në {0} orë për prezencë. Orët joaktive fshihen nga profesorët.</value>
+    <value>Deri në {0} orë për prezencë. Orët joaktive fshihen nga mësuesit.</value>
   </data>
-  <data name="Msg_StudentCreateStep1" xml:space="preserve">
-    <value>Vendosni emrin dhe departamentin — llogaria krijohet automatikisht.</value>
+  <data name="Msg_NxënësCreateStep1" xml:space="preserve">
+    <value>Vendosni emrin dhe klasën — llogaria krijohet automatikisht.</value>
   </data>
-  <data name="Msg_StudentCreateStep2" xml:space="preserve">
+  <data name="Msg_NxënësCreateStep2" xml:space="preserve">
     <value>Opsionalisht shtoni prind në të njëjtën faqe (ose lidhni më vonë nga profili).</value>
   </data>
-  <data name="Msg_StudentCreateStep3" xml:space="preserve">
-    <value>Pas ruajtjes, hapni profilin e studentit për regjistrime dhe kredencialet.</value>
+  <data name="Msg_NxënësCreateStep3" xml:space="preserve">
+    <value>Pas ruajtjes, hapni profilin e nxënësit për regjistrime dhe kredencialet.</value>
   </data>
   <data name="Msg_ParentEmailLinkHint" xml:space="preserve">
     <value>Përdorni email ekzistues të prindit për të lidhur pa krijuar llogari të dyfishtë.</value>
   </data>
   <data name="Msg_ProfCreateEmail" xml:space="preserve">
-    <value>Email i hyrjes — iniciale + numër + @@umproject.edu</value>
+    <value>Email i hyrjes — iniciale + numër + @@shkollademo.edu</value>
   </data>
   <data name="Msg_ProfCreatePwd" xml:space="preserve">
     <value>Fjalëkalimi i parazgjedhur — duhet ndryshuar në hyrjen e parë</value>
@@ -2805,43 +2373,37 @@
     <value>Gjithashtu i lidhur me:</value>
   </data>
   <data name="Msg_ParentEditLinkHint" xml:space="preserve">
-    <value>Ndryshon studentin për këtë rresht. Përdorni Cakto fëmijën për të shtuar më shumë.</value>
+    <value>Ndryshon nxënësin për këtë rresht. Përdorni Cakto fëmijën për të shtuar më shumë.</value>
   </data>
   <data name="Msg_ParentCreateEmailEmpty" xml:space="preserve">
     <value>Lëreni email bosh → gjeneron automatikisht par.emri.mbiemri001@domain</value>
   </data>
   <data name="Msg_ParentCreateEmailExisting" xml:space="preserve">
-    <value>Vendosni email ekzistues të prindit → lidh studentin pa llogari të re</value>
+    <value>Vendosni email ekzistues të prindit → lidh nxënësin pa llogari të re</value>
   </data>
   <data name="Msg_ParentEmailMatch" xml:space="preserve">
     <value>Duhet të përputhet me hyrjen ekzistuese të prindit; përndryshe krijohet llogari e re.</value>
   </data>
   <data name="Msg_AcademicSettingsHint" xml:space="preserve">
-    <value>Këto kufij vlejnë për profesorët dhe adminin kur vendosin nota.</value>
+    <value>Këto kufij vlejnë për mësuesit dhe adminin kur vendosin nota.</value>
   </data>
   <data name="Msg_AttendanceColumns" xml:space="preserve">
-    <value>Kolonat e rrjetit të prezencës për profesorët (p.sh. 6).</value>
+    <value>Kolonat e rrjetit të prezencës për mësuesit (p.sh. 6).</value>
   </data>
   <data name="Page_PastDue" xml:space="preserve">
     <value>Me vonesë</value>
   </data>
   <data name="Page_NoProfileParent" xml:space="preserve">
-    <value>Llogaria juaj nuk është lidhur me asnjë student. Kontaktoni administratorin.</value>
-  </data>
-  <data name="Page_NoProfileStudent" xml:space="preserve">
-    <value>Emaili juaj nuk lidhet me asnjë profil studenti. Kontaktoni adminin.</value>
+    <value>Llogaria juaj nuk është lidhur me asnjë nxënës. Kontaktoni administratorin.</value>
   </data>
   <data name="Page_NoProfileProfessor" xml:space="preserve">
-    <value>Emaili juaj nuk lidhet me asnjë profil profesori. Kontaktoni adminin.</value>
+    <value>Emaili juaj nuk lidhet me asnjë profil mësuesi. Kontaktoni adminin.</value>
   </data>
   <data name="Error_RequestFailed" xml:space="preserve">
     <value>Ndodhi një gabim gjatë përpunimit të kërkesës suaj.</value>
   </data>
   <data name="Page_OneStepRegistration" xml:space="preserve">
     <value>Regjistrim në një hap</value>
-  </data>
-  <data name="Common_Error" xml:space="preserve">
-    <value>Gabim</value>
   </data>
   <data name="Error_RequestId" xml:space="preserve">
     <value>ID e kërkesës:</value>
@@ -2859,13 +2421,11 @@
   <data name="Label_StaffId" xml:space="preserve"><value>ID stafi</value></data>
   <data name="Msg_StaffIdAuto" xml:space="preserve"><value>automatik (p.sh. PROF20260001)</value></data>
   <data name="Label_Graded" xml:space="preserve"><value>E notuar</value></data>
-  <data name="Msg_AttendanceHelp" xml:space="preserve"><value>Shënoni Mungon për çdo student dhe orë. Pa shënim = prezent. Ka {0} orë për këtë ditë.</value></data>
+  <data name="Msg_AttendanceHelp" xml:space="preserve"><value>Shënoni Mungon për çdo nxënës dhe orë. Pa shënim = prezent. Ka {0} orë për këtë ditë.</value></data>
   <data name="Label_Date" xml:space="preserve"><value>Data</value></data>
-  <data name="Nav_Dashboard" xml:space="preserve"><value>Paneli</value></data>
-  <data name="Page_AssignmentsFor" xml:space="preserve"><value>Detyrat — {0}</value></data>
   <data name="Label_WeightLine" xml:space="preserve"><value>Pesha {0}%</value></data>
-  <data name="Page_StudentRegistration" xml:space="preserve"><value>Regjistrim studenti</value></data>
-  <data name="Label_StudentInfo" xml:space="preserve"><value>Të dhënat e studentit</value></data>
+  <data name="Page_NxënësRegistration" xml:space="preserve"><value>Regjistrim nxënësi</value></data>
+  <data name="Label_NxënësInfo" xml:space="preserve"><value>Të dhënat e nxënësit</value></data>
   <data name="Label_ParentOptional" xml:space="preserve"><value>Prindi (opsional)</value></data>
   <data name="Msg_ErrorContactAdmin" xml:space="preserve"><value>Nëse problemi vazhdon, kontaktoni administratorin e sistemit.</value></data>
   <data name="Btn_AssignChildExisting" xml:space="preserve"><value>Cakto fëmijën te prind ekzistues</value></data>
@@ -2873,8 +2433,6 @@
   <data name="Cal_TableTitle" xml:space="preserve"><value>Titulli</value></data>
   <data name="Label_Off" xml:space="preserve"><value>Joaktiv</value></data>
   <data name="Label_Missed" xml:space="preserve"><value>mungon</value></data>
-  <data name="Nav_ControlCenter" xml:space="preserve"><value>Qendra e kontrollit</value></data>
-  <data name="Label_Documents" xml:space="preserve"><value>Dokumentet</value></data>
   <data name="Msg_AutoAccountSetup" xml:space="preserve"><value>Konfigurim automatik i llogarisë</value></data>
   <data name="Label_Credits" xml:space="preserve"><value>Kreditë</value></data>
 </root>

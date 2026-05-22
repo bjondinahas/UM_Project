@@ -2,10 +2,10 @@ namespace UM_Project.Models
 {
     public class AccountProvisioningSettings
     {
-        public string EmailDomain { get; set; } = "umproject.edu";
+        public string EmailDomain { get; set; } = "shkollademo.edu";
         public string DefaultPassword { get; set; } = "Welcome@123";
-        public string StudentNumberPrefix { get; set; } = "STU";
-        public string ProfessorIdPrefix { get; set; } = "PROF";
+        public string StudentNumberPrefix { get; set; } = "NX";
+        public string ProfessorIdPrefix { get; set; } = "MES";
     }
 
     public class ProvisionedAccountResult

@@ -137,7 +137,7 @@ app.UseAuthorization();
 var applyMigrations = builder.Configuration.GetValue("Database:ApplyMigrationsOnStartup", false);
 var applySchemaBootstrap = builder.Configuration.GetValue("Database:ApplySchemaBootstrapOnStartup", false);
 
-Console.WriteLine("UM Project — preparing database...");
+Console.WriteLine("Menaxhimi Shkollor — preparing database...");
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -180,14 +180,14 @@ using (var scope = app.Services.CreateScope())
     await settingsService.ApplyGradeScaleOneToFiveAsync();
     await settingsService.MigrateLegacyGradesToCurrentScaleAsync();
 
-    Console.WriteLine("UM Project — database startup step done.");
+    Console.WriteLine("Menaxhimi Shkollor — database startup step done.");
 }
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {
     Console.WriteLine();
     Console.WriteLine("============================================");
-    Console.WriteLine("  UM Project is running. Open in browser:");
+    Console.WriteLine("  Menaxhimi Shkollor is running. Open in browser:");
     Console.WriteLine("  https://localhost:7059");
     Console.WriteLine("  http://localhost:5199");
     Console.WriteLine("============================================");

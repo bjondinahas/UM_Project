@@ -1,95 +1,190 @@
-﻿@using UM_Project.Models
-@{
-    ViewData["Title"] = Localizer["Nav_HowItWorks"];
-}
-
-<div class="dash-wrap">
-    <div class="dash-hero">
-        <h1 class="dash-hero-title"><i class="fas fa-circle-info me-2"></i>@Localizer["Guide_Title"]</h1>
-        <p class="dash-hero-sub mb-0">@Localizer.Format("Guide_Subtitle", RoleNames.All.Length)</p>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <div class="dash-card h-100">
-                <div class="dash-card-head"><i class="fas fa-crown me-2"></i>@Localizer["Role_SuperAdmin"]</div>
-                <div class="dash-card-body">
-                    <p class="small text-muted mb-2">@Localizer["Guide_SuperAdmin_Desc"]</p>
-                    <ul class="small mb-0">
-                        <li>@Localizer["Guide_SuperAdmin_1"]</li>
-                        <li>@Localizer["Guide_SuperAdmin_2"]</li>
-                        <li>@Localizer["Guide_SuperAdmin_3"]</li>
-                    </ul>
-                    <p class="mt-3 mb-0 small"><strong>@Localizer["Common_Login"]</strong> superadmin@umproject.com</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="dash-card h-100">
-                <div class="dash-card-head"><i class="fas fa-user-shield me-2"></i>@Localizer["Role_Admin"]</div>
-                <div class="dash-card-body">
-                    <p class="small text-muted mb-2">@Localizer["Guide_Admin_Desc"]</p>
-                    <ul class="small mb-0">
-                        <li>@Localizer["Guide_Admin2"]</li>
-                        <li>@Localizer["Guide_Admin3"]</li>
-                        <li>@Localizer["Guide_Admin4"]</li>
-                    </ul>
-                    <p class="mt-3 mb-0 small"><strong>@Localizer["Common_Login"]</strong> admin@umproject.com</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="dash-card h-100">
-                <div class="dash-card-head"><i class="fas fa-chalkboard-teacher me-2"></i>@Localizer["Role_Professor"]</div>
-                <div class="dash-card-body">
-                    <p class="small text-muted mb-2">@Localizer["Guide_Prof_Desc"]</p>
-                    <ul class="small mb-0">
-                        <li>@Localizer["Guide_Prof1"]</li>
-                        <li>@Localizer["Guide_Prof_SeeStudents"]</li>
-                        <li>@Localizer["Guide_Prof3"]</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="dash-card h-100">
-                <div class="dash-card-head"><i class="fas fa-user-graduate me-2"></i>@Localizer["Role_Student"]</div>
-                <div class="dash-card-body">
-                    <p class="small text-muted mb-2">@Localizer["Guide_Student_Desc"]</p>
-                    <ul class="small mb-0">
-                        <li>@Localizer["Guide_Student_Dashboard"]</li>
-                        <li>@Localizer["Guide_Student_Schedule"]</li>
-                        <li>@Localizer["Guide_Student_Grades"]</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <div class="dash-card h-100">
-                <div class="dash-card-head"><i class="fas fa-people-roof me-2"></i>@Localizer["Role_Parent"]</div>
-                <div class="dash-card-body">
-                    <p class="small text-muted mb-2">@Localizer["Guide_Parent_Desc"]</p>
-                    <ul class="small mb-0">
-                        <li>@Localizer["Guide_Parent1"]</li>
-                        <li>@Localizer["Guide_Parent2"]</li>
-                        <li>@Localizer["Guide_Parent_ReadOnly"]</li>
-                    </ul>
-                    <p class="mt-3 mb-0 small text-muted">@Localizer["Guide_Parent_LinkHint"]</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dash-card mt-4">
-        <div class="dash-card-head"><i class="fas fa-diagram-project me-2"></i>@Localizer["Guide_Flow_Title"]</div>
-        <div class="dash-card-body">
-            <ol class="mb-0">
-                <li class="mb-2"><strong>@Localizer["Role_SuperAdmin"]</strong> @Localizer["Guide_Flow_SuperAdmin"]</li>
-                <li class="mb-2"><strong>@Localizer["Role_Admin"]</strong> @Localizer["Guide_Flow_Admin"]</li>
-                <li class="mb-2"><strong>@Localizer["Role_Professor"]</strong> @Localizer["Guide_Flow_Professor"]</li>
-                <li class="mb-2"><strong>@Localizer["Role_Student"]</strong> @Localizer["Guide_Flow_Student"]</li>
-                <li><strong>@Localizer["Role_Parent"]</strong> @Localizer["Guide_Flow_Parent"]</li>
-            </ol>
-        </div>
-    </div>
-</div>
+@using UM_Project.Models
+
+@{
+
+    ViewData["Title"] = Localizer["Nav_HowItWorks"];
+
+}
+
+
+
+<div class="dash-wrap">
+
+    <div class="dash-hero">
+
+        <h1 class="dash-hero-title"><i class="fas fa-circle-info me-2"></i>@Localizer["Guide_Title"]</h1>
+
+        <p class="dash-hero-sub mb-0">@Localizer.Format("Guide_Subtitle", RoleNames.All.Length)</p>
+
+    </div>
+
+
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="dash-card h-100">
+
+                <div class="dash-card-head"><i class="fas fa-crown me-2"></i>@Localizer["Role_SuperAdmin"]</div>
+
+                <div class="dash-card-body">
+
+                    <p class="small text-muted mb-2">@Localizer["Guide_SuperAdmin_Desc"]</p>
+
+                    <ul class="small mb-0">
+
+                        <li>@Localizer["Guide_SuperAdmin_1"]</li>
+
+                        <li>@Localizer["Guide_SuperAdmin_2"]</li>
+
+                        <li>@Localizer["Guide_SuperAdmin_3"]</li>
+
+                    </ul>
+
+                    <p class="mt-3 mb-0 small"><strong>@Localizer["Common_Login"]</strong> superadmin@shkollademo.edu</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="dash-card h-100">
+
+                <div class="dash-card-head"><i class="fas fa-user-shield me-2"></i>@Localizer["Role_Admin"]</div>
+
+                <div class="dash-card-body">
+
+                    <p class="small text-muted mb-2">@Localizer["Guide_Admin_Desc"]</p>
+
+                    <ul class="small mb-0">
+
+                        <li>@Localizer["Guide_Admin2"]</li>
+
+                        <li>@Localizer["Guide_Admin3"]</li>
+
+                        <li>@Localizer["Guide_Admin4"]</li>
+
+                    </ul>
+
+                    <p class="mt-3 mb-0 small"><strong>@Localizer["Common_Login"]</strong> admin@shkollademo.edu</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="dash-card h-100">
+
+                <div class="dash-card-head"><i class="fas fa-chalkboard-teacher me-2"></i>@Localizer["Role_Professor"]</div>
+
+                <div class="dash-card-body">
+
+                    <p class="small text-muted mb-2">@Localizer["Guide_Prof_Desc"]</p>
+
+                    <ul class="small mb-0">
+
+                        <li>@Localizer["Guide_Prof1"]</li>
+
+                        <li>@Localizer["Guide_Prof_SeeStudents"]</li>
+
+                        <li>@Localizer["Guide_Prof3"]</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="dash-card h-100">
+
+                <div class="dash-card-head"><i class="fas fa-user-graduate me-2"></i>@Localizer["Role_Student"]</div>
+
+                <div class="dash-card-body">
+
+                    <p class="small text-muted mb-2">@Localizer["Guide_Student_Desc"]</p>
+
+                    <ul class="small mb-0">
+
+                        <li>@Localizer["Guide_Student_Dashboard"]</li>
+
+                        <li>@Localizer["Guide_Student_Schedule"]</li>
+
+                        <li>@Localizer["Guide_Student_Grades"]</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+
+            <div class="dash-card h-100">
+
+                <div class="dash-card-head"><i class="fas fa-people-roof me-2"></i>@Localizer["Role_Parent"]</div>
+
+                <div class="dash-card-body">
+
+                    <p class="small text-muted mb-2">@Localizer["Guide_Parent_Desc"]</p>
+
+                    <ul class="small mb-0">
+
+                        <li>@Localizer["Guide_Parent1"]</li>
+
+                        <li>@Localizer["Guide_Parent2"]</li>
+
+                        <li>@Localizer["Guide_Parent_ReadOnly"]</li>
+
+                    </ul>
+
+                    <p class="mt-3 mb-0 small text-muted">@Localizer["Guide_Parent_LinkHint"]</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="dash-card mt-4">
+
+        <div class="dash-card-head"><i class="fas fa-diagram-project me-2"></i>@Localizer["Guide_Flow_Title"]</div>
+
+        <div class="dash-card-body">
+
+            <ol class="mb-0">
+
+                <li class="mb-2"><strong>@Localizer["Role_SuperAdmin"]</strong> @Localizer["Guide_Flow_SuperAdmin"]</li>
+
+                <li class="mb-2"><strong>@Localizer["Role_Admin"]</strong> @Localizer["Guide_Flow_Admin"]</li>
+
+                <li class="mb-2"><strong>@Localizer["Role_Professor"]</strong> @Localizer["Guide_Flow_Professor"]</li>
+
+                <li class="mb-2"><strong>@Localizer["Role_Student"]</strong> @Localizer["Guide_Flow_Student"]</li>
+
+                <li><strong>@Localizer["Role_Parent"]</strong> @Localizer["Guide_Flow_Parent"]</li>
+
+            </ol>
+
+        </div>
+
+    </div>
+
+</div>
+

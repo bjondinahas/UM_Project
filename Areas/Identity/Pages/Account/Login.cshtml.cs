@@ -63,13 +63,24 @@ namespace UM_Project.Areas.Identity.Pages.Account
                 return Page();
             }
 
+            var user = await _userManager.FindByEmailAsync(Input.Email.Trim());
+            if (user == null)
+            {
+                await _auditService.LogAsync(AuthEventTypes.LoginFailed, false, Input.Email,
+                    failureReason: "User not found", ipAddress: ip, userAgent: ua);
+                ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                return Page();
+            }
+
             var result = await _signInManager.PasswordSignInAsync(
-                Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                user.UserName ?? user.Email ?? Input.Email.Trim(),
+                Input.Password,
+                Input.RememberMe,
+                lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                await _auditService.LogAsync(AuthEventTypes.LoginSuccess, true, Input.Email, user?.Id,
+                await _auditService.LogAsync(AuthEventTypes.LoginSuccess, true, Input.Email, user.Id,
                     ipAddress: ip, userAgent: ua);
 
                 if (user?.MustChangePassword == true)

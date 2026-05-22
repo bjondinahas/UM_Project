@@ -64,12 +64,12 @@ public class ReportExportService : IReportExportService
             {
                 p.Size(PageSizes.A4);
                 p.Margin(40);
-                p.Header().Text(t => { t.Span("Class Attendance Report").Bold().FontSize(18); });
+                p.Header().Text(t => { t.Span("Raporti i mungesave").Bold().FontSize(18); });
                 p.Content().Column(col =>
                 {
-                    col.Item().Text($"Course: {data.CourseName}");
-                    col.Item().Text($"Period: {from:d} – {to:d}");
-                    col.Item().PaddingTop(10).Text($"Present: {data.Present}  |  Absent: {data.Absent}  |  Late: {data.Late}");
+                    col.Item().Text($"Lënda: {data.CourseName}");
+                    col.Item().Text($"Periudha: {from:d} – {to:d}");
+                    col.Item().PaddingTop(10).Text($"Prezent: {data.Present}  |  Mungesë: {data.Absent}  |  Vonë: {data.Late}");
                     col.Item().PaddingTop(15).Table(table =>
                     {
                         table.ColumnsDefinition(c =>
@@ -81,14 +81,14 @@ public class ReportExportService : IReportExportService
                         });
                         table.Header(h =>
                         {
-                            h.Cell().Text("Student").Bold();
-                            h.Cell().Text("Date").Bold();
-                            h.Cell().Text("Slot").Bold();
-                            h.Cell().Text("Status").Bold();
+                            h.Cell().Text("Nxënësi").Bold();
+                            h.Cell().Text("Data").Bold();
+                            h.Cell().Text("Ora").Bold();
+                            h.Cell().Text("Statusi").Bold();
                         });
                         if (data.Rows.Count == 0)
                         {
-                            table.Cell().ColumnSpan(4).Text("No attendance records for this period.").Italic();
+                            table.Cell().ColumnSpan(4).Text("Nuk ka regjistrime mungesash për këtë periudhë.").Italic();
                         }
                         else
                         {
@@ -106,7 +106,7 @@ public class ReportExportService : IReportExportService
                         r.ConstantItem(100).Image(qr);
                         r.RelativeItem().PaddingLeft(10).Text(t =>
                         {
-                            t.Span("Scan to verify report authenticity.\n").FontSize(9);
+                            t.Span("Skanoni për të verifikuar raportin.\n").FontSize(9);
                             t.Span(verifyUrl).FontSize(7);
                         });
                     });
@@ -121,16 +121,16 @@ public class ReportExportService : IReportExportService
         var data = await LoadAttendanceAsync(courseId, from, to);
         using var wb = new XLWorkbook();
         var ws = wb.Worksheets.Add("Attendance");
-        ws.Cell(1, 1).Value = "Class Attendance Report";
-        ws.Cell(2, 1).Value = "Course";
+        ws.Cell(1, 1).Value = "Raporti i mungesave";
+        ws.Cell(2, 1).Value = "Lënda";
         ws.Cell(2, 2).Value = data.CourseName;
-        ws.Cell(3, 1).Value = "Period";
+        ws.Cell(3, 1).Value = "Periudha";
         ws.Cell(3, 2).Value = $"{from:d} – {to:d}";
         var row = 5;
-        ws.Cell(row, 1).Value = "Student";
-        ws.Cell(row, 2).Value = "Date";
-        ws.Cell(row, 3).Value = "Slot";
-        ws.Cell(row, 4).Value = "Status";
+        ws.Cell(row, 1).Value = "Nxënësi";
+        ws.Cell(row, 2).Value = "Data";
+        ws.Cell(row, 3).Value = "Ora";
+        ws.Cell(row, 4).Value = "Statusi";
         row++;
         foreach (var r in data.Rows)
         {
@@ -156,23 +156,23 @@ public class ReportExportService : IReportExportService
             {
                 p.Size(PageSizes.A4);
                 p.Margin(40);
-                p.Header().Text(t => t.Span("Department Performance").Bold().FontSize(18));
+                p.Header().Text(t => t.Span("Raporti i klasës").Bold().FontSize(18));
                 p.Content().Column(col =>
                 {
-                    col.Item().Text($"Department: {data.DepartmentName}");
-                    col.Item().Text($"Students: {data.StudentCount}  |  Avg grade: {data.AverageGrade:F2}");
+                    col.Item().Text($"Klasa: {data.DepartmentName}");
+                    col.Item().Text($"Nxënës: {data.StudentCount}  |  Nota mesatare: {data.AverageGrade:F2}");
                     col.Item().PaddingTop(15).Table(table =>
                     {
                         table.ColumnsDefinition(c => { c.RelativeColumn(2); c.RelativeColumn(); c.RelativeColumn(); });
                         table.Header(h =>
                         {
-                            h.Cell().Text("Course").Bold();
-                            h.Cell().Text("Enrollments").Bold();
-                            h.Cell().Text("Avg grade").Bold();
+                            h.Cell().Text("Lënda").Bold();
+                            h.Cell().Text("Nxënës").Bold();
+                            h.Cell().Text("Nota mes.").Bold();
                         });
                         if (data.Courses.Count == 0)
                         {
-                            table.Cell().ColumnSpan(3).Text("No courses in this department.").Italic();
+                            table.Cell().ColumnSpan(3).Text("Nuk ka lëndë për këtë klasë.").Italic();
                         }
                         else
                         {
@@ -186,14 +186,14 @@ public class ReportExportService : IReportExportService
                     });
                     if (data.GradeBreakdown.Count > 0)
                     {
-                        col.Item().PaddingTop(12).Text("Grade distribution (1–5)").Bold();
+                        col.Item().PaddingTop(12).Text("Shpërndarja e notave (1–5)").Bold();
                         col.Item().Table(table =>
                         {
                             table.ColumnsDefinition(c => { c.RelativeColumn(); c.RelativeColumn(); });
                             table.Header(h =>
                             {
-                                h.Cell().Text("Grade").Bold();
-                                h.Cell().Text("Count").Bold();
+                                h.Cell().Text("Nota").Bold();
+                                h.Cell().Text("Numri").Bold();
                             });
                             foreach (var g in data.GradeBreakdown)
                             {
@@ -205,7 +205,7 @@ public class ReportExportService : IReportExportService
                     col.Item().PaddingTop(20).Row(r =>
                     {
                         r.ConstantItem(100).Image(qr);
-                        r.RelativeItem().PaddingLeft(10).Text("Scan QR to verify.").FontSize(9);
+                        r.RelativeItem().PaddingLeft(10).Text("Skanoni QR për verifikim.").FontSize(9);
                     });
                 });
                 p.Footer().AlignCenter().Text($"Generated {DateTime.UtcNow:u} UTC");
@@ -218,14 +218,14 @@ public class ReportExportService : IReportExportService
         var data = await LoadDepartmentPerformanceAsync(departmentId, termId);
         using var wb = new XLWorkbook();
         var ws = wb.Worksheets.Add("Department");
-        ws.Cell(1, 1).Value = "Department Performance";
+        ws.Cell(1, 1).Value = "Raporti i klasës";
         ws.Cell(2, 1).Value = data.DepartmentName;
-        ws.Cell(3, 1).Value = "Avg grade";
+        ws.Cell(3, 1).Value = "Nota mesatare";
         ws.Cell(3, 2).Value = data.AverageGrade;
         var row = 5;
-        ws.Cell(row, 1).Value = "Course";
-        ws.Cell(row, 2).Value = "Enrollments";
-        ws.Cell(row, 3).Value = "Avg grade";
+        ws.Cell(row, 1).Value = "Lënda";
+        ws.Cell(row, 2).Value = "Nxënës";
+        ws.Cell(row, 3).Value = "Nota mes.";
         row++;
         foreach (var c in data.Courses)
         {
@@ -250,30 +250,30 @@ public class ReportExportService : IReportExportService
             {
                 p.Size(PageSizes.A4);
                 p.Margin(40);
-                p.Header().Text(t => t.Span("Term Summary Report").Bold().FontSize(18));
+                p.Header().Text(t => t.Span("Raporti i vitit shkollor").Bold().FontSize(18));
                 p.Content().Column(col =>
                 {
-                    col.Item().Text($"Term: {data.TermName} ({data.StartDate:d} – {data.EndDate:d})");
-                    col.Item().Text($"Students enrolled: {data.StudentsEnrolled}");
-                    col.Item().Text($"Grades recorded: {data.GradesCount}  |  Avg: {data.AverageGrade:F2} (scale 1–5)");
-                    col.Item().Text($"Absences in term: {data.Absences}");
+                    col.Item().Text($"Viti: {data.TermName} ({data.StartDate:d} – {data.EndDate:d})");
+                    col.Item().Text($"Nxënës të regjistruar: {data.StudentsEnrolled}");
+                    col.Item().Text($"Nota të regjistruara: {data.GradesCount}  |  Mesatare: {data.AverageGrade:F2} (shkalla 1–5)");
+                    col.Item().Text($"Mungesa në vit: {data.Absences}");
                     if (data.GradeBreakdown.Count > 0)
                     {
-                        col.Item().PaddingTop(12).Text("Grade distribution").Bold();
+                        col.Item().PaddingTop(12).Text("Shpërndarja e notave").Bold();
                         foreach (var g in data.GradeBreakdown)
-                            col.Item().Text($"Grade {g.Grade}: {g.Count} records");
+                            col.Item().Text($"Nota {g.Grade}: {g.Count} regjistrime");
                     }
                     if (data.CourseSummaries.Count > 0)
                     {
-                        col.Item().PaddingTop(12).Text("Courses").Bold();
+                        col.Item().PaddingTop(12).Text("Lëndët").Bold();
                         col.Item().Table(table =>
                         {
                             table.ColumnsDefinition(c => { c.RelativeColumn(2); c.RelativeColumn(); c.RelativeColumn(); });
                             table.Header(h =>
                             {
-                                h.Cell().Text("Course").Bold();
-                                h.Cell().Text("Grades").Bold();
-                                h.Cell().Text("Avg").Bold();
+                                h.Cell().Text("Lënda").Bold();
+                                h.Cell().Text("Nota").Bold();
+                                h.Cell().Text("Mes.").Bold();
                             });
                             foreach (var c in data.CourseSummaries)
                             {
@@ -286,7 +286,7 @@ public class ReportExportService : IReportExportService
                     col.Item().PaddingTop(20).Row(r =>
                     {
                         r.ConstantItem(100).Image(qr);
-                        r.RelativeItem().PaddingLeft(10).Text("Scan QR to verify.").FontSize(9);
+                        r.RelativeItem().PaddingLeft(10).Text("Skanoni QR për verifikim.").FontSize(9);
                     });
                 });
                 p.Footer().AlignCenter().Text($"Generated {DateTime.UtcNow:u} UTC");
@@ -348,7 +348,7 @@ public class ReportExportService : IReportExportService
                 StudentName = r.Student?.FullName ?? $"#{r.StudentId}",
                 Date = r.AttendanceDate,
                 Slot = r.LessonSlot?.Title ?? r.LessonSlotId.ToString(),
-                Status = r.IsPresent ? "Present" : "Absent"
+                Status = r.IsPresent ? "Prezent" : "Mungesë"
             }).ToList()
         };
     }

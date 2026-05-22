@@ -141,7 +141,7 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user != null && user.Email != "superadmin@umproject.com")
+            if (user != null && user.Email is not ("superadmin@shkollademo.edu" or "superadmin@umproject.com"))
             {
                 await _userManager.DeleteAsync(user);
                 TempData["Success"] = _ui["Flash_UserDeleted"];
