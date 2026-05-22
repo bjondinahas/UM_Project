@@ -1,9 +1,9 @@
-@model IEnumerable<UM_Project.Models.Department>
+﻿@model IEnumerable<UM_Project.Models.Department>
 @{
-    ViewData["Title"] = "Departments";
-    ViewData["PageTitle"] = "Departments";
+    ViewData["Title"] = Localizer["Nav_Departments"];
+    ViewData["PageTitle"] = Localizer["Nav_Departments"];
     ViewData["PageIcon"] = "fa-building";
-    ViewData["PageSubtitle"] = "Organize academic departments";
+    ViewData["PageSubtitle"] = Localizer["Page_Departments_Subtitle"];
     ViewData["CreateController"] = "Departments";
 }
 
@@ -11,11 +11,11 @@
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search departments..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Departments"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
-                <thead><tr><th>Department Name</th><th>Actions</th></tr></thead>
+                <thead><tr><th>@Localizer["Table_DepartmentName"]</th><th>@Localizer["Common_Actions"]</th></tr></thead>
                 <tbody>
                     @foreach (var d in Model)
                     {
@@ -23,7 +23,7 @@
                             <td class="fw-semibold">@d.DepartmentName</td>
                             <td>
                                 <div class="um-actions">
-                                    <a asp-action="Edit" asp-route-id="@d.DepartmentId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> Edit</a>
+                                    <a asp-action="Edit" asp-route-id="@d.DepartmentId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> @Localizer["Common_Edit"]</a>
                                     <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@d.DepartmentId', '@d.DepartmentName')"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>

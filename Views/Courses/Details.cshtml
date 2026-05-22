@@ -1,4 +1,4 @@
-@model UM_Project.Models.Course
+﻿@model UM_Project.Models.Course
 @{
     ViewData["Title"] = Model.CourseName;
     ViewData["PageTitle"] = Model.CourseName;
@@ -10,49 +10,49 @@
 <div class="um-page">
     <partial name="_AdminPageHeader" />
     <div class="d-flex gap-2 mb-4 flex-wrap">
-        <a asp-action="Edit" asp-route-id="@Model.CourseId" class="um-btn-primary"><i class="fas fa-pen"></i> Edit course</a>
-        <a asp-action="Index" class="btn btn-light border">Back to list</a>
+        <a asp-action="Edit" asp-route-id="@Model.CourseId" class="um-btn-primary"><i class="fas fa-pen"></i> @Localizer["Page_EditCourse"]</a>
+        <a asp-action="Index" class="btn btn-light border">@Localizer["Msg_BackToList"]</a>
     </div>
 
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="um-panel mb-4">
-                <h3 class="h6 fw-bold text-danger mb-3">Overview</h3>
+                <h3 class="h6 fw-bold text-danger mb-3">@Localizer["Label_Overview"]</h3>
                 <dl class="row mb-0 small">
-                    <dt class="col-sm-3">Code</dt><dd class="col-sm-9"><span class="um-badge um-badge-gray">@Model.CourseCode</span></dd>
-                    <dt class="col-sm-3">Department</dt><dd class="col-sm-9">@(Model.Department?.DepartmentName ?? "—")</dd>
-                    <dt class="col-sm-3">Professor</dt><dd class="col-sm-9">@(Model.Professor?.FullName ?? "—")</dd>
-                    <dt class="col-sm-3">Semester</dt><dd class="col-sm-9">@(Model.Semester ?? "—")</dd>
-                    <dt class="col-sm-3">Max enrollment</dt><dd class="col-sm-9">@(Model.MaxEnrollment?.ToString() ?? "—")</dd>
-                    <dt class="col-sm-3">Enrolled</dt><dd class="col-sm-9">@Model.Enrollments.Count</dd>
+                    <dt class="col-sm-3">@Localizer["Label_Code"]</dt><dd class="col-sm-9"><span class="um-badge um-badge-gray">@Model.CourseCode</span></dd>
+                    <dt class="col-sm-3">@Localizer["Label_Department"]</dt><dd class="col-sm-9">@(Model.Department?.DepartmentName ?? "—")</dd>
+                    <dt class="col-sm-3">@Localizer["Label_Professor"]</dt><dd class="col-sm-9">@(Model.Professor?.FullName ?? "—")</dd>
+                    <dt class="col-sm-3">@Localizer["Label_Semester"]</dt><dd class="col-sm-9">@(Model.Semester ?? "—")</dd>
+                    <dt class="col-sm-3">@Localizer["Label_MaxEnrollmentShort"]</dt><dd class="col-sm-9">@(Model.MaxEnrollment?.ToString() ?? "—")</dd>
+                    <dt class="col-sm-3">@Localizer["Label_Enrolled"]</dt><dd class="col-sm-9">@Model.Enrollments.Count</dd>
                 </dl>
             </div>
 
             @if (!string.IsNullOrWhiteSpace(Model.Description))
             {
                 <div class="um-panel mb-4">
-                    <h3 class="h6 fw-bold text-danger mb-2">Description</h3>
+                    <h3 class="h6 fw-bold text-danger mb-2">@Localizer["Label_Description"]</h3>
                     <p class="mb-0 text-secondary" style="white-space:pre-wrap">@Model.Description</p>
                 </div>
             }
             @if (!string.IsNullOrWhiteSpace(Model.LearningOutcomes))
             {
                 <div class="um-panel mb-4">
-                    <h3 class="h6 fw-bold text-danger mb-2">Learning outcomes</h3>
+                    <h3 class="h6 fw-bold text-danger mb-2">@Localizer["Label_LearningOutcomes"]</h3>
                     <p class="mb-0 text-secondary" style="white-space:pre-wrap">@Model.LearningOutcomes</p>
                 </div>
             }
             @if (!string.IsNullOrWhiteSpace(Model.Prerequisites))
             {
                 <div class="um-panel mb-4">
-                    <h3 class="h6 fw-bold text-danger mb-2">Prerequisites</h3>
+                    <h3 class="h6 fw-bold text-danger mb-2">@Localizer["Label_Prerequisites"]</h3>
                     <p class="mb-0 text-secondary" style="white-space:pre-wrap">@Model.Prerequisites</p>
                 </div>
             }
             @if (!string.IsNullOrWhiteSpace(Model.AdditionalNotes))
             {
                 <div class="um-panel mb-4">
-                    <h3 class="h6 fw-bold text-danger mb-2">Additional notes</h3>
+                    <h3 class="h6 fw-bold text-danger mb-2">@Localizer["Label_AdditionalNotes"]</h3>
                     <p class="mb-0 text-secondary" style="white-space:pre-wrap">@Model.AdditionalNotes</p>
                 </div>
             }
@@ -60,10 +60,10 @@
 
         <div class="col-lg-4">
             <div class="um-panel">
-                <h3 class="h6 fw-bold text-danger mb-3"><i class="fas fa-file-pdf me-1"></i> Documents</h3>
+                <h3 class="h6 fw-bold text-danger mb-3"><i class="fas fa-file-pdf me-1"></i> @Localizer["Label_Documents"]</h3>
                 @if (!Model.Documents.Any())
                 {
-                    <p class="text-muted small mb-0">No documents uploaded. Add files on Edit.</p>
+                    <p class="text-muted small mb-0">@Localizer["Msg_NoDocumentsEdit"]</p>
                 }
                 else
                 {
@@ -75,11 +75,11 @@
                                     <i class="fas fa-download me-1"></i>@doc.Title
                                 </a>
                                 <div class="text-muted" style="font-size:0.75rem">@doc.FileName · @doc.UploadedAtUtc.ToLocalTime().ToString("g")</div>
-                                <form asp-action="DeleteDocument" method="post" class="mt-1" onsubmit="return confirm('Remove this document?');">
+                                <form asp-action="DeleteDocument" method="post" class="mt-1" onsubmit="return confirm('@Localizer["Confirm_RemoveDocument"]');">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="documentId" value="@doc.CourseDocumentId" />
                                     <input type="hidden" name="courseId" value="@Model.CourseId" />
-                                    <button type="submit" class="btn btn-link btn-sm text-danger p-0">Remove</button>
+                                    <button type="submit" class="btn btn-link btn-sm text-danger p-0">@Localizer["Common_Remove"]</button>
                                 </form>
                             </li>
                         }

@@ -1,20 +1,24 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public class SuperAdminController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly ISystemSettingsService _settings;
 
-        public SuperAdminController(ApplicationDbContext context, ISystemSettingsService settings)
+        public SuperAdminController(ApplicationDbContext context, ISystemSettingsService settings, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _settings = settings;
         }
@@ -39,7 +43,7 @@ namespace UM_Project.Controllers
             try
             {
                 await _settings.SaveAcademicSettingsAsync(model);
-                TempData["Success"] = "Academic settings saved.";
+                TempData["Success"] = _ui["Flash_SettingsSaved"];
                 return RedirectToAction(nameof(Hub));
             }
             catch (InvalidOperationException ex)
@@ -62,7 +66,7 @@ namespace UM_Project.Controllers
         {
             if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(startTime) || string.IsNullOrWhiteSpace(endTime))
             {
-                TempData["Error"] = "Title and times are required.";
+                TempData["Error"] = _ui["Flash_TitleTimesRequired"];
                 return RedirectToAction(nameof(LessonSlots));
             }
 
@@ -80,7 +84,7 @@ namespace UM_Project.Controllers
             {
                 if (await _context.LessonSlots.AnyAsync(l => l.SlotNumber == slotNumber))
                 {
-                    TempData["Error"] = $"Slot number {slotNumber} already exists.";
+                    TempData["Error"] = _ui.Format("Flash_SlotExists", slotNumber);
                     return RedirectToAction(nameof(LessonSlots));
                 }
                 _context.LessonSlots.Add(new LessonSlot
@@ -94,7 +98,7 @@ namespace UM_Project.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Lesson slot saved.";
+            TempData["Success"] = _ui["Flash_LessonSlotSaved"];
             return RedirectToAction(nameof(LessonSlots));
         }
 
@@ -109,12 +113,12 @@ namespace UM_Project.Controllers
                 if (inUse)
                 {
                     slot.IsActive = false;
-                    TempData["Success"] = "Slot has attendance history — marked inactive instead of deleted.";
+                    TempData["Success"] = _ui["Flash_LessonSlotInactive"];
                 }
                 else
                 {
                     _context.LessonSlots.Remove(slot);
-                    TempData["Success"] = "Lesson slot removed.";
+                    TempData["Success"] = _ui["Flash_LessonSlotRemoved"];
                 }
                 await _context.SaveChangesAsync();
             }

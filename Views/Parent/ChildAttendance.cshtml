@@ -1,6 +1,6 @@
 @model UM_Project.Models.ParentAttendanceCalendarViewModel
 @{
-    ViewData["Title"] = "Child attendance";
+    ViewData["Title"] = Localizer["Page_ChildAttendance"];
     var monthName = new DateTime(Model.Year, Model.Month, 1).ToString("MMMM yyyy");
     var prev = Model.Month == 1 ? (Model.Year - 1, 12) : (Model.Year, Model.Month - 1);
     var next = Model.Month == 12 ? (Model.Year + 1, 1) : (Model.Year, Model.Month + 1);

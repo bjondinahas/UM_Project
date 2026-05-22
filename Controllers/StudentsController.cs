@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,18 +8,21 @@ using UM_Project.Data;
 using UM_Project.Helpers;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminPanel)]
     public class StudentsController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAccountProvisioningService _provisioning;
         private readonly IEmailService _emailService;
         private readonly IAdminPasswordService _passwordService;
         private readonly AccountProvisioningSettings _settings;
+        private readonly ISystemSettingsService _academicSettings;
 
         public StudentsController(
             ApplicationDbContext context,
@@ -27,9 +30,14 @@ namespace UM_Project.Controllers
             IAccountProvisioningService provisioning,
             IEmailService emailService,
             IAdminPasswordService passwordService,
-            IOptions<AccountProvisioningSettings> settings)
+            IOptions<AccountProvisioningSettings> settings,
+            ISystemSettingsService academicSettings,
+            IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
+            _academicSettings = academicSettings;
             _userManager = userManager;
             _provisioning = provisioning;
             _emailService = emailService;
@@ -85,9 +93,11 @@ namespace UM_Project.Controllers
 
             if (grades.Any())
             {
+                var academic = await _academicSettings.GetAcademicSettingsAsync();
                 vm.AverageGrade = Math.Round(grades.Average(g => g.Value), 2);
-                vm.PassedCount = grades.Count(g => g.Value >= 6);
-                vm.FailedCount = grades.Count(g => g.Value == 5);
+                vm.PassedCount = grades.Count(g => g.Value >= academic.GradePassingMinimum);
+                vm.FailedCount = grades.Count(g => g.Value < academic.GradePassingMinimum);
+                ViewBag.GradePassingMin = academic.GradePassingMinimum;
             }
 
             return View(vm);
@@ -99,7 +109,7 @@ namespace UM_Project.Controllers
         {
             if (await _context.Enrollments.AnyAsync(e => e.StudentId == studentId && e.CourseId == courseId))
             {
-                TempData["Error"] = "Student is already enrolled in this course.";
+                TempData["Error"] = _ui["Flash_AlreadyEnrolled"];
                 return RedirectToAction(nameof(Details), new { id = studentId });
             }
 
@@ -110,7 +120,7 @@ namespace UM_Project.Controllers
                 EnrollmentDate = DateTime.UtcNow
             });
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Student enrolled in course.";
+            TempData["Success"] = _ui["Flash_Enrolled"];
             return RedirectToAction(nameof(Details), new { id = studentId });
         }
 
@@ -124,7 +134,7 @@ namespace UM_Project.Controllers
             {
                 _context.Enrollments.Remove(enrollment);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Enrollment removed.";
+                TempData["Success"] = _ui["Flash_EnrollmentRemoved"];
             }
             return RedirectToAction(nameof(Details), new { id = studentId });
         }
@@ -135,7 +145,7 @@ namespace UM_Project.Controllers
         {
             if (string.IsNullOrWhiteSpace(parentFullName))
             {
-                TempData["Error"] = "Parent name is required.";
+                TempData["Error"] = _ui["Flash_ParentNameRequired"];
                 return RedirectToAction(nameof(Details), new { id = studentId });
             }
 
@@ -143,14 +153,13 @@ namespace UM_Project.Controllers
                 parentFullName.Trim(), string.IsNullOrWhiteSpace(parentEmail) ? null : parentEmail.Trim(), studentId);
             if (!result.Success)
             {
-                TempData["Error"] = result.Error ?? "Could not create parent.";
+                TempData["Error"] = result.Error ?? _ui["Flash_CouldNotCreateParent"];
                 return RedirectToAction(nameof(Details), new { id = studentId });
             }
 
-            var msg = string.IsNullOrEmpty(result.TemporaryPassword)
-                ? $"Parent linked. Login: {result.Email}"
-                : $"Parent linked. Login: {result.Email} · Password: {result.TemporaryPassword}";
-            TempData["Success"] = msg;
+            TempData["Success"] = string.IsNullOrEmpty(result.TemporaryPassword)
+                ? _ui.Format("Flash_ParentLinked", result.Email)
+                : _ui.Format("Flash_ParentLinkedPwd", result.Email, result.TemporaryPassword);
             return RedirectToAction(nameof(Details), new { id = studentId });
         }
 
@@ -164,7 +173,7 @@ namespace UM_Project.Controllers
             var pwd = string.IsNullOrWhiteSpace(newPassword) ? _settings.DefaultPassword : newPassword;
             var (ok, err) = await _passwordService.ResetPasswordAsync(student.UserId, pwd, requireChange);
             TempData[ok ? "Success" : "Error"] = ok
-                ? $"Password reset. New password: {pwd}" + (requireChange ? " (user must change on next login)." : ".")
+                ? (requireChange ? _ui.Format("Flash_PasswordResetForce", pwd) : _ui.Format("Flash_PasswordReset", pwd))
                 : err;
             return RedirectToAction(nameof(Details), new { id = studentId });
         }
@@ -181,7 +190,7 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> Create(StudentRegistrationViewModel model)
         {
             if (model.AddParent && string.IsNullOrWhiteSpace(model.ParentFullName))
-                ModelState.AddModelError(nameof(model.ParentFullName), "Parent name is required when adding a parent.");
+                ModelState.AddModelError(nameof(model.ParentFullName), _ui["Flash_ParentWhenAdding"]);
 
             if (!ModelState.IsValid)
             {
@@ -193,7 +202,7 @@ namespace UM_Project.Controllers
             var result = await _provisioning.ProvisionStudentAsync(model.FullName.Trim(), model.DepartmentId);
             if (!result.Success)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not create student account.");
+                ModelState.AddModelError(string.Empty, result.Error ?? _ui["Flash_CouldNotCreateStudent"]);
                 ViewBag.Departments = await _context.Departments.OrderBy(d => d.DepartmentName).ToListAsync();
                 ViewBag.ExistingParents = await StudentSelectListHelper.BuildParentAccountSelectListAsync(_context);
                 return View(model);
@@ -208,7 +217,7 @@ namespace UM_Project.Controllers
 
             var messages = new List<string>
             {
-                $"Student {created.StudentNumber}: login {result.Email}, password {result.TemporaryPassword}"
+                _ui.Format("Flash_StudentCreated", created.StudentNumber, result.Email, result.TemporaryPassword)
             };
 
             if (model.AddParent)
@@ -220,13 +229,12 @@ namespace UM_Project.Controllers
 
                 if (parentResult.Success)
                 {
-                    var parentMsg = string.IsNullOrEmpty(parentResult.TemporaryPassword)
-                        ? $"Parent linked: {parentResult.Email}"
-                        : $"Parent created: {parentResult.Email}, password {parentResult.TemporaryPassword}";
-                    messages.Add(parentMsg);
+                    messages.Add(string.IsNullOrEmpty(parentResult.TemporaryPassword)
+                        ? _ui.Format("Flash_ParentLinked", parentResult.Email)
+                        : _ui.Format("Flash_ParentCreatedLinked", parentResult.Email, parentResult.TemporaryPassword));
                 }
                 else
-                    messages.Add($"Parent not linked: {parentResult.Error}");
+                    messages.Add(_ui.Format("Flash_ParentNotLinked", parentResult.Error));
             }
 
             TempData["Success"] = string.Join(" · ", messages);
@@ -274,7 +282,7 @@ namespace UM_Project.Controllers
                     await _userManager.UpdateAsync(user);
                 }
 
-                TempData["Success"] = "Student updated!";
+                TempData["Success"] = _ui["Flash_StudentUpdated"];
                 return RedirectToAction(nameof(Details), new { id });
             }
             ViewBag.Departments = await _context.Departments.ToListAsync();
@@ -311,7 +319,7 @@ namespace UM_Project.Controllers
                 }
                 _context.Students.Remove(student);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Student and related accounts deleted.";
+                TempData["Success"] = _ui["Flash_StudentDeleted"];
             }
             return RedirectToAction(nameof(Index));
         }

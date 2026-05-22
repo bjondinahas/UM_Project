@@ -6,11 +6,20 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-sans, 'Roboto', 'Segoe UI', sans-serif);
     background: var(--bg-gradient);
     min-height: 100vh;
     margin-bottom: 60px;
 }
+
+body.app-layout {
+    background: var(--surface-page);
+    margin-bottom: 0;
+}
+
+.lang-switcher,
+.app-topbar-desktop-lang,
+.app-sidebar-lang { display: none !important; }
 
 /* Navbar */
 .um-navbar,

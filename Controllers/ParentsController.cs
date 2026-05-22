@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,12 +8,14 @@ using UM_Project.Data;
 using UM_Project.Helpers;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminPanel)]
     public class ParentsController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAccountProvisioningService _provisioning;
@@ -25,8 +27,10 @@ namespace UM_Project.Controllers
             UserManager<ApplicationUser> userManager,
             IAccountProvisioningService provisioning,
             IAdminPasswordService passwordService,
-            IOptions<AccountProvisioningSettings> settings)
+            IOptions<AccountProvisioningSettings> settings, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _userManager = userManager;
             _provisioning = provisioning;
@@ -79,7 +83,7 @@ namespace UM_Project.Controllers
         {
             if (string.IsNullOrWhiteSpace(parentFullName) || studentId <= 0)
             {
-                ModelState.AddModelError(string.Empty, "Parent name and student are required.");
+                ModelState.AddModelError(string.Empty, _ui["Flash_ParentRequiredFields"]);
                 await PopulateStudentListAsync(studentId);
                 return View();
             }
@@ -89,15 +93,14 @@ namespace UM_Project.Controllers
 
             if (!result.Success)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not create parent.");
+                ModelState.AddModelError(string.Empty, result.Error ?? _ui["Flash_CouldNotCreateParent"]);
                 await PopulateStudentListAsync(studentId);
                 return View();
             }
 
-            var msg = string.IsNullOrEmpty(result.TemporaryPassword)
-                ? $"Parent linked. Login: {result.Email}"
-                : $"Parent created. Login: {result.Email} · Password: {result.TemporaryPassword}";
-            TempData["Success"] = msg;
+            TempData["Success"] = string.IsNullOrEmpty(result.TemporaryPassword)
+                ? _ui.Format("Flash_ParentLinked", result.Email)
+                : _ui.Format("Flash_ParentLinkedPwd", result.Email, result.TemporaryPassword);
             return RedirectToAction(nameof(Index));
         }
 
@@ -122,7 +125,7 @@ namespace UM_Project.Controllers
         {
             if (parentGuardianId <= 0 || studentId <= 0)
             {
-                ModelState.AddModelError(string.Empty, "Parent and student are required.");
+                ModelState.AddModelError(string.Empty, _ui["Flash_ParentRequiredFields"]);
                 await PopulateAssignChildListsAsync(parentGuardianId, studentId);
                 return View();
             }
@@ -132,7 +135,7 @@ namespace UM_Project.Controllers
                 .FirstOrDefaultAsync(s => s.StudentId == studentId);
             if (student == null)
             {
-                ModelState.AddModelError(string.Empty, "Student not found.");
+                ModelState.AddModelError(string.Empty, _ui["Flash_StudentNotFound"]);
                 await PopulateAssignChildListsAsync(parentGuardianId, studentId);
                 return View();
             }
@@ -140,12 +143,12 @@ namespace UM_Project.Controllers
             var result = await _provisioning.AssignChildToExistingParentAsync(parentGuardianId, studentId);
             if (!result.Success)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not assign child.");
+                ModelState.AddModelError(string.Empty, result.Error ?? _ui["Flash_AssignChildFailed"]);
                 await PopulateAssignChildListsAsync(parentGuardianId, studentId);
                 return View();
             }
 
-            TempData["Success"] = $"Linked {student.StudentNumber} ({student.FullName}) to parent.";
+            TempData["Success"] = _ui.Format("Flash_LinkedStudent", student.StudentNumber, student.FullName);
             return RedirectToAction(nameof(Index));
         }
 
@@ -177,7 +180,7 @@ namespace UM_Project.Controllers
 
             if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email))
             {
-                ModelState.AddModelError(string.Empty, "Name and email are required.");
+                ModelState.AddModelError(string.Empty, _ui["Flash_NameEmailRequired"]);
                 return await Edit(id);
             }
 
@@ -192,7 +195,7 @@ namespace UM_Project.Controllers
                     var taken = await _userManager.FindByEmailAsync(email);
                     if (taken != null && taken.Id != user.Id)
                     {
-                        ModelState.AddModelError(string.Empty, "Email is already used by another account.");
+                        ModelState.AddModelError(string.Empty, _ui["Flash_EmailInUse"]);
                         return await Edit(id);
                     }
 
@@ -224,7 +227,7 @@ namespace UM_Project.Controllers
 
             parent.StudentId = studentId;
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Parent updated.";
+            TempData["Success"] = _ui["Flash_ParentUpdated"];
             return RedirectToAction(nameof(Index));
         }
 
@@ -235,13 +238,13 @@ namespace UM_Project.Controllers
             var parent = await _context.ParentGuardians.FindAsync(parentId);
             if (parent == null || string.IsNullOrEmpty(parent.UserId))
             {
-                TempData["Error"] = "Parent has no login account.";
+                TempData["Error"] = _ui["Flash_ParentNoLogin"];
                 return RedirectToAction(nameof(Index));
             }
 
             var pwd = string.IsNullOrWhiteSpace(newPassword) ? _settings.DefaultPassword : newPassword;
             var (ok, err) = await _passwordService.ResetPasswordAsync(parent.UserId, pwd, requireChange);
-            TempData[ok ? "Success" : "Error"] = ok ? $"Password reset. New password: {pwd}" : err;
+            TempData[ok ? "Success" : "Error"] = ok ? _ui.Format("Flash_PasswordReset", pwd) : err;
             return RedirectToAction(nameof(Index));
         }
 
@@ -266,7 +269,7 @@ namespace UM_Project.Controllers
 
             _context.ParentGuardians.Remove(parent);
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Parent link removed.";
+            TempData["Success"] = _ui["Flash_ParentLinkRemoved"];
             return RedirectToAction(nameof(Index));
         }
 

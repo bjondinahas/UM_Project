@@ -1,49 +1,21 @@
 @using System.Globalization
 @{
-    var homeCtrl = ViewContext.RouteData.Values["controller"]?.ToString() == "Home";
-    var homeAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
-    var publicMarketingActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        { "Index", "Features", "About", "Contact", "Privacy" };
-    var isPublicMarketing = homeCtrl && publicMarketingActions.Contains(homeAction);
-    var isAppLayout = User.Identity?.IsAuthenticated == true && !isPublicMarketing;
-    var uiCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var isAppLayout = User.Identity?.IsAuthenticated == true;
 }
 <!DOCTYPE html>
-<html lang="@uiCulture" class="scroll-smooth @(isAppLayout ? "h-full" : "")">
+<html lang="sq" class="scroll-smooth @(isAppLayout ? "h-full" : "")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @Localizer["App_Title"]</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fff5f5', 100: '#ffe4e6', 200: '#fecdd3', 300: '#fda4af',
-                            400: '#fb7185', 500: '#f87171', 600: '#ef4444', 700: '#f43f5e',
-                            800: '#e11d48', 900: '#be123c',
-                        }
-                    },
-                    fontFamily: { sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+    <link rel="icon" type="image/png" href="~/images/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/brand-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="~/css/lang-switcher.css" asp-append-version="true" />
-    @if (isPublicMarketing)
-    {
-        <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/css/home-nav.css" asp-append-version="true" />
-    }
     @if (isAppLayout)
     {
         <link rel="stylesheet" href="~/css/app-shell.css" asp-append-version="true" />
@@ -54,29 +26,25 @@
         <link rel="stylesheet" href="~/css/superadmin-hub.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/role-dashboard.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/custom-select.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/analytics.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/editari-compat.css" asp-append-version="true" />
     }
 </head>
-<body class="@(isPublicMarketing ? "pub-theme antialiased" : isAppLayout ? "app-layout" : "")">
-    @if (isPublicMarketing)
-    {
-        <partial name="_PublicNavbar" />
-        <main role="main" class="pub-main">@RenderBody()</main>
-        <partial name="_PublicFooter" />
-    }
-    else if (isAppLayout)
+<body class="@(isAppLayout ? "app-layout" : "antialiased")">
+    @if (isAppLayout)
     {
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <partial name="_Sidebar" />
         <div class="app-main">
             <div class="app-topbar">
-                <button type="button" class="app-topbar-toggle" id="sidebar-toggle" aria-label="Open menu">
+                <button type="button" class="app-topbar-toggle" id="sidebar-toggle" aria-label="Hap menunë">
                     <i class="fas fa-bars"></i>
                 </button>
                 <span class="app-topbar-title">@ViewData["Title"]</span>
                 <div class="app-topbar-actions">
-                    <div class="app-topbar-desktop-lang"><partial name="_LanguageSwitcher" /></div>
                     <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="m-0">
-                    <button type="submit" class="btn btn-sm btn-light fw-bold">@Localizer["Topbar_Logout"]</button>
+                        <button type="submit" class="btn btn-sm btn-light fw-bold">@Localizer["Nav_SignOut"]</button>
                     </form>
                 </div>
             </div>
@@ -95,30 +63,12 @@
     }
     else
     {
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-dark um-navbar">
-                <div class="container-fluid">
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index"><i class="fas fa-graduation-cap"></i> UM_Project</a>
-                    <partial name="_LoginPartial" />
-                </div>
-            </nav>
-        </header>
-        <div class="container">
-            <main role="main" class="pb-3">@RenderBody()</main>
-        </div>
-        <footer class="footer text-center py-3" style="background: linear-gradient(135deg, #f87171, #ef4444); color: white;">
-            <div class="container">&copy; @DateTime.Now.Year - UM_Project</div>
-        </footer>
+        <main role="main" class="min-h-screen">@RenderBody()</main>
     }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/lang-switcher.js" asp-append-version="true"></script>
-    @if (isPublicMarketing)
-    {
-        <script src="~/js/home-nav.js" asp-append-version="true"></script>
-    }
     @if (isAppLayout)
     {
         <script src="~/js/sidebar.js" asp-append-version="true"></script>

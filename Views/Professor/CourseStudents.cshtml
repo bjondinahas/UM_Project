@@ -1,4 +1,4 @@
-@model IEnumerable<UM_Project.Models.Student>
+﻿@model IEnumerable<UM_Project.Models.Student>
 @{
     var course = ViewBag.Course as UM_Project.Models.Course;
     var grades = ViewBag.Grades as Dictionary<int, UM_Project.Models.Grade> ?? new Dictionary<int, UM_Project.Models.Grade>();
@@ -13,12 +13,12 @@
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search students..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Placeholder_SearchStudents"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Name</th><th>Number</th><th>Email</th><th>Grade</th><th>Set grade</th></tr>
+                    <tr><th>@Localizer["Table_Name"]</th><th>@Localizer["Label_Number"]</th><th>@Localizer["Table_Email"]</th><th>@Localizer["Table_Grade"]</th><th>@Localizer["Label_SetGrade"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var student in Model)
@@ -42,10 +42,10 @@
                                         <input type="hidden" name="studentId" value="@student.StudentId" />
                                         <input type="hidden" name="courseId" value="@course?.CourseId" />
                                         <input type="number" name="gradeValue" class="form-control form-control-sm" style="width:72px" min="@ViewBag.GradeMin" max="@ViewBag.GradeMax" required />
-                                        <button type="submit" class="um-btn-sm um-btn-edit">Save</button>
+                                        <button type="submit" class="um-btn-sm um-btn-edit">@Localizer["Common_Save"]</button>
                                     </form>
                                 }
-                                else { <span class="text-muted small">Graded</span> }
+                                else { <span class="text-muted small">@Localizer["Label_Graded"]</span> }
                             </td>
                         </tr>
                     }

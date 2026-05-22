@@ -1,6 +1,6 @@
-@{
-    ViewData["Title"] = "Assign Child";
-    ViewData["FormTitle"] = "Assign child to existing parent";
+﻿@{
+    ViewData["Title"] = Localizer["Page_AssignChild"];
+    ViewData["FormTitle"] = Localizer["Page_AssignChild"];
     ViewData["FormIcon"] = "fa-child";
     var parents = ViewBag.ParentGuardianId as SelectList;
     var students = ViewBag.StudentId as SelectList;
@@ -20,20 +20,20 @@
             @Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="alert alert-danger"></div>
             <div class="mb-3">
-                <label class="form-label">Parent account</label>
+                <label class="form-label">@Localizer["Label_ParentAccount"]</label>
                 <select name="parentGuardianId" id="parentSelect" class="form-select" asp-items="parents" required>
-                    <option value="">Select parent</option>
+                    <option value="">@Localizer["Form_SelectParent"]</option>
                 </select>
             </div>
             <div class="mb-4">
-                <label class="form-label">Student (child)</label>
+                <label class="form-label">@Localizer["Label_StudentChild"]</label>
                 <select name="studentId" id="studentSelect" class="form-select" asp-items="students" required>
-                    <option value="">Select student — use student # if names match</option>
+                    <option value="">@Localizer["Form_SelectStudentDisambig"]</option>
                 </select>
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="um-btn-primary" id="assignBtn"><i class="fas fa-link"></i> Assign</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>
@@ -47,7 +47,7 @@
             if (!student.value || !parent.value) return;
             const studentLabel = student.options[student.selectedIndex].text;
             const parentLabel = parent.options[parent.selectedIndex].text;
-            if (!confirm('Link this student to this parent?\n\nStudent: ' + studentLabel + '\nParent: ' + parentLabel)) {
+            if (!confirm('@Localizer["Confirm_LinkStudentParent"]\n\nStudent: ' + studentLabel + '\nParent: ' + parentLabel)) {
                 e.preventDefault();
             }
         });

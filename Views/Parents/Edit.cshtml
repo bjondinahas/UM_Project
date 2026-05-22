@@ -1,7 +1,7 @@
-@model UM_Project.Models.ParentGuardian
+﻿@model UM_Project.Models.ParentGuardian
 @{
-    ViewData["Title"] = "Edit Parent";
-    ViewData["FormTitle"] = "Edit parent";
+    ViewData["Title"] = Localizer["Page_EditParent"];
+    ViewData["FormTitle"] = Localizer["Page_EditParent"];
     ViewData["FormIcon"] = "fa-pen";
     var students = ViewBag.StudentId as SelectList;
     var siblings = ViewBag.Siblings as List<UM_Project.Models.ParentGuardian> ?? new();
@@ -13,12 +13,12 @@
         @if (siblings.Count > 1)
         {
             <div class="rounded-xl border border-amber-100 bg-amber-50/80 p-3 mb-4 text-sm">
-                <strong>Also linked to:</strong>
+                <strong>@Localizer["Label_AlsoLinkedTo"]</strong>
                 @foreach (var s in siblings.Where(x => x.ParentId != Model.ParentId))
                 {
                     <span class="me-2">@(s.Student?.FullName ?? "—")</span>
                 }
-                <div class="text-muted mt-1">Name and email apply to all children for this parent account.</div>
+                <div class="text-muted mt-1">@Localizer["Msg_ParentEditNameEmail"]</div>
             </div>
         }
         <form asp-action="Edit" method="post">
@@ -26,21 +26,21 @@
             <input type="hidden" name="id" value="@Model.ParentId" />
             <div asp-validation-summary="All" class="alert alert-danger"></div>
             <div class="mb-3">
-                <label class="form-label">Full name</label>
+                <label class="form-label">@Localizer["Form_FullName"]</label>
                 <input type="text" name="fullName" class="form-control" value="@Model.FullName" required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Email (login)</label>
+                <label class="form-label">@Localizer["Label_EmailLogin"]</label>
                 <input type="email" name="email" class="form-control" value="@Model.Email" required />
             </div>
             <div class="mb-4">
-                <label class="form-label">This link — student</label>
+                <label class="form-label">@Localizer["Label_ThisLinkStudent"]</label>
                 <select name="studentId" class="form-select" asp-items="students" required></select>
-                <div class="form-text">Changes which student this row points to. Use <a asp-action="AssignChild">Assign child</a> to add more children.</div>
+                <div class="form-text">@Localizer["Msg_ParentEditLinkHint"] <a asp-action="AssignChild">@Localizer["Page_AssignChild"]</a>.</div>
             </div>
             <div class="d-flex gap-2">
-                <button type="submit" class="um-btn-primary">Save</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <button type="submit" class="um-btn-primary">@Localizer["Common_Save"]</button>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

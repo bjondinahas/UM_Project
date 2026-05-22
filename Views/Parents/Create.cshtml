@@ -1,6 +1,6 @@
-@{
-    ViewData["Title"] = "Link Parent";
-    ViewData["FormTitle"] = "Link Parent to Student";
+﻿@{
+    ViewData["Title"] = Localizer["Page_LinkParent"];
+    ViewData["FormTitle"] = Localizer["Page_LinkParent"];
     ViewData["FormIcon"] = "fa-people-roof";
     var students = ViewBag.StudentId as SelectList;
 }
@@ -9,33 +9,33 @@
     <partial name="_AdminFormHeader" />
     <div class="um-form-panel" style="max-width:640px">
         <div class="rounded-xl border border-blue-100 bg-blue-50/80 p-4 mb-4 text-sm">
-            <p class="mb-1"><strong>Full name</strong> is required. <strong>Email</strong> is optional:</p>
+            <p class="mb-1">@Localizer["Msg_ParentCreateRequired"]</p>
             <ul class="mb-0 ps-3">
-                <li>Leave email empty → auto-generates <code>par.firstname.lastname001@domain</code></li>
-                <li>Enter existing parent email → links this student without a new account</li>
+                <li>@Localizer["Msg_ParentCreateEmailEmpty"] → auto-generates <code>par.firstname.lastname001@domain</code></li>
+                <li>@Localizer["Msg_ParentCreateEmailExisting"] → links this student without a new account</li>
             </ul>
         </div>
         <form asp-action="Create" method="post">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="alert alert-danger"></div>
             <div class="mb-3">
-                <label class="form-label">Parent full name</label>
-                <input type="text" name="parentFullName" class="form-control" required placeholder="Jane Doe" />
+                <label class="form-label">@Localizer["Label_ParentFullName"]</label>
+                <input type="text" name="parentFullName" class="form-control" required placeholder="@Localizer["Placeholder_FullName"]" />
             </div>
             <div class="mb-3">
-                <label class="form-label">Parent email (optional)</label>
+                <label class="form-label">@Localizer["Label_ParentEmailOptional"]</label>
                 <input type="email" name="parentEmail" class="form-control" placeholder="par.jane.doe001@umproject.edu" />
-                <div class="form-text">Must match an existing parent login to link; otherwise a new account is created.</div>
+                <div class="form-text">@Localizer["Msg_ParentEmailMatch"]</div>
             </div>
             <div class="mb-4">
-                <label class="form-label">Student</label>
+                <label class="form-label">@Localizer["Label_Student"]</label>
                 <select name="studentId" class="form-select" asp-items="students" required>
-                    <option value="">Select student</option>
+                    <option value="">@Localizer["Form_SelectStudent"]</option>
                 </select>
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Create & link</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

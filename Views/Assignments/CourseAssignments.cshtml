@@ -1,8 +1,8 @@
-@model IEnumerable<UM_Project.Models.CourseAssignment>
+﻿@model IEnumerable<UM_Project.Models.CourseAssignment>
 @{
     var course = ViewBag.Course as UM_Project.Models.Course;
-    ViewData["Title"] = "Assignments";
-    ViewData["PageTitle"] = $"Assignments — {course?.CourseCode}";
+    ViewData["Title"] = Localizer["Nav_Assignments"];
+    ViewData["PageTitle"] = $"{Localizer["Nav_Assignments"]} — {course?.CourseCode}";
     ViewData["PageIcon"] = "fa-tasks";
     ViewData["ShowCreate"] = false;
 }
@@ -14,25 +14,25 @@
     <div class="row g-3">
         <div class="col-lg-5">
             <div class="um-card">
-                <h3 class="h6 fw-bold text-danger mb-3">New assignment / exam</h3>
+                <h3 class="h6 fw-bold text-danger mb-3">@Localizer["Label_NewAssignment"]</h3>
                 <form asp-action="Create" method="post" class="row g-2 um-form-row-stack">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="courseId" value="@course?.CourseId" />
-                    <div class="col-12"><input type="text" name="title" class="form-control" placeholder="Title" required /></div>
-                    <div class="col-12"><textarea name="description" class="form-control" rows="2" placeholder="Description (optional)"></textarea></div>
-                    <div class="col-md-6"><label class="small">Due date</label><input type="datetime-local" name="dueDate" class="form-control" required /></div>
-                    <div class="col-md-6"><label class="small">Weight %</label><input type="number" name="weightPercent" class="form-control" min="0" max="100" step="0.5" value="10" required /></div>
-                    <div class="col-12"><label class="small">Max points (optional)</label><input type="number" name="maxPoints" class="form-control" min="1" /></div>
-                    <div class="col-12"><button type="submit" class="um-btn-primary w-100">Add</button></div>
+                    <div class="col-12"><input type="text" name="title" class="form-control" placeholder="@Localizer["Table_Title"]" required /></div>
+                    <div class="col-12"><textarea name="description" class="form-control" rows="2" placeholder="@Localizer["Label_Description"] @Localizer["Label_Optional"]"></textarea></div>
+                    <div class="col-md-6"><label class="small">@Localizer["Label_DueDate"]</label><input type="datetime-local" name="dueDate" class="form-control" required /></div>
+                    <div class="col-md-6"><label class="small">@Localizer["Label_WeightPercent"]</label><input type="number" name="weightPercent" class="form-control" min="0" max="100" step="0.5" value="10" required /></div>
+                    <div class="col-12"><label class="small">@Localizer["Label_MaxPoints"]</label><input type="number" name="maxPoints" class="form-control" min="1" /></div>
+                    <div class="col-12"><button type="submit" class="um-btn-primary w-100">@Localizer["Common_Add"]</button></div>
                 </form>
             </div>
         </div>
         <div class="col-lg-7">
             <div class="um-card">
-                <h3 class="h6 fw-bold mb-3">Scheduled (@Model.Count())</h3>
+                <h3 class="h6 fw-bold mb-3">@Localizer["Label_Scheduled"] (@Model.Count())</h3>
                 <div class="um-table-wrap">
                     <table class="um-table table-sm">
-                        <thead><tr><th>Title</th><th>Due</th><th>Weight</th><th></th></tr></thead>
+                        <thead><tr><th>@Localizer["Table_Title"]</th><th>@Localizer["Label_Due"]</th><th>@Localizer["Label_Weight"]</th><th></th></tr></thead>
                         <tbody>
                             @foreach (var a in Model)
                             {
@@ -45,7 +45,7 @@
                                     <td class="text-nowrap">@a.DueDate.ToString("g")</td>
                                     <td>@a.WeightPercent%</td>
                                     <td>
-                                        <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Delete?');">
+                                        <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Confirm_Delete"]');">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@a.CourseAssignmentId" />
                                             <input type="hidden" name="courseId" value="@course?.CourseId" />
@@ -60,5 +60,5 @@
             </div>
         </div>
     </div>
-    <a asp-controller="Professor" asp-action="Dashboard" class="btn btn-light border mt-3">Back to dashboard</a>
+    <a asp-controller="Professor" asp-action="Dashboard" class="btn btn-light border mt-3">@Localizer["Msg_BackToDashboard"]</a>
 </div>

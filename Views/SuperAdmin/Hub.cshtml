@@ -1,9 +1,9 @@
 @{
     ViewData["Title"] = Localizer["Nav_ControlCenter"];
     var settings = ViewBag.Settings as UM_Project.Models.AcademicSettingsDto;
-    var gMin = settings?.GradeMinimum ?? 5;
-    var gMax = settings?.GradeMaximum ?? 10;
-    var gPass = settings?.GradePassingMinimum ?? 6;
+    var gMin = settings?.GradeMinimum ?? 1;
+    var gMax = settings?.GradeMaximum ?? 5;
+    var gPass = settings?.GradePassingMinimum ?? 3;
     var slots = (int)(ViewBag.LessonSlotCount ?? 0);
     var users = (int)(ViewBag.UserCount ?? 0);
     var lessonsDay = settings?.LessonsPerDay ?? 6;

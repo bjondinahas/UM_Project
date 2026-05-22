@@ -1,7 +1,7 @@
-@model UM_Project.Models.Student
+﻿@model UM_Project.Models.Student
 @{
-    ViewData["Title"] = "Edit Student";
-    ViewData["FormTitle"] = "Edit Student";
+    ViewData["Title"] = Localizer["Page_EditStudent"];
+    ViewData["FormTitle"] = Localizer["Page_EditStudent"];
     ViewData["FormIcon"] = "fa-pen";
     var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
 }
@@ -17,9 +17,9 @@
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
             <div class="rounded-xl border border-gray-200 bg-gray-50 p-3 mb-4 text-sm">
-                <p class="mb-1"><strong>Login email:</strong> @Model.Email</p>
-                <p class="mb-0"><strong>Student number:</strong> @Model.StudentNumber</p>
-                <p class="text-muted small mt-2 mb-0">Email and student number cannot be changed here (tied to login account).</p>
+                <p class="mb-1"><strong>@Localizer["Label_LoginEmail"]</strong> @Model.Email</p>
+                <p class="mb-0"><strong>@Localizer["Label_StudentNumber"]:</strong> @Model.StudentNumber</p>
+                <p class="text-muted small mt-2 mb-0">@Localizer["Msg_StudentEmailLocked"]</p>
             </div>
 
             <div class="mb-3">
@@ -28,7 +28,7 @@
                 <span asp-validation-for="FullName" class="text-danger small"></span>
             </div>
             <div class="mb-4">
-                <label asp-for="DepartmentId" class="form-label">Department</label>
+                <label asp-for="DepartmentId" class="form-label">@Localizer["Label_Department"]</label>
                 <select asp-for="DepartmentId" class="form-select" required>
                     @if (departments != null)
                     {
@@ -40,8 +40,8 @@
                 </select>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save Changes</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> @Localizer["Common_Save"]</button>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

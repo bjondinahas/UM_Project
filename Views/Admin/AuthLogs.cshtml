@@ -1,4 +1,4 @@
-@model IEnumerable<UM_Project.Models.AuthAuditLog>
+﻿@model IEnumerable<UM_Project.Models.AuthAuditLog>
 @{
     ViewData["Title"] = Localizer["Nav_LoginActivity"];
     ViewData["PageTitle"] = Localizer["Nav_LoginActivity"];
@@ -45,12 +45,12 @@
         <div class="table-responsive">
             <table class="um-table">
                 <thead>
-                    <tr><th>Time (UTC)</th><th>Event</th><th>Email</th><th>Status</th><th>Location</th><th>IP</th><th>Details</th></tr>
+                    <tr><th>@Localizer["Table_TimeUtc"]</th><th>Event</th><th>@Localizer["Table_Email"]</th><th>Status</th><th>Location</th><th>IP</th><th>Details</th></tr>
                 </thead>
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="7" class="text-center text-muted py-4">No records found.</td></tr>
+                        <tr><td colspan="7" class="text-center text-muted py-4">@Localizer["Msg_NoRecords"]</td></tr>
                     }
                     @foreach (var log in Model)
                     {

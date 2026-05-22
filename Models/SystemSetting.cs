@@ -20,9 +20,9 @@ namespace UM_Project.Models
 
     public class AcademicSettingsDto
     {
-        public int GradeMinimum { get; set; } = 5;
-        public int GradeMaximum { get; set; } = 10;
-        public int GradePassingMinimum { get; set; } = 6;
+        public int GradeMinimum { get; set; } = 1;
+        public int GradeMaximum { get; set; } = 5;
+        public int GradePassingMinimum { get; set; } = 3;
         public int LessonsPerDay { get; set; } = 6;
     }
 }

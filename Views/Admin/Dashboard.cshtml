@@ -274,7 +274,7 @@
 
 <script>
 
-    const red = '#f87171', redDark = '#e11d48', redLight = '#fecdd3';
+    const navy = '#1a1f36', blue = '#3b82f6', blueLight = '#93c5fd', green = '#22c55e', greenLight = '#86efac';
 
     const lblPassing = @Html.Raw(JsonSerializer.Serialize(chartPassing));
 
@@ -292,7 +292,7 @@
 
             datasets: [{ label: lblLogins, data: @Html.Raw(JsonSerializer.Serialize(loginData)),
 
-                borderColor: red, backgroundColor: 'rgba(248,113,113,0.12)', fill: true, tension: 0.35 }]
+                borderColor: blue, backgroundColor: 'rgba(59,130,246,0.12)', fill: true, tension: 0.35 }]
 
         },
 
@@ -308,7 +308,7 @@
 
             labels: [lblPassing, lblFailing],
 
-            datasets: [{ data: [@ViewBag.PassingCount, @ViewBag.FailingCount], backgroundColor: [red, '#e5e7eb'], borderWidth: 0 }]
+            datasets: [{ data: [@ViewBag.PassingCount, @ViewBag.FailingCount], backgroundColor: [green, blueLight], borderWidth: 0 }]
 
         },
 
@@ -324,7 +324,7 @@
 
             labels: @Html.Raw(JsonSerializer.Serialize(deptLabels)),
 
-            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(deptCounts)), backgroundColor: red, borderRadius: 4 }]
+            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(deptCounts)), backgroundColor: blue, borderRadius: 4 }]
 
         },
 
@@ -340,7 +340,7 @@
 
             labels: @Html.Raw(JsonSerializer.Serialize(gradeLabels)),
 
-            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(gradeCounts)), backgroundColor: [redDark, red, '#ef4444', redLight, '#fecaca', '#ffe4e6'], borderRadius: 4 }]
+            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(gradeCounts)), backgroundColor: [navy, blue, '#60a5fa', blueLight, green, greenLight], borderRadius: 4 }]
 
         },
 

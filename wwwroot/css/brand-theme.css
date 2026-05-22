@@ -1,57 +1,48 @@
-/* University Manager — red & white brand (lighter red accents) */
+/* Editari — navy & light UI theme */
 
 :root {
+    --navy-950: #0f1428;
+    --navy-900: #151b33;
+    --navy-800: #1a1f36;
+    --navy-700: #232a4a;
+    --navy-600: #2d3560;
 
-    --brand-50: #fff5f5;
+    --accent-500: #3b82f6;
+    --accent-400: #60a5fa;
+    --accent-soft: rgba(59, 130, 246, 0.12);
 
-    --brand-100: #ffe4e6;
+    --surface-page: #f4f7fe;
+    --surface-card: #ffffff;
+    --surface-border: #e8edf5;
 
-    --brand-200: #fecdd3;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
 
-    --brand-300: #fda4af;
+    --success: #22c55e;
+    --success-soft: #dcfce7;
+    --warning: #f59e0b;
+    --danger: #ef4444;
 
-    --brand-400: #fb7185;
+    /* Legacy brand vars → navy */
+    --brand-50: #eff6ff;
+    --brand-100: #dbeafe;
+    --brand-200: #bfdbfe;
+    --brand-300: #93c5fd;
+    --brand-400: #60a5fa;
+    --brand-500: #3b82f6;
+    --brand-600: #2563eb;
+    --brand-700: #1d4ed8;
+    --brand-800: #1a1f36;
+    --brand-900: #151b33;
 
-    --brand-500: #f87171;
+    --primary-dark: var(--navy-800);
+    --primary-medium: var(--accent-500);
+    --primary-light: var(--accent-400);
 
-    --brand-600: #ef4444;
-
-    --brand-700: #f43f5e;
-
-    --brand-800: #e11d48;
-
-    --brand-900: #be123c;
-
-
-
-    --primary-dark: var(--brand-800);
-
-    --primary-medium: var(--brand-500);
-
-    --primary-light: var(--brand-300);
-
-
-
-    --pub-bg: #ffffff;
-
-    --pub-bg-elevated: #fff5f5;
-
-    --pub-surface: #ffffff;
-
-    --pub-border: #fecdd3;
-
-    --pub-text: #1f2937;
-
-    --pub-muted: #6b7280;
-
-    --pub-accent: var(--brand-500);
-
-    --pub-accent-hover: var(--brand-600);
-
-    --pub-accent-text: #ffffff;
-
-    --pub-accent-soft: #fee2e2;
-
+    --font-sans: 'Roboto', 'Segoe UI', system-ui, sans-serif;
 }
 
-
+html, body {
+    font-family: var(--font-sans);
+}

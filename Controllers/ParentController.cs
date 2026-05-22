@@ -98,6 +98,8 @@ namespace UM_Project.Controllers
             ViewBag.SelectedStudentId = parent.StudentId;
             ViewBag.StudentName = parent.Student!.FullName;
             ViewBag.StudentNumber = parent.Student.StudentNumber;
+            var academic = await _settings.GetAcademicSettingsAsync();
+            ViewBag.GradePassingMin = academic.GradePassingMinimum;
             return View(grades);
         }
 

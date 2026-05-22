@@ -1,17 +1,24 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminAndProfessor)]
     public class AssignmentsController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
 
-        public AssignmentsController(ApplicationDbContext context) => _context = context;
+        public AssignmentsController(ApplicationDbContext context, IUiText ui)
+        {
+            _ui = ui;
+
+            _context = context;
+        }
 
         private async Task<Professor?> GetCurrentProfessorAsync()
         {
@@ -54,7 +61,7 @@ namespace UM_Project.Controllers
 
             if (string.IsNullOrWhiteSpace(title) || weightPercent < 0 || weightPercent > 100)
             {
-                TempData["Error"] = "Title required; weight must be 0–100%.";
+                TempData["Error"] = _ui["Flash_AssignmentInvalid"];
                 return RedirectToAction(nameof(CourseAssignments), new { courseId });
             }
 
@@ -68,7 +75,7 @@ namespace UM_Project.Controllers
                 MaxPoints = maxPoints
             });
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Assignment added.";
+            TempData["Success"] = _ui["Flash_AssignmentAdded"];
             return RedirectToAction(nameof(CourseAssignments), new { courseId });
         }
 
@@ -81,7 +88,7 @@ namespace UM_Project.Controllers
             {
                 _context.CourseAssignments.Remove(a);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Assignment removed.";
+                TempData["Success"] = _ui["Flash_AssignmentRemoved"];
             }
             return RedirectToAction(nameof(CourseAssignments), new { courseId });
         }

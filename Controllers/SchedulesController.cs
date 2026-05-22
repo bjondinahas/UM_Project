@@ -1,25 +1,32 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminPanel)]
     public class SchedulesController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
-        public SchedulesController(ApplicationDbContext context) => _context = context;
+        public SchedulesController(ApplicationDbContext context, IUiText ui)
+        {
+            _ui = ui;
+
+            _context = context;
+        }
 
         private async Task<string> CheckScheduleConflicts(Schedule schedule, int? excludeId = null)
         {
             var sameCourseSameTime = await _context.Schedules
                 .AnyAsync(s => s.CourseId == schedule.CourseId && s.Day == schedule.Day && s.Time == schedule.Time && s.ScheduleId != excludeId);
-            if (sameCourseSameTime) return "This course already has a schedule at the same day and time.";
+            if (sameCourseSameTime) return _ui["Flash_ScheduleDuplicate"];
 
             var course = await _context.Courses.FindAsync(schedule.CourseId);
-            if (course == null) return "Course not found.";
+            if (course == null) return _ui["Flash_CourseNotFound"];
 
             var professorCourses = await _context.Courses
                 .Where(c => c.ProfessorId == course.ProfessorId && c.CourseId != schedule.CourseId)
@@ -29,7 +36,7 @@ namespace UM_Project.Controllers
             var professorSchedules = await _context.Schedules
                 .Where(s => professorCourses.Contains(s.CourseId) && s.Day == schedule.Day && s.Time == schedule.Time && s.ScheduleId != excludeId)
                 .ToListAsync();
-            if (professorSchedules.Any()) return "The professor is already teaching another course at this day and time.";
+            if (professorSchedules.Any()) return _ui["Flash_ProfessorBusy"];
 
             return null;
         }
@@ -62,7 +69,7 @@ namespace UM_Project.Controllers
             {
                 _context.Add(schedule);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Schedule created successfully!";
+                TempData["Success"] = _ui["Flash_ScheduleCreated"];
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Courses = await _context.Courses.ToListAsync();
@@ -93,7 +100,7 @@ namespace UM_Project.Controllers
             {
                 _context.Update(schedule);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Schedule updated!";
+                TempData["Success"] = _ui["Flash_ScheduleUpdated"];
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Courses = await _context.Courses.ToListAsync();
@@ -116,7 +123,7 @@ namespace UM_Project.Controllers
             {
                 _context.Schedules.Remove(schedule);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Schedule deleted successfully!";
+                TempData["Success"] = _ui["Flash_ScheduleDeleted"];
             }
             return RedirectToAction(nameof(Index));
         }

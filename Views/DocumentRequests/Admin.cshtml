@@ -1,9 +1,9 @@
-@model IEnumerable<UM_Project.Models.DocumentRequest>
+﻿@model IEnumerable<UM_Project.Models.DocumentRequest>
 @{
-    ViewData["Title"] = "Document requests";
-    ViewData["PageTitle"] = "Document requests";
+    ViewData["Title"] = Localizer["Nav_DocumentRequests"];
+    ViewData["PageTitle"] = Localizer["Nav_DocumentRequests"];
     ViewData["PageIcon"] = "fa-file-pdf";
-    ViewData["PageSubtitle"] = "Approve transcripts and generate PDF";
+    ViewData["PageSubtitle"] = Localizer["Page_Documents_Subtitle"];
     ViewData["ShowCreate"] = false;
 }
 
@@ -14,7 +14,7 @@
     <div class="um-table-wrap um-panel p-0">
         <table class="um-table">
             <thead>
-                <tr><th>Student</th><th>Dept</th><th>Status</th><th>Requested</th><th>Parent note</th><th class="hide-mobile">Actions</th></tr>
+                <tr><th>@Localizer["Table_Student"]</th><th>@Localizer["Label_Dept"]</th><th>@Localizer["Label_Status"]</th><th>@Localizer["Table_Requested"]</th><th>@Localizer["Table_ParentNote"]</th><th class="hide-mobile">@Localizer["Common_Actions"]</th></tr>
             </thead>
             <tbody>
                 @foreach (var r in Model)
@@ -34,10 +34,10 @@
                                 <form asp-action="Approve" method="post" class="d-inline-flex gap-1 flex-wrap">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@r.DocumentRequestId" />
-                                    <input type="text" name="adminNotes" class="form-control form-control-sm" style="max-width:120px" placeholder="Note" />
+                                    <input type="text" name="adminNotes" class="form-control form-control-sm" style="max-width:120px" placeholder="@Localizer["Placeholder_Note"]" />
                                     <button type="submit" class="um-btn-sm um-btn-edit">Approve</button>
                                 </form>
-                                <form asp-action="Reject" method="post" class="d-inline" onsubmit="return confirm('Reject?');">
+                                <form asp-action="Reject" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Confirm_Reject"]');">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@r.DocumentRequestId" />
                                     <button type="submit" class="um-btn-sm um-btn-delete">Reject</button>

@@ -14,7 +14,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    border-left: 3px solid var(--brand-500);
+    border-left: 3px solid var(--accent-500);
 }
 
 .adm-hero h1 {
@@ -51,12 +51,12 @@
 }
 
 .adm-btn--primary {
-    background: var(--brand-500);
+    background: var(--navy-800);
     color: #fff;
 }
 
 .adm-btn--primary:hover {
-    background: var(--brand-600);
+    background: var(--navy-700);
     color: #fff;
 }
 

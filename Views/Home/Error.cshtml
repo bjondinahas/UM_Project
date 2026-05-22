@@ -1,0 +1,14 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = Localizer["Common_Error"];
+    Layout = "/Views/Shared/_AuthLayout.cshtml";
+}
+<h2>@Localizer["Common_Error"]</h2>
+<p class="auth-demo-hint" style="margin-top:0">Ndodhi një gabim i papritur. Provo përsëri ose kyçu në sistem.</p>
+@if (!string.IsNullOrEmpty(Model.RequestId))
+{
+    <p class="auth-demo-hint">ID e kërkesës: @Model.RequestId</p>
+}
+<a asp-area="Identity" asp-page="/Account/Login" class="auth-submit" style="display:inline-flex;text-decoration:none;justify-content:center;margin-top:1rem;width:auto;padding:0.65rem 1.5rem">
+    <i class="fas fa-right-to-bracket me-2"></i> @Localizer["Login_Submit"]
+</a>

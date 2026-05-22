@@ -1,9 +1,9 @@
-@model UM_Project.Models.ApplicationUser
+﻿@model UM_Project.Models.ApplicationUser
 @{
-    ViewData["Title"] = "Edit User";
-    ViewData["FormTitle"] = "Edit User & Role";
+    ViewData["Title"] = Localizer["Page_EditUser"];
+    ViewData["FormTitle"] = Localizer["Page_EditUser"];
     ViewData["FormIcon"] = "fa-user-pen";
-    ViewData["PageSubtitle"] = "SuperAdmin only — can change Admin roles and any account";
+    ViewData["PageSubtitle"] = Localizer["Page_Users_Subtitle"];
     ViewData["ShowCreate"] = false;
     var roles = ViewBag.Roles as List<IdentityRole>;
     var currentRole = ViewBag.CurrentRole as string;
@@ -15,7 +15,7 @@
     <div class="um-form-panel" style="max-width:720px">
         <div class="alert alert-info small mb-4">
             <i class="fas fa-shield-alt me-1"></i>
-            As <strong>SuperAdmin</strong> you can assign any role including <strong>Admin</strong> and <strong>SuperAdmin</strong>.
+            @Localizer["Msg_SuperAdminRoleHint"]
         </div>
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="Id" />
@@ -37,7 +37,7 @@
                 <input asp-for="Email" class="form-control" required />
             </div>
             <div class="mb-4">
-                <label class="form-label">Role</label>
+                <label class="form-label">@Localizer["Common_Role"]</label>
                 <select name="role" class="form-select" required>
                     @if (roles != null)
                     {
@@ -49,29 +49,29 @@
                 </select>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> @Localizer["Common_Save"]</button>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>
 
     <div class="um-form-panel mt-4" style="max-width:720px">
-        <h3 class="font-bold text-red-900 mb-3"><i class="fas fa-key me-2"></i>Reset password</h3>
+        <h3 class="font-bold text-red-900 mb-3"><i class="fas fa-key me-2"></i>@Localizer["Label_ResetPassword"]</h3>
         <form asp-action="ResetPassword" method="post" class="row g-2 align-items-end">
             @Html.AntiForgeryToken()
             <input type="hidden" name="id" value="@Model.Id" />
             <div class="col-md-6">
-                <label class="form-label small">New password (blank = @defaultPwd)</label>
+                <label class="form-label small">@Localizer.Format("Label_NewPasswordBlank", defaultPwd)</label>
                 <input type="text" name="newPassword" class="form-control" />
             </div>
             <div class="col-md-3">
                 <div class="form-check mt-4">
                     <input class="form-check-input" type="checkbox" name="requireChange" value="true" checked />
-                    <label class="form-check-label small">Force change on login</label>
+                    <label class="form-check-label small">@Localizer["Label_ForceChangeLogin"]</label>
                 </div>
             </div>
             <div class="col-md-3">
-                <button type="submit" class="um-btn-primary w-100 justify-content-center">Reset</button>
+                <button type="submit" class="um-btn-primary w-100 justify-content-center">@Localizer["Common_Reset"]</button>
             </div>
         </form>
     </div>

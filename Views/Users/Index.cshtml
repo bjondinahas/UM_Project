@@ -1,12 +1,12 @@
-@model IEnumerable<UM_Project.Models.ApplicationUser>
+﻿@model IEnumerable<UM_Project.Models.ApplicationUser>
 @using UM_Project.Models
 @{
-    ViewData["Title"] = "Users & Roles";
-    ViewData["PageTitle"] = "Users & Roles";
+    ViewData["Title"] = Localizer["Nav_UsersRoles"];
+    ViewData["PageTitle"] = Localizer["Nav_UsersRoles"];
     ViewData["PageIcon"] = "fa-users-cog";
-    ViewData["PageSubtitle"] = "SuperAdmin only — manage all accounts, roles (including Admin), and passwords";
+    ViewData["PageSubtitle"] = Localizer["Page_Users_Subtitle"];
     ViewData["CreateController"] = "Users";
-    ViewData["CreateText"] = "Add User";
+    ViewData["CreateText"] = Localizer["Page_Users_Create"];
     var userRoles = ViewBag.UserRoles as Dictionary<string, string>;
 }
 
@@ -14,18 +14,18 @@
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email, or role..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Users"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>@Localizer["Table_Name"]</th>
                         <th>ID</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Verified</th>
-                        <th>Actions</th>
+                        <th>@Localizer["Table_Email"]</th>
+                        <th>@Localizer["Table_Role"]</th>
+                        <th>@Localizer["Table_Verified"]</th>
+                        <th>@Localizer["Common_Actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,21 +39,21 @@
                             <td>
                                 @switch (role)
                                 {
-                                    case RoleNames.SuperAdmin: <span class="um-badge um-badge-red">SuperAdmin</span> break;
-                                    case RoleNames.Admin: <span class="um-badge um-badge-red">Admin</span> break;
-                                    case RoleNames.Professor: <span class="um-badge um-badge-blue">Professor</span> break;
-                                    case RoleNames.Student: <span class="um-badge um-badge-green">Student</span> break;
-                                    case RoleNames.Parent: <span class="um-badge um-badge-orange">Parent</span> break;
+                                    case RoleNames.SuperAdmin: <span class="um-badge um-badge-navy">@Localizer["Role_SuperAdmin"]</span> break;
+                                    case RoleNames.Admin: <span class="um-badge um-badge-navy">@Localizer["Role_Admin"]</span> break;
+                                    case RoleNames.Professor: <span class="um-badge um-badge-blue">@Localizer["Role_Professor"]</span> break;
+                                    case RoleNames.Student: <span class="um-badge um-badge-green">@Localizer["Role_Student"]</span> break;
+                                    case RoleNames.Parent: <span class="um-badge um-badge-orange">@Localizer["Role_Parent"]</span> break;
                                     default: <span class="um-badge um-badge-gray">@role</span> break;
                                 }
                             </td>
                             <td>
-                                @if (user.EmailConfirmed) { <span class="um-badge um-badge-green">Yes</span> }
-                                else { <span class="um-badge um-badge-gray">No</span> }
+                                @if (user.EmailConfirmed) { <span class="um-badge um-badge-green">@Localizer["Common_Yes"]</span> }
+                                else { <span class="um-badge um-badge-gray">@Localizer["Common_No"]</span> }
                             </td>
                             <td>
                                 <div class="um-actions">
-                                    <a asp-action="Edit" asp-route-id="@user.Id" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> Edit</a>
+                                    <a asp-action="Edit" asp-route-id="@user.Id" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> @Localizer["Common_Edit"]</a>
                                     @if (user.Email != "admin@umproject.com" && user.Email != "superadmin@umproject.com")
                                     {
                                         <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@user.Id', '@user.FullName')"><i class="fas fa-trash"></i></button>

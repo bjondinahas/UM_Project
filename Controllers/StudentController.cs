@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
@@ -10,7 +11,12 @@ namespace UM_Project.Controllers
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public StudentController(ApplicationDbContext context) => _context = context;
+        private readonly ISystemSettingsService _settings;
+        public StudentController(ApplicationDbContext context, ISystemSettingsService settings)
+        {
+            _context = context;
+            _settings = settings;
+        }
 
         private async Task<Student?> GetCurrentStudentAsync()
         {
@@ -42,8 +48,10 @@ namespace UM_Project.Controllers
             ViewBag.Department = student.Department?.DepartmentName ?? "—";
             ViewBag.Grades = grades;
             ViewBag.AverageGrade = gradeList.Any() ? Math.Round(gradeList.Average(g => g.Value), 2) : 0;
-            ViewBag.PassedCourses = gradeList.Count(g => g.Value >= 6);
-            ViewBag.FailedCourses = gradeList.Count(g => g.Value == 5);
+            var academic = await _settings.GetAcademicSettingsAsync();
+            ViewBag.GradePassingMin = academic.GradePassingMinimum;
+            ViewBag.PassedCourses = gradeList.Count(g => g.Value >= academic.GradePassingMinimum);
+            ViewBag.FailedCourses = gradeList.Count(g => g.Value < academic.GradePassingMinimum);
             ViewBag.GradedCount = gradeList.Count;
 
             return View(enrollments);
@@ -58,6 +66,8 @@ namespace UM_Project.Controllers
                 .Where(g => g.StudentId == student.StudentId)
                 .ToListAsync();
             ViewBag.StudentName = student.FullName;
+            var academic = await _settings.GetAcademicSettingsAsync();
+            ViewBag.GradePassingMin = academic.GradePassingMinimum;
             return View(grades);
         }
 

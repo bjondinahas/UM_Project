@@ -35,13 +35,6 @@ namespace UM_Project.Controllers
             ViewBag.RoleCount = RoleNames.All.Length;
             ViewBag.AverageGrade = await _context.Grades.AnyAsync() ? Math.Round(await _context.Grades.AverageAsync(g => g.Value), 2) : 0;
 
-            ViewBag.Grade10 = await _context.Grades.CountAsync(g => g.Value == 10);
-            ViewBag.Grade9 = await _context.Grades.CountAsync(g => g.Value == 9);
-            ViewBag.Grade8 = await _context.Grades.CountAsync(g => g.Value == 8);
-            ViewBag.Grade7 = await _context.Grades.CountAsync(g => g.Value == 7);
-            ViewBag.Grade6 = await _context.Grades.CountAsync(g => g.Value == 6);
-            ViewBag.Grade5 = await _context.Grades.CountAsync(g => g.Value == 5);
-
             ViewBag.PassingCount = await _context.Grades.Where(g => g.Value >= academic.GradePassingMinimum).Select(g => g.StudentId).Distinct().CountAsync();
             ViewBag.FailingCount = await _context.Grades.Where(g => g.Value < academic.GradePassingMinimum).Select(g => g.StudentId).Distinct().CountAsync();
 

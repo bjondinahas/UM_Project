@@ -28,12 +28,11 @@ namespace UM_Project.Models
         public int PassingStudents { get; set; }
         public int FailingStudents { get; set; }
 
-        public int Grade10 { get; set; }
-        public int Grade9 { get; set; }
-        public int Grade8 { get; set; }
-        public int Grade7 { get; set; }
-        public int Grade6 { get; set; }
-        public int Grade5 { get; set; }
+        public int GradeMinimum { get; set; } = 1;
+        public int GradeMaximum { get; set; } = 5;
+        public int GradePassingMinimum { get; set; } = 3;
+        public List<int> GradeHistogram { get; set; } = new();
+        public List<string> GradeHistogramLabels { get; set; } = new();
 
         public List<string> DeptLabels { get; set; } = new();
         public List<int> DeptCounts { get; set; } = new();

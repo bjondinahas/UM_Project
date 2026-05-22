@@ -1,16 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.SuperAdmin)]
     public class UsersController : Controller
     {
+        private readonly IUiText _ui;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
@@ -22,8 +24,10 @@ namespace UM_Project.Controllers
             RoleManager<IdentityRole> roleManager,
             IEmailService emailService,
             IAdminPasswordService passwordService,
-            IOptions<AccountProvisioningSettings> settings)
+            IOptions<AccountProvisioningSettings> settings, IUiText ui)
         {
+            _ui = ui;
+
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
@@ -73,7 +77,7 @@ namespace UM_Project.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, role);
                     await _emailService.SendWelcomeEmailAsync(user.Email!, user.FullName, pwd, role);
-                    TempData["Success"] = $"User {user.Email} created with role {role}.";
+                    TempData["Success"] = _ui.Format("Flash_UserCreated", user.Email, role);
                     return RedirectToAction(nameof(Index));
                 }
                 foreach (var error in result.Errors)
@@ -113,7 +117,7 @@ namespace UM_Project.Controllers
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
             await _userManager.AddToRoleAsync(user, role);
 
-            TempData["Success"] = "User and role updated.";
+            TempData["Success"] = _ui["Flash_UserUpdated"];
             return RedirectToAction(nameof(Index));
         }
 
@@ -127,7 +131,7 @@ namespace UM_Project.Controllers
             var pwd = string.IsNullOrWhiteSpace(newPassword) ? _settings.DefaultPassword : newPassword;
             var (ok, err) = await _passwordService.ResetPasswordAsync(id, pwd, requireChange);
             TempData[ok ? "Success" : "Error"] = ok
-                ? $"Password reset for {user.Email}. New password: {pwd}"
+                ? _ui.Format("Flash_PasswordResetUser", user.Email, pwd)
                 : err;
             return RedirectToAction(nameof(Edit), new { id });
         }
@@ -140,11 +144,11 @@ namespace UM_Project.Controllers
             if (user != null && user.Email != "superadmin@umproject.com")
             {
                 await _userManager.DeleteAsync(user);
-                TempData["Success"] = "User deleted.";
+                TempData["Success"] = _ui["Flash_UserDeleted"];
             }
             else
             {
-                TempData["Error"] = "Cannot delete the primary SuperAdmin account.";
+                TempData["Error"] = _ui["Flash_CannotDeleteSuperAdmin"];
             }
             return RedirectToAction(nameof(Index));
         }

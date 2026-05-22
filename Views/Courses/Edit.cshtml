@@ -1,7 +1,7 @@
-@model UM_Project.Models.Course
+﻿@model UM_Project.Models.Course
 @{
-    ViewData["Title"] = "Edit Course";
-    ViewData["FormTitle"] = "Edit Course";
+    ViewData["Title"] = Localizer["Page_EditCourse"];
+    ViewData["FormTitle"] = Localizer["Page_EditCourse"];
     ViewData["FormIcon"] = "fa-pen";
     var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
     var professors = ViewBag.Professors as List<UM_Project.Models.Professor>;
@@ -23,7 +23,7 @@
                     <input asp-for="Credits" class="form-control" type="number" min="1" max="30" required />
                 </div>
                 <div class="col-md-4">
-                    <label asp-for="Semester" class="form-label">Semester</label>
+                    <label asp-for="Semester" class="form-label">@Localizer["Label_Semester"]</label>
                     <input asp-for="Semester" class="form-control" />
                 </div>
                 <div class="col-12">
@@ -31,41 +31,41 @@
                     <input asp-for="CourseName" class="form-control" required />
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="DepartmentId" class="form-label">Department</label>
+                    <label asp-for="DepartmentId" class="form-label">@Localizer["Label_Department"]</label>
                     <select asp-for="DepartmentId" class="form-select" required>
                         @if (departments != null) { foreach (var d in departments) { <option value="@d.DepartmentId">@d.DepartmentName</option> } }
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="ProfessorId" class="form-label">Professor</label>
+                    <label asp-for="ProfessorId" class="form-label">@Localizer["Label_Professor"]</label>
                     <select asp-for="ProfessorId" class="form-select" required>
                         @if (professors != null) { foreach (var p in professors) { <option value="@p.ProfessorId">@p.FullName</option> } }
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="MaxEnrollment" class="form-label">Max enrollment</label>
+                    <label asp-for="MaxEnrollment" class="form-label">@Localizer["Label_MaxEnrollment"]</label>
                     <input asp-for="MaxEnrollment" class="form-control" type="number" min="1" />
                 </div>
                 <div class="col-12">
-                    <label asp-for="Description" class="form-label">Description</label>
+                    <label asp-for="Description" class="form-label">@Localizer["Label_Description"]</label>
                     <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 </div>
                 <div class="col-12">
-                    <label asp-for="LearningOutcomes" class="form-label">Learning outcomes</label>
+                    <label asp-for="LearningOutcomes" class="form-label">@Localizer["Label_LearningOutcomes"]</label>
                     <textarea asp-for="LearningOutcomes" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="col-12">
-                    <label asp-for="Prerequisites" class="form-label">Prerequisites</label>
+                    <label asp-for="Prerequisites" class="form-label">@Localizer["Label_Prerequisites"]</label>
                     <textarea asp-for="Prerequisites" class="form-control" rows="2"></textarea>
                 </div>
                 <div class="col-12">
-                    <label asp-for="AdditionalNotes" class="form-label">Additional notes</label>
+                    <label asp-for="AdditionalNotes" class="form-label">@Localizer["Label_AdditionalNotes"]</label>
                     <textarea asp-for="AdditionalNotes" class="form-control" rows="2"></textarea>
                 </div>
                 @if (Model.Documents?.Any() == true)
                 {
                     <div class="col-12">
-                        <label class="form-label">Existing documents</label>
+                        <label class="form-label">@Localizer["Label_ExistingDocuments"]</label>
                         <ul class="small mb-0">
                             @foreach (var doc in Model.Documents)
                             {
@@ -75,14 +75,14 @@
                     </div>
                 }
                 <div class="col-12">
-                    <label class="form-label">Add documents</label>
+                    <label class="form-label">@Localizer["Label_AddDocuments"]</label>
                     <input type="file" name="documents" class="form-control" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" />
                 </div>
             </div>
             <div class="d-flex gap-2 flex-wrap mt-4">
-                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save Changes</button>
-                <a asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-light border">View details</a>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> @Localizer["Common_Save"]</button>
+                <a asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-light border">@Localizer["Common_ViewDetails"]</a>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

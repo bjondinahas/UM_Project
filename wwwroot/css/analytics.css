@@ -1,0 +1,250 @@
+/* Analitika — dashboard style */
+
+.analytics-page {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.analytics-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.analytics-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navy-800);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.analytics-header p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    margin: 0.35rem 0 0;
+}
+
+.analytics-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--surface-border);
+    background: #fff;
+    color: var(--navy-800);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.analytics-back:hover {
+    background: var(--navy-800);
+    color: #fff;
+    border-color: var(--navy-800);
+}
+
+.analytics-filters {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: 14px;
+    padding: 1.25rem 1.35rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+.analytics-filters-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.analytics-filters-head h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy-800);
+    margin: 0;
+}
+
+.analytics-filters-head h2 i {
+    color: var(--accent-500);
+    margin-right: 0.35rem;
+}
+
+.analytics-clear {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-500);
+    text-decoration: none;
+}
+
+.analytics-clear:hover {
+    color: var(--navy-800);
+    text-decoration: underline;
+}
+
+.analytics-apply {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--navy-800);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.15s;
+}
+
+.analytics-apply:hover {
+    background: var(--navy-700);
+}
+
+.analytics-kpis {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .analytics-kpis { grid-template-columns: repeat(5, 1fr); }
+}
+
+.analytics-kpi {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: 14px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+}
+
+.analytics-kpi--hero {
+    grid-column: span 2;
+    text-align: left;
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+    border: none;
+    color: #fff;
+}
+
+@media (min-width: 768px) {
+    .analytics-kpi--hero { grid-column: span 1; }
+}
+
+.analytics-kpi-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--navy-800);
+}
+
+.analytics-kpi--hero .analytics-kpi-value {
+    font-size: 2rem;
+    color: #fff;
+}
+
+.analytics-kpi-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.analytics-kpi--hero .analytics-kpi-label {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.analytics-kpi--pass .analytics-kpi-value { color: var(--success); }
+.analytics-kpi--fail .analytics-kpi-value { color: var(--accent-500); }
+
+.analytics-charts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .analytics-charts { grid-template-columns: repeat(2, 1fr); }
+}
+
+.analytics-chart-card {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: 14px;
+    padding: 1.15rem 1.25rem;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+.analytics-chart-card h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--navy-800);
+    margin: 0 0 1rem;
+}
+
+.analytics-chart-card h3 i {
+    color: var(--accent-500);
+    margin-right: 0.35rem;
+}
+
+.analytics-chart-wrap {
+    height: 220px;
+    position: relative;
+}
+
+.analytics-table-card {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+
+.analytics-table-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--surface-border);
+    background: #f8fafc;
+}
+
+.analytics-table-head h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--navy-800);
+    margin: 0;
+}
+
+.analytics-table-head input {
+    max-width: 260px;
+    border-radius: 10px;
+}
+
+.analytics-filter-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 0.75rem 0 0;
+}
+
+.analytics-filter-note i {
+    color: var(--accent-500);
+}

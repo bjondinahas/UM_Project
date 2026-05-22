@@ -46,7 +46,7 @@
             {
                 var course = enrollment.Course!;
                 var grade = grades.GetValueOrDefault(course.CourseId);
-                var pass = grade != null && grade.Value >= 6;
+                var pass = grade != null && grade.Value >= (ViewBag.GradePassingMin ?? 3);
                 var scheduleText = course.Schedules?.Any() == true
                     ? string.Join(" · ", course.Schedules.Select(s => $"{s.Day} {s.Time}"))
                     : lblNotScheduled;

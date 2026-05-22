@@ -1,28 +1,28 @@
-@model IEnumerable<UM_Project.Models.ParentIndexViewModel>
+﻿@model IEnumerable<UM_Project.Models.ParentIndexViewModel>
 @{
-    ViewData["Title"] = "Parents";
-    ViewData["PageTitle"] = "Parents";
+    ViewData["Title"] = Localizer["Nav_Parents"];
+    ViewData["PageTitle"] = Localizer["Nav_Parents"];
     ViewData["PageIcon"] = "fa-people-roof";
-    ViewData["PageSubtitle"] = "Guardians with login email — assign multiple children per parent";
+    ViewData["PageSubtitle"] = Localizer["Page_Parents_Subtitle"];
     ViewData["CreateController"] = "Parents";
-    ViewData["CreateText"] = "New parent";
+    ViewData["CreateText"] = Localizer["Page_Parents_Create"];
 }
 
 <div class="um-page">
     <partial name="_AdminPageHeader" />
     <div class="mb-3">
-        <a asp-action="AssignChild" class="btn btn-outline-danger btn-sm">
-            <i class="fas fa-child me-1"></i> Assign child to existing parent
+        <a asp-action="AssignChild" class="um-btn-secondary btn-sm">
+            <i class="fas fa-child me-1"></i> @Localizer["Btn_AssignChildExisting"]
         </a>
     </div>
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search parent, email, or student..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Parents"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Parent</th><th>Email (login)</th><th>Children</th><th>Login</th><th>Actions</th></tr>
+                    <tr><th>@Localizer["Table_Parent"]</th><th>@Localizer["Table_Email"] (@Localizer["Table_Login"])</th><th>@Localizer["Table_Children"]</th><th>@Localizer["Table_Login"]</th><th>@Localizer["Common_Actions"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var p in Model)
@@ -43,27 +43,27 @@
                             </td>
                             <td>
                                 @if (string.IsNullOrEmpty(p.UserId))
-                                { <span class="um-badge um-badge-gray">No</span> }
-                                else { <span class="um-badge um-badge-green">Yes</span> }
+                                { <span class="um-badge um-badge-gray">@Localizer["Common_No"]</span> }
+                                else { <span class="um-badge um-badge-green">@Localizer["Common_Yes"]</span> }
                             </td>
                             <td>
                                 <div class="um-actions flex-wrap">
                                     <a asp-action="AssignChild" asp-route-parentGuardianId="@p.RepresentativeParentId"
-                                       class="um-btn-sm um-btn-edit" title="Add another child"><i class="fas fa-child"></i></a>
-                                    <a asp-action="Edit" asp-route-id="@p.RepresentativeParentId" class="um-btn-sm um-btn-edit" title="Edit parent"><i class="fas fa-pen"></i></a>
+                                       class="um-btn-sm um-btn-edit" title="@Localizer["Title_AddChild"]"><i class="fas fa-child"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@p.RepresentativeParentId" class="um-btn-sm um-btn-edit" title="@Localizer["Title_EditParent"]"><i class="fas fa-pen"></i></a>
                                     @if (!string.IsNullOrEmpty(p.UserId))
                                     {
-                                        <form asp-action="ResetPassword" method="post" class="d-inline" onsubmit="return confirm('Reset password to default?');">
+                                        <form asp-action="ResetPassword" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Confirm_ResetPasswordDefault"]');">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="parentId" value="@p.RepresentativeParentId" />
-                                            <button type="submit" class="um-btn-sm um-btn-edit" title="Reset password"><i class="fas fa-key"></i></button>
+                                            <button type="submit" class="um-btn-sm um-btn-edit" title="@Localizer["Label_ResetPassword"]"><i class="fas fa-key"></i></button>
                                         </form>
                                     }
                                     @foreach (var child in p.Children)
                                     {
                                         <button type="button" class="um-btn-sm um-btn-delete"
                                                 onclick="showDeleteModal('@child.ParentId', '@p.FullName → @child.StudentName')"
-                                                title="Remove link"><i class="fas fa-unlink"></i></button>
+                                                title="@Localizer["Title_RemoveLink"]"><i class="fas fa-unlink"></i></button>
                                     }
                                 </div>
                             </td>

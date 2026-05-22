@@ -9,5 +9,7 @@ namespace UM_Project.Services.Interfaces
         Task<int> GetIntAsync(string key, int defaultValue);
         Task<bool> IsValidGradeAsync(int value);
         Task<bool> IsPassingGradeAsync(int value);
+        Task ApplyGradeScaleOneToFiveAsync();
+        Task MigrateLegacyGradesToCurrentScaleAsync();
     }
 }

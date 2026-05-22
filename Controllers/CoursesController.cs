@@ -1,21 +1,25 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminPanel)]
     public class CoursesController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
         private static readonly string[] AllowedExtensions = { ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".txt" };
         private const long MaxFileBytes = 15 * 1024 * 1024;
 
-        public CoursesController(ApplicationDbContext context, IWebHostEnvironment env)
+        public CoursesController(ApplicationDbContext context, IWebHostEnvironment env, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _env = env;
         }
@@ -66,7 +70,7 @@ namespace UM_Project.Controllers
             if (documents != null && documents.Count > 0)
                 await SaveDocumentsAsync(course.CourseId, documents);
 
-            TempData["Success"] = "Course created.";
+            TempData["Success"] = _ui["Flash_CourseCreated"];
             return RedirectToAction(nameof(Details), new { id = course.CourseId });
         }
 
@@ -101,7 +105,7 @@ namespace UM_Project.Controllers
                 await _context.SaveChangesAsync();
                 if (documents != null && documents.Count > 0)
                     await SaveDocumentsAsync(id, documents);
-                TempData["Success"] = "Course updated.";
+                TempData["Success"] = _ui["Flash_CourseUpdated"];
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -123,7 +127,7 @@ namespace UM_Project.Controllers
                 DeletePhysicalFile(doc.StoredPath);
                 _context.CourseDocuments.Remove(doc);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Document removed.";
+                TempData["Success"] = _ui["Flash_DocumentRemoved"];
             }
             return RedirectToAction(nameof(Details), new { id = courseId });
         }
@@ -141,7 +145,7 @@ namespace UM_Project.Controllers
                     DeletePhysicalFile(doc.StoredPath);
                 _context.Courses.Remove(course);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Course deleted.";
+                TempData["Success"] = _ui["Flash_CourseDeleted"];
             }
             return RedirectToAction(nameof(Index));
         }
@@ -155,14 +159,14 @@ namespace UM_Project.Controllers
             {
                 if (file.Length > MaxFileBytes)
                 {
-                    TempData["Error"] = $"Skipped {file.FileName}: file too large (max 15 MB).";
+                    TempData["Error"] = _ui.Format("Flash_FileTooLarge", file.FileName);
                     continue;
                 }
 
                 var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
                 if (!AllowedExtensions.Contains(ext))
                 {
-                    TempData["Error"] = $"Skipped {file.FileName}: type not allowed.";
+                    TempData["Error"] = _ui.Format("Flash_FileTypeNotAllowed", file.FileName);
                     continue;
                 }
 

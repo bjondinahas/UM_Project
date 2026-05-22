@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Resources;
+using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
@@ -11,7 +14,15 @@ namespace UM_Project.Controllers
     public class StatisticsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public StatisticsController(ApplicationDbContext context) => _context = context;
+        private readonly ISystemSettingsService _settings;
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
+        public StatisticsController(ApplicationDbContext context, ISystemSettingsService settings, IStringLocalizer<SharedResource> localizer)
+        {
+            _context = context;
+            _settings = settings;
+            _localizer = localizer;
+        }
 
         [HttpGet("")]
         [HttpGet("Index")]
@@ -37,12 +48,16 @@ namespace UM_Project.Controllers
                 Search = search?.Trim()
             };
 
+            var academic = await _settings.GetAcademicSettingsAsync();
             var vm = new AnalyticsViewModel
             {
                 Filter = filter,
                 Departments = await _context.Departments.OrderBy(d => d.DepartmentName).ToListAsync(),
                 Courses = await _context.Courses.OrderBy(c => c.CourseName).ToListAsync(),
-                Professors = await _context.Professors.OrderBy(p => p.FullName).ToListAsync()
+                Professors = await _context.Professors.OrderBy(p => p.FullName).ToListAsync(),
+                GradeMinimum = academic.GradeMinimum,
+                GradeMaximum = academic.GradeMaximum,
+                GradePassingMinimum = academic.GradePassingMinimum
             };
 
             var gradesQuery = _context.Grades
@@ -64,9 +79,9 @@ namespace UM_Project.Controllers
             if (filter.DateTo.HasValue)
                 gradesQuery = gradesQuery.Where(g => g.DateRecorded <= filter.DateTo.Value);
             if (filter.Status == "pass")
-                gradesQuery = gradesQuery.Where(g => g.Value >= 6);
+                gradesQuery = gradesQuery.Where(g => g.Value >= academic.GradePassingMinimum);
             else if (filter.Status == "fail")
-                gradesQuery = gradesQuery.Where(g => g.Value == 5);
+                gradesQuery = gradesQuery.Where(g => g.Value < academic.GradePassingMinimum);
 
             var grades = await gradesQuery.ToListAsync();
 
@@ -83,14 +98,13 @@ namespace UM_Project.Controllers
 
             vm.TotalGrades = grades.Count;
             vm.AverageGrade = grades.Count > 0 ? Math.Round(grades.Average(g => g.Value), 2) : 0;
-            vm.Grade10 = grades.Count(g => g.Value == 10);
-            vm.Grade9 = grades.Count(g => g.Value == 9);
-            vm.Grade8 = grades.Count(g => g.Value == 8);
-            vm.Grade7 = grades.Count(g => g.Value == 7);
-            vm.Grade6 = grades.Count(g => g.Value == 6);
-            vm.Grade5 = grades.Count(g => g.Value == 5);
-            vm.PassingStudents = grades.Where(g => g.Value >= 6).Select(g => g.StudentId).Distinct().Count();
-            vm.FailingStudents = grades.Where(g => g.Value == 5).Select(g => g.StudentId).Distinct().Count();
+            for (var v = academic.GradeMaximum; v >= academic.GradeMinimum; v--)
+            {
+                vm.GradeHistogramLabels.Add(v.ToString());
+                vm.GradeHistogram.Add(grades.Count(g => g.Value == v));
+            }
+            vm.PassingStudents = grades.Where(g => g.Value >= academic.GradePassingMinimum).Select(g => g.StudentId).Distinct().Count();
+            vm.FailingStudents = grades.Where(g => g.Value < academic.GradePassingMinimum).Select(g => g.StudentId).Distinct().Count();
 
             var studentsQuery = _context.Students.Include(s => s.Department).AsQueryable();
             if (filter.DepartmentId.HasValue)
@@ -127,28 +141,34 @@ namespace UM_Project.Controllers
             }
             vm.TotalEnrollments = await enrollQuery.CountAsync();
 
+            var unknown = _localizer["Common_Unknown"].Value;
+            var noData = _localizer["Common_NoData"].Value;
+
             vm.DeptLabels = students
-                .GroupBy(s => s.Department?.DepartmentName ?? "Unknown")
+                .GroupBy(s => s.Department?.DepartmentName ?? unknown)
                 .OrderByDescending(g => g.Count())
                 .Take(10)
                 .Select(g => g.Key)
                 .ToList();
             vm.DeptCounts = students
-                .GroupBy(s => s.Department?.DepartmentName ?? "Unknown")
+                .GroupBy(s => s.Department?.DepartmentName ?? unknown)
                 .OrderByDescending(g => g.Count())
                 .Take(10)
                 .Select(g => g.Count())
                 .ToList();
-            if (!vm.DeptLabels.Any()) { vm.DeptLabels.Add("No data"); vm.DeptCounts.Add(0); }
+            if (!vm.DeptLabels.Any()) { vm.DeptLabels.Add(noData); vm.DeptCounts.Add(0); }
 
             var courseGroups = grades
-                .GroupBy(g => g.Course?.CourseName ?? "Unknown")
+                .GroupBy(g => g.Course?.CourseName ?? unknown)
                 .OrderByDescending(g => g.Count())
                 .Take(8)
                 .ToList();
             vm.CourseLabels = courseGroups.Select(g => Truncate(g.Key, 24)).ToList();
             vm.CourseCounts = courseGroups.Select(g => g.Count()).ToList();
-            if (!vm.CourseLabels.Any()) { vm.CourseLabels.Add("No data"); vm.CourseCounts.Add(0); }
+            if (!vm.CourseLabels.Any()) { vm.CourseLabels.Add(noData); vm.CourseCounts.Add(0); }
+
+            var statusPass = _localizer["Status_Pass"].Value;
+            var statusFail = _localizer["Status_Fail"].Value;
 
             vm.GradeRows = grades
                 .OrderByDescending(g => g.DateRecorded)
@@ -161,7 +181,7 @@ namespace UM_Project.Controllers
                     DepartmentName = g.Course?.Department?.DepartmentName ?? "—",
                     ProfessorName = g.Course?.Professor?.FullName ?? "—",
                     Value = g.Value,
-                    Status = g.Value >= 6 ? "Pass" : "Fail",
+                    Status = g.Value >= academic.GradePassingMinimum ? statusPass : statusFail,
                     DateRecorded = g.DateRecorded
                 })
                 .ToList();

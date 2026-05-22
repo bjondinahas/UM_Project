@@ -1,28 +1,29 @@
-@model IEnumerable<UM_Project.Models.Grade>
+﻿@model IEnumerable<UM_Project.Models.Grade>
 @{
-    ViewData["Title"] = "Grades";
-    ViewData["PageTitle"] = "Grades";
+    ViewData["Title"] = Localizer["Nav_Grades"];
+    ViewData["PageTitle"] = Localizer["Nav_Grades"];
     ViewData["PageIcon"] = "fa-star";
-    ViewData["PageSubtitle"] = "Student grades and pass/fail status";
+    ViewData["PageSubtitle"] = Localizer["Page_Grades_Subtitle"];
     ViewData["CreateController"] = "Grades";
-    ViewData["CreateText"] = "Assign Grade";
+    ViewData["CreateText"] = Localizer["Page_Grades_Create"];
 }
 
 <div class="um-page">
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search student or course..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Enrollments"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Student</th><th>Course</th><th>Grade</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+                    <tr><th>@Localizer["Table_Student"]</th><th>@Localizer["Table_Course"]</th><th>@Localizer["Table_Grade"]</th><th>@Localizer["Table_Status"]</th><th>@Localizer["Table_Date"]</th><th>@Localizer["Common_Actions"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var g in Model)
                     {
-                        var pass = g.Value >= 6;
+                        var passMin = (int)(ViewBag.GradePassingMin ?? 3);
+                        var pass = g.Value >= passMin;
                         <tr>
                             <td class="fw-semibold">@(g.Student?.FullName ?? "—")</td>
                             <td>@(g.Course?.CourseName ?? "—")</td>
@@ -31,7 +32,7 @@
                             <td>@g.DateRecorded.ToString("MMM dd, yyyy")</td>
                             <td>
                                 <div class="um-actions">
-                                    <a asp-action="Edit" asp-route-id="@g.GradeId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> Edit</a>
+                                    <a asp-action="Edit" asp-route-id="@g.GradeId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> @Localizer["Common_Edit"]</a>
                                     <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@g.GradeId', 'this grade')"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>

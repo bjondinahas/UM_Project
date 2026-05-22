@@ -1,16 +1,37 @@
-@using UM_Project.Models
+@model UM_Project.Models.ReportsIndexViewModel
 @{
     ViewData["Title"] = Localizer["Reports_Title"];
-    var courses = ViewBag.Courses as IEnumerable<Course> ?? Enumerable.Empty<Course>();
-    var departments = ViewBag.Departments as IEnumerable<Department> ?? Enumerable.Empty<Department>();
-    var terms = ViewBag.Terms as IEnumerable<AcademicTerm> ?? Enumerable.Empty<AcademicTerm>();
     var today = DateTime.Today;
-    var monthStart = new DateTime(today.Year, today.Month, 1);
+    var rangeStart = today.AddDays(-60);
 }
 
 <div class="admin-page-header">
-    <h1><i class="fas fa-file-export text-danger"></i> @Localizer["Reports_Title"]</h1>
+    <h1>@Localizer["Reports_Title"]</h1>
     <p class="text-muted mb-0">@Localizer["Reports_Subtitle"]</p>
+</div>
+
+<div class="um-panel mb-4">
+    <h2 class="h6 fw-bold mb-3">@Localizer["Dash_GradeDistribution"] (@Model.GradeMinimum–@Model.GradeMaximum)</h2>
+    <div class="row g-4 align-items-center">
+        <div class="col-md-5">
+            <div style="max-height:220px"><canvas id="reportsGradeChart"></canvas></div>
+        </div>
+        <div class="col-md-7">
+            <p class="small text-muted mb-2">@Localizer["Analytics_PassOnly"]: ≥ @Model.GradePassingMinimum</p>
+            <table class="um-table table-sm mb-0">
+                <thead><tr><th>@Localizer["Table_Grade"]</th><th>@Localizer["Analytics_TotalGrades"]</th></tr></thead>
+                <tbody>
+                    @for (var i = 0; i < Model.GradeChartLabels.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model.GradeChartLabels[i]</td>
+                            <td>@Model.GradeChartCounts[i]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <div class="row g-4">
@@ -18,12 +39,19 @@
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-bold">@Localizer["Reports_Attendance"]</div>
             <div class="card-body">
+                @if (Model.PreviewCourseName != null)
+                {
+                    <div class="alert alert-light border small mb-3">
+                        <strong>@Model.PreviewCourseName</strong> (60 ditë)<br />
+                        Prezenca: @Model.PreviewAttendancePresent · Mungesat: @Model.PreviewAttendanceAbsent · Rreshta: @Model.PreviewAttendanceRows
+                    </div>
+                }
                 <form asp-action="AttendancePdf" method="post" class="mb-2">
                     @Html.AntiForgeryToken()
                     <div class="mb-2">
                         <label class="form-label">@Localizer["Reports_Course"]</label>
                         <select name="courseId" class="form-select" required>
-                            @foreach (var c in courses)
+                            @foreach (var c in Model.Courses)
                             {
                                 <option value="@c.CourseId">@c.CourseName</option>
                             }
@@ -32,24 +60,24 @@
                     <div class="row g-2 mb-2">
                         <div class="col-6">
                             <label class="form-label">@Localizer["Reports_From"]</label>
-                            <input type="date" name="from" class="form-control" value="@monthStart.ToString("yyyy-MM-dd")" required />
+                            <input type="date" name="from" class="form-control" value="@rangeStart.ToString("yyyy-MM-dd")" required />
                         </div>
                         <div class="col-6">
                             <label class="form-label">@Localizer["Reports_To"]</label>
                             <input type="date" name="to" class="form-control" value="@today.ToString("yyyy-MM-dd")" required />
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-danger btn-sm w-100 mb-1"><i class="fas fa-file-pdf"></i> @Localizer["Common_PDF"]</button>
+                    <button type="submit" class="btn um-btn-primary btn-sm w-100 mb-1"><i class="fas fa-file-pdf"></i> @Localizer["Common_PDF"]</button>
                 </form>
                 <form asp-action="AttendanceExcel" method="post">
                     @Html.AntiForgeryToken()
                     <div class="mb-2">
                         <select name="courseId" class="form-select form-select-sm" required>
-                            @foreach (var c in courses) { <option value="@c.CourseId">@c.CourseName</option> }
+                            @foreach (var c in Model.Courses) { <option value="@c.CourseId">@c.CourseName</option> }
                         </select>
                     </div>
                     <div class="row g-2 mb-2">
-                        <div class="col-6"><input type="date" name="from" class="form-control form-control-sm" value="@monthStart.ToString("yyyy-MM-dd")" required /></div>
+                        <div class="col-6"><input type="date" name="from" class="form-control form-control-sm" value="@rangeStart.ToString("yyyy-MM-dd")" required /></div>
                         <div class="col-6"><input type="date" name="to" class="form-control form-control-sm" value="@today.ToString("yyyy-MM-dd")" required /></div>
                     </div>
                     <button type="submit" class="btn btn-outline-secondary btn-sm w-100"><i class="fas fa-file-excel"></i> @Localizer["Common_Excel"]</button>
@@ -61,12 +89,35 @@
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-bold">@Localizer["Reports_Department"]</div>
             <div class="card-body">
+                @if (Model.PreviewDepartmentName != null)
+                {
+                    <div class="alert alert-light border small mb-3">
+                        <strong>@Model.PreviewDepartmentName</strong><br />
+                        @Model.PreviewDepartmentStudents @Localizer["Nav_Students"] · @Localizer["Table_AvgGrade"]: @Model.PreviewDepartmentAvgGrade.ToString("0.00")
+                    </div>
+                    @if (Model.PreviewDepartmentCourses.Any())
+                    {
+                        <table class="table table-sm mb-3">
+                            <thead><tr><th>@Localizer["Table_Course"]</th><th>@Localizer["Table_Enrollments"]</th><th>@Localizer["Table_AvgGrade"]</th></tr></thead>
+                            <tbody>
+                                @foreach (var row in Model.PreviewDepartmentCourses.Take(4))
+                                {
+                                    <tr>
+                                        <td class="small">@row.CourseName</td>
+                                        <td>@row.Enrollments</td>
+                                        <td>@(row.AverageGrade > 0 ? row.AverageGrade.ToString("0.00") : "—")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
                 <form asp-action="DepartmentPdf" method="post" class="mb-2">
                     @Html.AntiForgeryToken()
                     <div class="mb-2">
                         <label class="form-label">@Localizer["Reports_DepartmentLabel"]</label>
                         <select name="departmentId" class="form-select" required>
-                            @foreach (var d in departments)
+                            @foreach (var d in Model.Departments)
                             {
                                 <option value="@d.DepartmentId">@d.DepartmentName</option>
                             }
@@ -76,25 +127,25 @@
                         <label class="form-label">@Localizer["Reports_TermLabel"]</label>
                         <select name="termId" class="form-select">
                             <option value="">@Localizer["Common_AllTerms"]</option>
-                            @foreach (var t in terms)
+                            @foreach (var t in Model.Terms)
                             {
                                 <option value="@t.AcademicTermId">@t.Name</option>
                             }
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-danger btn-sm w-100 mb-1"><i class="fas fa-file-pdf"></i> @Localizer["Common_PDF"]</button>
+                    <button type="submit" class="btn um-btn-primary btn-sm w-100 mb-1"><i class="fas fa-file-pdf"></i> @Localizer["Common_PDF"]</button>
                 </form>
                 <form asp-action="DepartmentExcel" method="post">
                     @Html.AntiForgeryToken()
                     <select name="departmentId" class="form-select form-select-sm mb-1" required>
-                        @foreach (var d in departments)
+                        @foreach (var d in Model.Departments)
                         {
                             <option value="@d.DepartmentId">@d.DepartmentName</option>
                         }
                     </select>
                     <select name="termId" class="form-select form-select-sm mb-1">
                         <option value="">@Localizer["Common_AllTerms"]</option>
-                        @foreach (var t in terms) { <option value="@t.AcademicTermId">@t.Name</option> }
+                        @foreach (var t in Model.Terms) { <option value="@t.AcademicTermId">@t.Name</option> }
                     </select>
                     <button type="submit" class="btn btn-outline-secondary btn-sm w-100"><i class="fas fa-file-excel"></i> @Localizer["Common_Excel"]</button>
                 </form>
@@ -105,23 +156,31 @@
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white fw-bold">@Localizer["Reports_Term"]</div>
             <div class="card-body">
+                @if (Model.PreviewTermName != null)
+                {
+                    <div class="alert alert-light border small mb-3">
+                        <strong>@Model.PreviewTermName</strong><br />
+                        @Model.PreviewTermGradesCount @Localizer["Analytics_TotalGrades"] · @Localizer["Table_AvgGrade"]: @Model.PreviewTermAvgGrade.ToString("0.00")<br />
+                        Mungesat: @Model.PreviewTermAbsences
+                    </div>
+                }
                 <form asp-action="TermPdf" method="post" class="mb-2">
                     @Html.AntiForgeryToken()
                     <div class="mb-2">
                         <label class="form-label">@Localizer["Reports_TermLabel"]</label>
                         <select name="termId" class="form-select" required>
-                            @foreach (var t in terms)
+                            @foreach (var t in Model.Terms)
                             {
                                 <option value="@t.AcademicTermId">@t.Name (@t.StartDate.ToString("d") – @t.EndDate.ToString("d"))</option>
                             }
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-danger btn-sm w-100 mb-1"><i class="fas fa-file-pdf"></i> @Localizer["Common_PDF"]</button>
+                    <button type="submit" class="btn um-btn-primary btn-sm w-100 mb-1"><i class="fas fa-file-pdf"></i> @Localizer["Common_PDF"]</button>
                 </form>
                 <form asp-action="TermExcel" method="post">
                     @Html.AntiForgeryToken()
                     <select name="termId" class="form-select form-select-sm mb-1" required>
-                        @foreach (var t in terms) { <option value="@t.AcademicTermId">@t.Name</option> }
+                        @foreach (var t in Model.Terms) { <option value="@t.AcademicTermId">@t.Name</option> }
                     </select>
                     <button type="submit" class="btn btn-outline-secondary btn-sm w-100"><i class="fas fa-file-excel"></i> @Localizer["Common_Excel"]</button>
                 </form>
@@ -129,3 +188,23 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/um-charts.js" asp-append-version="true"></script>
+<script>
+    UmCharts.create('reportsGradeChart', {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeChartLabels)),
+            datasets: [{
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GradeChartCounts)),
+                backgroundColor: '#3b82f6',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+    });
+</script>

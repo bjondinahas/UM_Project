@@ -1,4 +1,4 @@
-@model IEnumerable<UM_Project.Models.AdminActivityLog>
+﻿@model IEnumerable<UM_Project.Models.AdminActivityLog>
 @{
     ViewData["Title"] = Localizer["Admin_ActivityTitle"];
     ViewData["PageTitle"] = Localizer["Admin_ActivityTitle"];
@@ -46,7 +46,7 @@
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="8" class="text-center text-muted py-4">No activity logged yet. Run admin_audit.sql if the table is missing.</td></tr>
+                        <tr><td colspan="8" class="text-center text-muted py-4">@Localizer["Msg_NoActivityLogs"]</td></tr>
                     }
                     @foreach (var log in Model)
                     {

@@ -1,8 +1,8 @@
-@{
-    ViewData["Title"] = "Academic Calendar";
-    ViewData["PageTitle"] = "Academic calendar";
+﻿@{
+    ViewData["Title"] = Localizer["Nav_AcademicCalendar"];
+    ViewData["PageTitle"] = Localizer["Nav_AcademicCalendar"];
     ViewData["PageIcon"] = "fa-calendar-days";
-    ViewData["PageSubtitle"] = "Terms, holidays, exam weeks — blocks professor attendance";
+    ViewData["PageSubtitle"] = Localizer["Page_Calendar_Subtitle"];
     ViewData["ShowCreate"] = false;
     var y = (int)ViewBag.Year;
     var m = (int)ViewBag.Month;
@@ -13,6 +13,7 @@
     var prevM = m == 1 ? 12 : m - 1; var prevY = m == 1 ? y - 1 : y;
     var nextM = m == 12 ? 1 : m + 1; var nextY = m == 12 ? y + 1 : y;
     var eventByDay = events.GroupBy(e => e.EventDate.Day).ToDictionary(g => g.Key, g => g.ToList());
+    var isCalendarAdmin = User.IsInRole(RoleNames.SuperAdmin) || User.IsInRole(RoleNames.Admin);
 }
 
 <link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
@@ -31,7 +32,10 @@
         <div class="col-lg-8">
             <div class="um-card">
                 <div class="um-cal-grid mb-2">
-                    @foreach (var dn in new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" })
+                    @{
+                        var dayNames = new[] { Localizer["Cal_Day_Sun"], Localizer["Cal_Day_Mon"], Localizer["Cal_Day_Tue"], Localizer["Cal_Day_Wed"], Localizer["Cal_Day_Thu"], Localizer["Cal_Day_Fri"], Localizer["Cal_Day_Sat"] };
+                    }
+                    @foreach (var dn in dayNames)
                     {
                         <div class="text-center fw-bold text-muted small py-1">@dn</div>
                     }
@@ -51,61 +55,70 @@
                         </div>
                     }
                 </div>
-                <p class="small text-muted mb-0"><span class="d-inline-block um-cal-day--off px-2 rounded">Pink</span> = attendance blocked (weekends + marked days)</p>
+                <p class="small text-muted mb-0">@Localizer["Cal_Legend"]</p>
             </div>
         </div>
         <div class="col-lg-4">
+            @if (!isCalendarAdmin)
+            {
+                <div class="um-card mb-3">
+                    <p class="small text-muted mb-0"><i class="fas fa-info-circle me-1"></i>@Localizer["Msg_CalendarReadOnly"]</p>
+                </div>
+            }
+            else
+            {
             <div class="um-card mb-3">
-                <h3 class="h6 fw-bold text-danger mb-3">Add calendar day</h3>
+                <h3 class="h6 fw-bold mb-3" style="color:var(--navy-800)">@Localizer["Cal_AddDay"]</h3>
                 <form asp-action="AddEvent" method="post" class="row g-2 um-form-row-stack">
                     @Html.AntiForgeryToken()
                     <div class="col-12">
                         <input type="date" name="eventDate" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                     </div>
                     <div class="col-12">
-                        <input type="text" name="title" class="form-control form-control-sm" placeholder="Title" required />
+                        <input type="text" name="title" class="form-control form-control-sm" placeholder="@Localizer["Cal_TitlePlaceholder"]" required />
                     </div>
                     <div class="col-12">
-                        <select name="eventType" class="form-select form-select-sm">
-                            <option value="Holiday">Holiday</option>
-                            <option value="ExamWeek">Exam week</option>
-                            <option value="NoSchool">No school</option>
-                            <option value="Break">Break</option>
+                        <select name="eventType" class="form-select form-select-sm um-select">
+                            <option value="Holiday">@Localizer["Cal_Type_Holiday"]</option>
+                            <option value="ExamWeek">@Localizer["Cal_Type_ExamWeek"]</option>
+                            <option value="NoSchool">@Localizer["Cal_Type_NoSchool"]</option>
+                            <option value="Break">@Localizer["Cal_Type_Break"]</option>
                         </select>
                     </div>
                     <div class="col-12">
-                        <select name="academicTermId" class="form-select form-select-sm">
-                            <option value="">No term</option>
+                        <select name="academicTermId" class="form-select form-select-sm um-select">
+                            <option value="">@Localizer["Cal_NoTerm"]</option>
                             @foreach (var t in terms) { <option value="@t.AcademicTermId">@t.Name</option> }
                         </select>
                     </div>
                     <div class="col-12 form-check">
                         <input type="checkbox" name="blocksAttendance" value="true" class="form-check-input" id="blockAtt" checked />
-                        <label class="form-check-label small" for="blockAtt">Block attendance</label>
+                        <label class="form-check-label small" for="blockAtt">@Localizer["Cal_BlockAttendance"]</label>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="um-btn-primary w-100 btn-sm">Add event</button>
+                        <button type="submit" class="um-btn-primary w-100 btn-sm">@Localizer["Cal_AddEvent"]</button>
                     </div>
                 </form>
             </div>
             <div class="um-card">
-                <h3 class="h6 fw-bold text-danger mb-3">Add term</h3>
+                <h3 class="h6 fw-bold mb-3" style="color:var(--navy-800)">@Localizer["Cal_AddTerm"]</h3>
                 <form asp-action="AddTerm" method="post" class="row g-2 um-form-row-stack">
                     @Html.AntiForgeryToken()
-                    <div class="col-12"><input type="text" name="name" class="form-control form-control-sm" placeholder="Fall 2026" required /></div>
+                    <div class="col-12"><input type="text" name="name" class="form-control form-control-sm" placeholder="@Localizer["Placeholder_Semester"]" required /></div>
                     <div class="col-6"><input type="date" name="startDate" class="form-control form-control-sm" required /></div>
                     <div class="col-6"><input type="date" name="endDate" class="form-control form-control-sm" required /></div>
-                    <div class="col-12"><button type="submit" class="btn btn-outline-danger w-100 btn-sm">Save term</button></div>
+                    <div class="col-12"><button type="submit" class="um-btn-primary w-100 btn-sm">@Localizer["Cal_SaveTerm"]</button></div>
                 </form>
             </div>
+            }
         </div>
     </div>
 
     <div class="um-card">
-        <h3 class="h6 fw-bold mb-3">Events this month</h3>
+        <h3 class="h6 fw-bold mb-3">@Localizer["Label_EventsThisMonth"]</h3>
         <div class="um-table-wrap">
             <table class="um-table table-sm">
-                <thead><tr><th>Date</th><th>Title</th><th>Type</th><th>Blocks</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Table_Date"]</th><th>@Localizer["Cal_TableTitle"]</th><th>@Localizer["Label_Type"]</th><th>@Localizer["Label_Blocks"]</th>@if (isCalendarAdmin) { <th></th> }</tr></thead>
                 <tbody>
                     @foreach (var ev in events)
                     {
@@ -113,9 +126,11 @@
                             <td>@ev.EventDate.ToString("ddd, dd MMM")</td>
                             <td>@ev.Title</td>
                             <td><span class="um-badge um-badge-gray">@ev.EventType</span></td>
-                            <td>@(ev.BlocksAttendance ? "Yes" : "No")</td>
+                            <td>@(ev.BlocksAttendance ? Localizer["Common_Yes"] : Localizer["Common_No"])</td>
+                            @if (isCalendarAdmin)
+                            {
                             <td>
-                                <form asp-action="DeleteEvent" method="post" class="d-inline" onsubmit="return confirm('Delete?');">
+                                <form asp-action="DeleteEvent" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Confirm_Delete"]');">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@ev.SchoolCalendarEventId" />
                                     <input type="hidden" name="year" value="@y" />
@@ -123,6 +138,7 @@
                                     <button type="submit" class="um-btn-sm um-btn-delete"><i class="fas fa-trash"></i></button>
                                 </form>
                             </td>
+                            }
                         </tr>
                     }
                 </tbody>

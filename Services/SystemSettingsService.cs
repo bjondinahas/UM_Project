@@ -13,9 +13,9 @@ namespace UM_Project.Services
 
         public async Task<AcademicSettingsDto> GetAcademicSettingsAsync() => new()
         {
-            GradeMinimum = await GetIntAsync(SystemSettingKeys.GradeMinimum, 5),
-            GradeMaximum = await GetIntAsync(SystemSettingKeys.GradeMaximum, 10),
-            GradePassingMinimum = await GetIntAsync(SystemSettingKeys.GradePassingMinimum, 6),
+            GradeMinimum = await GetIntAsync(SystemSettingKeys.GradeMinimum, 1),
+            GradeMaximum = await GetIntAsync(SystemSettingKeys.GradeMaximum, 5),
+            GradePassingMinimum = await GetIntAsync(SystemSettingKeys.GradePassingMinimum, 3),
             LessonsPerDay = await GetIntAsync(SystemSettingKeys.LessonsPerDay, 6)
         };
 
@@ -52,6 +52,36 @@ namespace UM_Project.Services
         {
             var s = await GetAcademicSettingsAsync();
             return value >= s.GradePassingMinimum;
+        }
+
+        public async Task ApplyGradeScaleOneToFiveAsync()
+        {
+            await SetAsync(SystemSettingKeys.GradeMinimum, "1", "Lowest allowed grade value");
+            await SetAsync(SystemSettingKeys.GradeMaximum, "5", "Highest allowed grade value");
+            await SetAsync(SystemSettingKeys.GradePassingMinimum, "3", "Minimum grade to pass");
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task MigrateLegacyGradesToCurrentScaleAsync()
+        {
+            var s = await GetAcademicSettingsAsync();
+            var grades = await _context.Grades.ToListAsync();
+            var changed = false;
+            foreach (var g in grades)
+            {
+                if (g.Value > s.GradeMaximum)
+                {
+                    g.Value = Math.Clamp(g.Value - 5, s.GradeMinimum, s.GradeMaximum);
+                    changed = true;
+                }
+                else if (g.Value < s.GradeMinimum)
+                {
+                    g.Value = s.GradeMinimum;
+                    changed = true;
+                }
+            }
+            if (changed)
+                await _context.SaveChangesAsync();
         }
 
         private async Task SetAsync(string key, string value, string? description)

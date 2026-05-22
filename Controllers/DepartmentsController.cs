@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
@@ -10,7 +11,13 @@ namespace UM_Project.Controllers
     public class DepartmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public DepartmentsController(ApplicationDbContext context) => _context = context;
+        private readonly IUiText _ui;
+
+        public DepartmentsController(ApplicationDbContext context, IUiText ui)
+        {
+            _context = context;
+            _ui = ui;
+        }
 
         public async Task<IActionResult> Index()
         {
@@ -29,7 +36,7 @@ namespace UM_Project.Controllers
             {
                 _context.Add(department);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Department created!";
+                TempData["Success"] = _ui["Flash_DepartmentCreated"];
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
@@ -51,7 +58,7 @@ namespace UM_Project.Controllers
             {
                 _context.Update(department);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Department updated!";
+                TempData["Success"] = _ui["Flash_DepartmentUpdated"];
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
@@ -75,7 +82,7 @@ namespace UM_Project.Controllers
             {
                 _context.Departments.Remove(department);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Department deleted successfully!";
+                TempData["Success"] = _ui["Flash_DepartmentDeleted"];
             }
             return RedirectToAction(nameof(Index));
         }

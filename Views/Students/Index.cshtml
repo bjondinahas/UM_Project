@@ -1,42 +1,52 @@
 @model IEnumerable<UM_Project.Models.Student>
 @{
-    ViewData["Title"] = "Students";
-    ViewData["PageTitle"] = "Students";
+    ViewData["Title"] = Localizer["Nav_Students"];
+    ViewData["PageTitle"] = Localizer["Nav_Students"];
+    ViewData["PageSubtitle"] = $"{Model.Count()} {Localizer["Students_CountSuffix"]}";
     ViewData["PageIcon"] = "fa-user-graduate";
-    ViewData["PageSubtitle"] = "Manage student records and department assignments";
     ViewData["CreateController"] = "Students";
-    ViewData["CreateText"] = "Register student";
+    ViewData["CreateText"] = Localizer["Students_Add"];
 }
 
 <div class="um-page">
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
-        <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email or student number..." />
+        <div class="um-panel-toolbar um-toolbar-row">
+            <div class="um-search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Students_SearchPlaceholder"]" />
+            </div>
         </div>
         <div class="table-responsive">
-            <table class="um-table" id="dataTable">
+            <table class="um-table um-table--students" id="dataTable">
                 <thead>
                     <tr>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Student #</th>
-                        <th>Department</th>
-                        <th>Actions</th>
+                        <th>@Localizer["Students_ColStudent"]</th>
+                        <th>@Localizer["Students_ColEmail"]</th>
+                        <th>@Localizer["Students_ColClass"]</th>
+                        <th>@Localizer["Common_Actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var s in Model)
                     {
+                        var initials = string.Join("", s.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(w => w[0]));
                         <tr>
-                            <td><span class="um-badge um-badge-gray">@s.StudentNumber</span></td>
-                            <td class="fw-semibold">@s.FullName</td>
-                            <td><code class="small">@s.Email</code></td>
-                            <td>@(s.Department?.DepartmentName ?? "—")</td>
+                            <td>
+                                <div class="um-student-cell">
+                                    <span class="um-student-avatar">@initials</span>
+                                    <div>
+                                        <span class="um-student-name">@s.FullName</span>
+                                        <span class="um-student-id">@s.StudentNumber</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><code class="um-email">@s.Email</code></td>
+                            <td><span class="um-link-pill">@(s.Department?.DepartmentName ?? "—")</span></td>
                             <td>
                                 <div class="um-actions">
-                                    <a asp-action="Details" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-edit"><i class="fas fa-eye"></i> Profile</a>
-                                    <a asp-action="Edit" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i></a>
+                                    <a asp-action="Details" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-view">@Localizer["Common_View"]</a>
+                                    <a asp-action="Edit" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-edit">@Localizer["Common_Edit"]</a>
                                     <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@s.StudentId', '@s.FullName')"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>

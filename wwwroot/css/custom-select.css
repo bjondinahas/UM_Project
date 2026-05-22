@@ -1,0 +1,58 @@
+/* Custom dropdowns — Editari style */
+
+body.app-layout select.form-select,
+body.app-layout select.form-control:not([type]),
+.auth-page select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 12px;
+    padding: 0.55rem 2.25rem 0.55rem 0.85rem;
+    border: 1px solid var(--surface-border, #e2e8f0);
+    border-radius: 10px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--navy-800, #1a1f36);
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    min-height: 42px;
+    line-height: 1.4;
+}
+
+body.app-layout select.form-select:hover,
+body.app-layout select.form-control:not([type]):hover {
+    border-color: #cbd5e1;
+}
+
+body.app-layout select.form-select:focus,
+body.app-layout select.form-control:not([type]):focus {
+    outline: none;
+    border-color: var(--accent-500, #3b82f6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+body.app-layout select.form-select-sm {
+    min-height: 36px;
+    padding: 0.35rem 2rem 0.35rem 0.65rem;
+    font-size: 0.78rem;
+}
+
+.um-select-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-secondary, #6b7280);
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.um-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}

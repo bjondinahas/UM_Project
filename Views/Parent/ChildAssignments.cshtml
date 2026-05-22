@@ -1,6 +1,6 @@
-@model IEnumerable<UM_Project.Models.CourseAssignment>
+﻿@model IEnumerable<UM_Project.Models.CourseAssignment>
 @{
-    ViewData["Title"] = "Assignments";
+    ViewData["Title"] = Localizer["Nav_Assignments"];
     var upcoming = ViewBag.Upcoming as List<UM_Project.Models.CourseAssignment> ?? new();
     var past = ViewBag.Past as List<UM_Project.Models.CourseAssignment> ?? new();
 }
@@ -9,13 +9,13 @@
 
 <div class="max-w-4xl mx-auto pb-8">
     <a asp-action="Dashboard" asp-route-studentId="@ViewBag.SelectedStudentId" class="text-sm font-semibold text-red-700">← Dashboard</a>
-    <h1 class="text-2xl font-extrabold text-red-900 mt-2">Assignments — @ViewBag.StudentName</h1>
+    <h1 class="text-2xl font-extrabold text-red-900 mt-2">@Localizer.Format("Page_AssignmentsFor", ViewBag.StudentName)</h1>
     <partial name="_ParentChildSelector" />
 
     <h2 class="text-lg font-bold text-red-800 mt-4 mb-2"><i class="fas fa-clock me-1"></i> Upcoming deadlines</h2>
     @if (!upcoming.Any())
     {
-        <p class="text-muted">No upcoming assignments.</p>
+        <p class="text-muted">@Localizer["Msg_NoUpcomingAssignments"]</p>
     }
     else
     {
@@ -30,7 +30,7 @@
                         </div>
                         <div class="text-end">
                             <div class="fw-bold text-red-700">@a.DueDate.ToString("ddd, MMM d · HH:mm")</div>
-                            <div class="small">Weight @a.WeightPercent%</div>
+                            <div class="small">@Localizer.Format("Label_WeightLine", a.WeightPercent)</div>
                         </div>
                     </div>
                 </div>
@@ -40,10 +40,10 @@
 
     @if (past.Any())
     {
-        <h2 class="text-lg font-bold text-gray-600 mb-2">Past due</h2>
+        <h2 class="text-lg font-bold text-gray-600 mb-2">@Localizer["Page_PastDue"]</h2>
         <div class="um-table-wrap">
             <table class="um-table table-sm">
-                <thead><tr><th>Title</th><th>Course</th><th>Due</th></tr></thead>
+                <thead><tr><th>@Localizer["Table_Title"]</th><th>@Localizer["Label_Course"]</th><th>@Localizer["Label_Due"]</th></tr></thead>
                 <tbody>
                     @foreach (var a in past.Take(20))
                     {

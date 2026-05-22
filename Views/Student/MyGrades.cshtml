@@ -1,7 +1,7 @@
-@model IEnumerable<UM_Project.Models.Grade>
+﻿@model IEnumerable<UM_Project.Models.Grade>
 @{
-    ViewData["Title"] = "My Grades";
-    ViewData["PageTitle"] = "My Grades";
+    ViewData["Title"] = Localizer["Nav_MyGrades"];
+    ViewData["PageTitle"] = Localizer["Page_MyGrades"];
     ViewData["PageIcon"] = "fa-star";
     ViewData["ShowCreate"] = false;
     double avg = Model.Any() ? Model.Average(g => g.Value) : 0;
@@ -12,11 +12,11 @@
     <div class="um-panel">
         <div class="table-responsive">
             <table class="um-table">
-                <thead><tr><th>Course</th><th>Grade</th><th>Status</th><th>Date</th></tr></thead>
+                <thead><tr><th>@Localizer["Label_Course"]</th><th>@Localizer["Table_Grade"]</th><th>@Localizer["Label_Status"]</th><th>@Localizer["Table_Date"]</th></tr></thead>
                 <tbody>
                     @foreach (var g in Model)
                     {
-                        var pass = g.Value >= 6;
+                        var pass = g.Value >= (ViewBag.GradePassingMin ?? 3);
                         <tr>
                             <td class="fw-semibold">@g.Course?.CourseName</td>
                             <td><span class="um-badge @(pass ? "um-badge-green" : "um-badge-red")">@g.Value</span></td>
@@ -29,8 +29,8 @@
                 {
                     <tfoot>
                         <tr class="bg-light">
-                            <td class="fw-bold">Average</td>
-                            <td colspan="3"><span class="um-badge um-badge-red">@avg.ToString("0.00")</span> @(avg >= 6 ? "Pass" : "Fail")</td>
+                            <td class="fw-bold">@Localizer["Label_Average"]</td>
+                            <td colspan="3"><span class="um-badge um-badge-red">@avg.ToString("0.00")</span> @(avg >= (ViewBag.GradePassingMin ?? 3) ? Localizer["Status_Pass"] : Localizer["Status_Fail"])</td>
                         </tr>
                     </tfoot>
                 }

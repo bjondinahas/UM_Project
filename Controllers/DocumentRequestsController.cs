@@ -1,16 +1,18 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize]
     public class DocumentRequestsController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITranscriptPdfService _pdf;
@@ -20,8 +22,10 @@ namespace UM_Project.Controllers
             ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             ITranscriptPdfService pdf,
-            IAdminAuditService audit)
+            IAdminAuditService audit, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _userManager = userManager;
             _pdf = pdf;
@@ -62,7 +66,7 @@ namespace UM_Project.Controllers
                 .AnyAsync(p => p.UserId == user.Id && p.StudentId == studentId);
             if (!linked)
             {
-                TempData["Error"] = "You can only request documents for your linked children.";
+                TempData["Error"] = _ui["Flash_OnlyLinkedChildren"];
                 return RedirectToAction(nameof(Index));
             }
 
@@ -71,7 +75,7 @@ namespace UM_Project.Controllers
                 r.RequestType == DocumentRequestTypes.Transcript &&
                 r.Status == DocumentRequestStatuses.Pending))
             {
-                TempData["Error"] = "A pending transcript request already exists for this student.";
+                TempData["Error"] = _ui["Flash_PendingTranscript"];
                 return RedirectToAction(nameof(Index));
             }
 
@@ -84,7 +88,7 @@ namespace UM_Project.Controllers
                 ParentNotes = notes
             });
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Transcript request submitted. An administrator will review it.";
+            TempData["Success"] = _ui["Flash_TranscriptSubmitted"];
             return RedirectToAction(nameof(Index));
         }
 
@@ -112,7 +116,7 @@ namespace UM_Project.Controllers
             req.ProcessedAtUtc = DateTime.UtcNow;
             req.ProcessedByUserId = user?.Id;
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Request approved. You can download the PDF.";
+            TempData["Success"] = _ui["Flash_RequestApproved"];
             return RedirectToAction(nameof(Admin));
         }
 
@@ -130,7 +134,7 @@ namespace UM_Project.Controllers
             req.ProcessedAtUtc = DateTime.UtcNow;
             req.ProcessedByUserId = user?.Id;
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Request rejected.";
+            TempData["Success"] = _ui["Flash_RequestRejected"];
             return RedirectToAction(nameof(Admin));
         }
 
@@ -141,7 +145,7 @@ namespace UM_Project.Controllers
             if (req == null) return NotFound();
             if (req.Status != DocumentRequestStatuses.Approved && req.Status != DocumentRequestStatuses.Completed)
             {
-                TempData["Error"] = "Approve the request before generating PDF.";
+                TempData["Error"] = _ui["Flash_ApproveBeforePdf"];
                 return RedirectToAction(nameof(Admin));
             }
 

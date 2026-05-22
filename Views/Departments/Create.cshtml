@@ -1,7 +1,7 @@
-@model UM_Project.Models.Department
+﻿@model UM_Project.Models.Department
 @{
-    ViewData["Title"] = "Create Department";
-    ViewData["FormTitle"] = "Create Department";
+    ViewData["Title"] = Localizer["Page_CreateDepartment"];
+    ViewData["FormTitle"] = Localizer["Page_CreateDepartment"];
     ViewData["FormIcon"] = "fa-plus";
 }
 
@@ -16,8 +16,8 @@
                 <span asp-validation-for="DepartmentName" class="text-danger small"></span>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> @Localizer["Common_Save"]</button>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

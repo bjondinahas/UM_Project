@@ -1,9 +1,9 @@
-@model IEnumerable<UM_Project.Models.Schedule>
+﻿@model IEnumerable<UM_Project.Models.Schedule>
 @{
-    ViewData["Title"] = "Schedules";
-    ViewData["PageTitle"] = "Schedules";
+    ViewData["Title"] = Localizer["Nav_Schedules"];
+    ViewData["PageTitle"] = Localizer["Nav_Schedules"];
     ViewData["PageIcon"] = "fa-calendar-alt";
-    ViewData["PageSubtitle"] = "Class times, rooms, and weekly timetable";
+    ViewData["PageSubtitle"] = Localizer["Page_Schedules_Subtitle"];
     ViewData["CreateController"] = "Schedules";
 }
 
@@ -11,12 +11,12 @@
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search course, day, room..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Schedules"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Course</th><th>Day</th><th>Time</th><th>Room</th><th>Actions</th></tr>
+                    <tr><th>@Localizer["Label_Course"]</th><th>Day</th><th>Time</th><th>Room</th><th>@Localizer["Common_Actions"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var s in Model)
@@ -28,7 +28,7 @@
                             <td>@s.Room</td>
                             <td>
                                 <div class="um-actions">
-                                    <a asp-action="Edit" asp-route-id="@s.ScheduleId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> Edit</a>
+                                    <a asp-action="Edit" asp-route-id="@s.ScheduleId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i> @Localizer["Common_Edit"]</a>
                                     <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@s.ScheduleId', 'this schedule')"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>

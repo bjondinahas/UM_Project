@@ -2,126 +2,36 @@
 @using UM_Project.Services
 @inject IUiText Localizer
 @{
-    var authMode = ViewData["AuthMode"]?.ToString() ?? "login";
-    var isLogin = authMode == "login";
     var uiCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 }
 <!DOCTYPE html>
-<html lang="@uiCulture" class="h-full">
+<html lang="sq" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - University Manager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fff5f5', 100: '#ffe4e6', 200: '#fecdd3', 300: '#fda4af',
-                            400: '#fb7185', 500: '#f87171', 600: '#ef4444', 700: '#f43f5e',
-                            800: '#e11d48', 900: '#be123c',
-                        }
-                    },
-                    fontFamily: { sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+    <title>@ViewData["Title"] - @Localizer["App_Title"]</title>
+    <link rel="icon" type="image/png" href="~/images/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/brand-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/lang-switcher.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom-select.css" asp-append-version="true" />
 </head>
-<body class="h-full overflow-hidden bg-gray-50 antialiased font-sans">
-    <div class="h-screen max-h-screen flex overflow-hidden">
-        <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] auth-panel relative overflow-hidden shrink-0">
-            <div class="absolute inset-0 auth-panel-overlay"></div>
-            <div class="relative z-10 flex flex-col justify-between p-10 xl:p-14 text-white w-full h-full">
-                <div>
-                    <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-3 group">
-                        <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm border border-white/25 group-hover:bg-white/30 transition">
-                            <i class="fas fa-graduation-cap text-lg"></i>
-                        </span>
-                        <span class="font-bold text-xl tracking-tight">University Manager</span>
-                    </a>
-                </div>
-
-                <div class="max-w-md">
-                    @if (isLogin)
-                    {
-                        <h1 class="text-4xl xl:text-5xl font-extrabold leading-tight">Welcome Back</h1>
-                        <p class="mt-4 text-red-100 text-lg leading-relaxed">Sign in to manage students, courses, schedules, and grades from your dashboard.</p>
-                    }
-                    else
-                    {
-                        <h1 class="text-4xl xl:text-5xl font-extrabold leading-tight">Join Our Campus</h1>
-                        <p class="mt-4 text-red-100 text-lg leading-relaxed">Create your account and start using the university management system today.</p>
-                    }
-                    <ul class="mt-10 space-y-4">
-                        <li class="flex items-center gap-4">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/15 border border-white/20">
-                                <i class="fas fa-user-graduate"></i>
-                            </span>
-                            <span class="text-red-50">Student portal & grades</span>
-                        </li>
-                        <li class="flex items-center gap-4">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/15 border border-white/20">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </span>
-                            <span class="text-red-50">Professor tools</span>
-                        </li>
-                        <li class="flex items-center gap-4">
-                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/15 border border-white/20">
-                                <i class="fas fa-building-columns"></i>
-                            </span>
-                            <span class="text-red-50">Admin management</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <p class="text-sm text-red-200/80 flex items-center gap-2">
-                    <i class="fas fa-lock"></i>
-                    Secure sign-in
-                </p>
-            </div>
+<body class="h-full">
+    <div class="auth-page">
+        <div class="auth-page-brand">
+            <img src="~/images/logo.png" alt="@Localizer["App_Title"]" class="auth-page-brand-logo" />
+            <p class="auth-page-brand-subtitle">@Localizer["Brand_Subtitle"]</p>
         </div>
-
-        <div class="flex-1 flex flex-col h-screen max-h-screen min-h-0 overflow-hidden">
-            <div class="shrink-0 px-4 sm:px-8 lg:px-12 pt-6">
-                <div class="flex justify-end mb-3">
-                    <partial name="_LanguageSwitcher" />
-                </div>
-                <div class="lg:hidden mb-4 text-center">
-                    <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-2 text-brand-700 font-bold text-lg">
-                        <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-600 text-white">
-                            <i class="fas fa-graduation-cap"></i>
-                        </span>
-                        University Manager
-                    </a>
-                </div>
-                <a asp-controller="Home" asp-action="Index"
-                   class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-brand-600 transition w-fit">
-                    <i class="fas fa-arrow-left"></i> Back to home
-                </a>
-            </div>
-
-            <div class="flex-1 min-h-0 overflow-y-auto px-4 sm:px-8 lg:px-12 xl:px-20 pb-8">
-                <div class="w-full max-w-md mx-auto lg:mx-0 py-4">
-                    @RenderBody()
-                </div>
-            </div>
+        <div class="auth-card">
+            @RenderBody()
         </div>
     </div>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/lang-switcher.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

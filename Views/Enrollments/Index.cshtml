@@ -1,23 +1,23 @@
-@model IEnumerable<UM_Project.Models.Enrollment>
+﻿@model IEnumerable<UM_Project.Models.Enrollment>
 @{
-    ViewData["Title"] = "Enrollments";
-    ViewData["PageTitle"] = "Enrollments";
+    ViewData["Title"] = Localizer["Nav_Enrollments"];
+    ViewData["PageTitle"] = Localizer["Nav_Enrollments"];
     ViewData["PageIcon"] = "fa-clipboard-list";
-    ViewData["PageSubtitle"] = "Student course registrations";
+    ViewData["PageSubtitle"] = Localizer["Page_Enrollments_Subtitle"];
     ViewData["CreateController"] = "Enrollments";
-    ViewData["CreateText"] = "New Enrollment";
+    ViewData["CreateText"] = Localizer["Page_Enrollments_Create"];
 }
 
 <div class="um-page">
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search student or course..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Enrollments"]" />
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Student</th><th>Course</th><th>Date</th><th>Actions</th></tr>
+                    <tr><th>@Localizer["Table_Student"]</th><th>@Localizer["Table_Course"]</th><th>@Localizer["Table_Date"]</th><th>@Localizer["Common_Actions"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var e in Model)

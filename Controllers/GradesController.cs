@@ -1,21 +1,25 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminAndProfessor)]
     public class GradesController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly ISystemSettingsService _settings;
         private readonly IAdminAuditService _audit;
 
-        public GradesController(ApplicationDbContext context, ISystemSettingsService settings, IAdminAuditService audit)
+        public GradesController(ApplicationDbContext context, ISystemSettingsService settings, IAdminAuditService audit, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _settings = settings;
             _audit = audit;
@@ -36,6 +40,7 @@ namespace UM_Project.Controllers
                 .Include(g => g.Course)
                 .ThenInclude(c => c.Department)
                 .ToListAsync();
+            await SetGradeRangeViewBagAsync();
             return View(grades);
         }
 
@@ -54,7 +59,7 @@ namespace UM_Project.Controllers
             if (!await _settings.IsValidGradeAsync(value))
             {
                 var a = await _settings.GetAcademicSettingsAsync();
-                TempData["Error"] = $"Grade must be between {a.GradeMinimum} and {a.GradeMaximum}!";
+                TempData["Error"] = _ui.Format("Flash_GradeRange", a.GradeMinimum, a.GradeMaximum);
                 ViewBag.Students = await _context.Students.ToListAsync();
                 ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
                 await SetGradeRangeViewBagAsync();
@@ -63,7 +68,7 @@ namespace UM_Project.Controllers
             var existing = await _context.Grades.FirstOrDefaultAsync(g => g.StudentId == studentId && g.CourseId == courseId);
             if (existing != null)
             {
-                TempData["Error"] = "Grade already exists! Use Edit.";
+                TempData["Error"] = _ui["Flash_GradeExists"];
                 ViewBag.Students = await _context.Students.ToListAsync();
                 ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
                 return View();
@@ -71,7 +76,7 @@ namespace UM_Project.Controllers
             var grade = new Grade { StudentId = studentId, CourseId = courseId, Value = value, DateRecorded = DateTime.Now };
             _context.Add(grade);
             await _context.SaveChangesAsync();
-            TempData["Success"] = $"Grade {value} assigned!";
+            TempData["Success"] = _ui.Format("Flash_GradeAssigned", value);
             return RedirectToAction(nameof(Index));
         }
 
@@ -95,7 +100,7 @@ namespace UM_Project.Controllers
             if (!await _settings.IsValidGradeAsync(value))
             {
                 var a = await _settings.GetAcademicSettingsAsync();
-                TempData["Error"] = $"Grade must be between {a.GradeMinimum} and {a.GradeMaximum}!";
+                TempData["Error"] = _ui.Format("Flash_GradeRange", a.GradeMinimum, a.GradeMaximum);
                 ViewBag.Students = await _context.Students.ToListAsync();
                 ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
                 await SetGradeRangeViewBagAsync();
@@ -112,7 +117,7 @@ namespace UM_Project.Controllers
                 await _audit.LogAsync(HttpContext, AdminActions.GradeOverride, AuditEntityTypes.Grade,
                     id.ToString(), $"Student={studentId}, Course={courseId}, {oldValue}→{value}");
             }
-            TempData["Success"] = "Grade updated!";
+            TempData["Success"] = _ui["Flash_GradeUpdated"];
             return RedirectToAction(nameof(Index));
         }
 
@@ -124,7 +129,7 @@ namespace UM_Project.Controllers
             var grade = await _context.Grades.FindAsync(id);
             if (grade != null) _context.Grades.Remove(grade);
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Grade deleted!";
+            TempData["Success"] = _ui["Flash_GradeDeleted"];
             return RedirectToAction(nameof(Index));
         }
     }

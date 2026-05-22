@@ -1,9 +1,9 @@
-@model IEnumerable<UM_Project.Models.Professor>
+﻿@model IEnumerable<UM_Project.Models.Professor>
 @{
-    ViewData["Title"] = "Professors";
-    ViewData["PageTitle"] = "Professors";
+    ViewData["Title"] = Localizer["Nav_Professors"];
+    ViewData["PageTitle"] = Localizer["Nav_Professors"];
     ViewData["PageIcon"] = "fa-chalkboard-teacher";
-    ViewData["PageSubtitle"] = "Faculty members and department assignments";
+    ViewData["PageSubtitle"] = Localizer["Page_Professors_Subtitle"];
     ViewData["CreateController"] = "Professors";
 }
 
@@ -11,12 +11,15 @@
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search name, email, title..." />
+            <div class="um-search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Professors"]" />
+            </div>
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Name</th><th>Email</th><th>Title</th><th>Department</th><th>Actions</th></tr>
+                    <tr><th>@Localizer["Table_Name"]</th><th>@Localizer["Table_Email"]</th><th>@Localizer["Table_Title"]</th><th>@Localizer["Nav_Departments"]</th><th>@Localizer["Common_Actions"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var p in Model)
@@ -24,15 +27,15 @@
                         <tr>
                             <td class="fw-semibold">@p.FullName</td>
                             <td>@p.Email</td>
-                            <td>@(string.IsNullOrEmpty(p.Title) ? "Professor" : p.Title)</td>
+                            <td>@(string.IsNullOrEmpty(p.Title) ? Localizer["Default_ProfessorTitle"] : p.Title)</td>
                             <td>@(p.Department?.DepartmentName ?? "—")</td>
                             <td>
                                 <div class="um-actions">
                                     <a asp-action="Edit" asp-route-id="@p.ProfessorId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i></a>
-                                    <form asp-action="ResetPassword" method="post" class="d-inline" onsubmit="return confirm('Reset to default password?');">
+                                    <form asp-action="ResetPassword" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Confirm_ResetPasswordDefault"]');">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="professorId" value="@p.ProfessorId" />
-                                        <button type="submit" class="um-btn-sm um-btn-edit" title="Reset password"><i class="fas fa-key"></i></button>
+                                        <button type="submit" class="um-btn-sm um-btn-edit" title="@Localizer["Label_ResetPassword"]"><i class="fas fa-key"></i></button>
                                     </form>
                                     <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@p.ProfessorId', '@p.FullName')"><i class="fas fa-trash"></i></button>
                                 </div>

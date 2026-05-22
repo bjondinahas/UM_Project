@@ -1,19 +1,19 @@
-@model IEnumerable<UM_Project.Models.LessonSlot>
+﻿@model IEnumerable<UM_Project.Models.LessonSlot>
 @{
-    ViewData["Title"] = "Lesson slots";
+    ViewData["Title"] = Localizer["Nav_LessonSlots"];
 }
 
 <link rel="stylesheet" href="~/css/superadmin-hub.css" asp-append-version="true" />
 
 <div class="sa-hub">
-    <a asp-action="Hub" class="sa-back"><i class="fas fa-arrow-left"></i> Control center</a>
+    <a asp-action="Hub" class="sa-back"><i class="fas fa-arrow-left"></i> @Localizer["Nav_ControlCenter"]</a>
     <div class="sa-hero" style="padding:1.5rem;margin-bottom:1.25rem">
-        <h1 style="font-size:1.35rem">Daily lesson schedule</h1>
-        <p style="font-size:0.85rem">Up to @ViewBag.LessonsPerDay slots used for attendance. Inactive slots are hidden from professors.</p>
+        <h1 style="font-size:1.35rem">@Localizer["Page_LessonSchedule"]</h1>
+        <p style="font-size:0.85rem">@Localizer.Format("Msg_LessonSlotsHint", ViewBag.LessonsPerDay)</p>
     </div>
 
     <div class="sa-settings-panel mb-4">
-        <h3 class="h6 fw-bold mb-3">Add or edit period</h3>
+        <h3 class="h6 fw-bold mb-3">@Localizer["Label_AddEditPeriod"]</h3>
         <form asp-action="SaveLessonSlot" method="post" class="row g-2 align-items-end">
             @Html.AntiForgeryToken()
             <input type="hidden" name="lessonSlotId" id="editSlotId" value="" />
@@ -22,32 +22,32 @@
                 <input type="number" name="slotNumber" id="editSlotNumber" class="form-control" min="1" max="12" required />
             </div>
             <div class="col-md-3">
-                <label class="form-label small">Title</label>
-                <input type="text" name="title" id="editTitle" class="form-control" required placeholder="Lesson 1" />
+                <label class="form-label small">@Localizer["Label_Title"]</label>
+                <input type="text" name="title" id="editTitle" class="form-control" required placeholder="@Localizer["Placeholder_Lesson1"]" />
             </div>
             <div class="col-md-2">
-                <label class="form-label small">Start</label>
+                <label class="form-label small">@Localizer["Label_Start"]</label>
                 <input type="time" name="startTime" id="editStart" class="form-control" required />
             </div>
             <div class="col-md-2">
-                <label class="form-label small">End</label>
+                <label class="form-label small">@Localizer["Label_End"]</label>
                 <input type="time" name="endTime" id="editEnd" class="form-control" required />
             </div>
             <div class="col-md-2">
                 <div class="form-check mt-4">
                     <input type="checkbox" name="isActive" value="true" id="editActive" class="form-check-input" checked />
-                    <label class="form-check-label small" for="editActive">Active</label>
+                    <label class="form-check-label small" for="editActive">@Localizer["Label_Active"]</label>
                 </div>
             </div>
             <div class="col-md-2">
-                <button type="submit" class="um-btn-primary w-100">Save</button>
+                <button type="submit" class="um-btn-primary w-100">@Localizer["Common_Save"]</button>
             </div>
         </form>
     </div>
 
     <div class="sa-settings-panel">
         <table class="um-table">
-            <thead><tr><th>#</th><th>Title</th><th>Time</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>#</th><th>@Localizer["Label_Title"]</th><th>@Localizer["Label_Time"]</th><th>@Localizer["Label_Status"]</th><th></th></tr></thead>
             <tbody>
                 @foreach (var s in Model)
                 {
@@ -55,10 +55,10 @@
                         <td>@s.SlotNumber</td>
                         <td class="fw-semibold">@s.Title</td>
                         <td>@s.StartTime – @s.EndTime</td>
-                        <td><span class="um-badge @(s.IsActive ? "um-badge-green" : "um-badge-gray")">@(s.IsActive ? "Active" : "Off")</span></td>
+                        <td><span class="um-badge @(s.IsActive ? "um-badge-green" : "um-badge-gray")">@(s.IsActive ? Localizer["Label_Active"] : Localizer["Label_Off"])</span></td>
                         <td>
-                            <button type="button" class="um-btn-sm um-btn-edit" onclick="fillEdit(@s.LessonSlotId,@s.SlotNumber,'@s.Title.Replace("'","\\'")','@s.StartTime','@s.EndTime',@s.IsActive.ToString().ToLower())">Edit</button>
-                            <form asp-action="DeleteLessonSlot" method="post" class="d-inline" onsubmit="return confirm('Remove this slot?');">
+                            <button type="button" class="um-btn-sm um-btn-edit" onclick="fillEdit(@s.LessonSlotId,@s.SlotNumber,'@s.Title.Replace("'","\\'")','@s.StartTime','@s.EndTime',@s.IsActive.ToString().ToLower())">@Localizer["Common_Edit"]</button>
+                            <form asp-action="DeleteLessonSlot" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Confirm_RemoveSlot"]');">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@s.LessonSlotId" />
                                 <button type="submit" class="um-btn-sm um-btn-delete"><i class="fas fa-trash"></i></button>

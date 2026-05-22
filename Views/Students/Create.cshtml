@@ -1,7 +1,7 @@
-@model UM_Project.Models.StudentRegistrationViewModel
+﻿@model UM_Project.Models.StudentRegistrationViewModel
 @{
-    ViewData["Title"] = "Register Student";
-    ViewData["FormTitle"] = "Register student";
+    ViewData["Title"] = Localizer["Page_CreateStudent"];
+    ViewData["FormTitle"] = Localizer["Page_CreateStudent"];
     ViewData["FormIcon"] = "fa-user-plus";
     var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
 }
@@ -10,11 +10,11 @@
     <partial name="_AdminFormHeader" />
     <div class="um-form-panel" style="max-width:800px">
         <div class="rounded-xl border border-blue-100 bg-blue-50/80 p-4 mb-4 text-sm text-blue-900">
-            <p class="font-bold mb-2">One-step registration</p>
+            <p class="font-bold mb-2">@Localizer["Page_OneStepRegistration"]</p>
             <ol class="mb-0 ps-3">
-                <li>Enter student name and department — account is created automatically.</li>
-                <li>Optionally add a parent on the same screen (or link later from the student profile).</li>
-                <li>After save, open the student profile for enrollments and credentials.</li>
+                <li>@Localizer["Msg_StudentCreateStep1"]</li>
+                <li>@Localizer["Msg_StudentCreateStep2"]</li>
+                <li>@Localizer["Msg_StudentCreateStep3"]</li>
             </ol>
         </div>
 
@@ -27,13 +27,13 @@
                 <div class="row g-3 mt-1">
                     <div class="col-md-8">
                         <label asp-for="FullName" class="form-label"></label>
-                        <input asp-for="FullName" class="form-control" placeholder="John Smith" required />
+                        <input asp-for="FullName" class="form-control" placeholder="@Localizer["Placeholder_FullName"]" required />
                         <span asp-validation-for="FullName" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4">
                         <label asp-for="DepartmentId" class="form-label"></label>
                         <select asp-for="DepartmentId" class="form-select" required>
-                            <option value="">Department</option>
+                            <option value="">@Localizer["Label_Department"]</option>
                             @if (departments != null)
                             {
                                 foreach (var dept in departments)
@@ -54,25 +54,25 @@
                 <legend class="float-none w-auto px-2 h6 fw-bold text-danger mb-0">2. Parent (optional)</legend>
                 <div class="form-check mb-3">
                     <input asp-for="AddParent" class="form-check-input" type="checkbox" id="addParentCheck" />
-                    <label class="form-check-label" for="addParentCheck">Add parent / guardian now</label>
+                    <label class="form-check-label" for="addParentCheck">@Localizer["Msg_AddParentCheck"]</label>
                 </div>
                 <div id="parentFields" class="row g-3" style="display:none">
                     <div class="col-md-6">
                         <label asp-for="ParentFullName" class="form-label"></label>
-                        <input asp-for="ParentFullName" class="form-control" placeholder="Jane Doe" />
+                        <input asp-for="ParentFullName" class="form-control" placeholder="@Localizer["Placeholder_FullName"]" />
                         <span asp-validation-for="ParentFullName" class="text-danger small"></span>
                     </div>
                     <div class="col-md-6">
                         <label asp-for="ParentEmail" class="form-label"></label>
-                        <input asp-for="ParentEmail" class="form-control" type="email" placeholder="Leave empty to auto-generate" />
-                        <div class="form-text">Use an existing parent email to link without creating a duplicate account.</div>
+                        <input asp-for="ParentEmail" class="form-control" type="email" placeholder="@Localizer["Placeholder_ParentEmailAuto"]" />
+                        <div class="form-text">@Localizer["Msg_ParentEmailLinkHint"]</div>
                     </div>
                 </div>
             </fieldset>
 
             <div class="d-flex gap-2 flex-wrap">
                 <button type="submit" class="um-btn-primary"><i class="fas fa-user-plus"></i> Register student</button>
-                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+                <a asp-action="Index" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

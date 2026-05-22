@@ -313,9 +313,9 @@ namespace UM_Project.Data
                     context.SystemSettings.Add(new Models.SystemSetting { SettingKey = key, SettingValue = value, Description = desc });
             }
 
-            await EnsureSetting(Models.SystemSettingKeys.GradeMinimum, "5", "Lowest grade");
-            await EnsureSetting(Models.SystemSettingKeys.GradeMaximum, "10", "Highest grade");
-            await EnsureSetting(Models.SystemSettingKeys.GradePassingMinimum, "6", "Passing grade");
+            await EnsureSetting(Models.SystemSettingKeys.GradeMinimum, "1", "Lowest grade");
+            await EnsureSetting(Models.SystemSettingKeys.GradeMaximum, "5", "Highest grade");
+            await EnsureSetting(Models.SystemSettingKeys.GradePassingMinimum, "3", "Passing grade");
             await EnsureSetting(Models.SystemSettingKeys.LessonsPerDay, "6", "Lessons per day");
             await EnsureSetting(Models.SystemSettingKeys.AtRiskAbsenceDays, "30", "At-risk absence window days");
             await EnsureSetting(Models.SystemSettingKeys.AtRiskAbsenceCount, "5", "At-risk absence threshold");

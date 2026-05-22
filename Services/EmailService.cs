@@ -82,7 +82,7 @@ namespace UM_Project.Services
                 <div class='content'>
                     <p>Dear {studentName},</p>
                     <p>Your grade for the course <strong>{courseName}</strong> has been assigned.</p>
-                    <p class='grade'>Grade: {grade} / 10</p>
+                    <p class='grade'>Grade: {grade} / 5</p>
                     <p>Login to the system to see more details.</p>
                 </div>
             </div>

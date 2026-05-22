@@ -1,6 +1,6 @@
-@model UM_Project.Models.AcademicSettingsDto
+﻿@model UM_Project.Models.AcademicSettingsDto
 @{
-    ViewData["Title"] = "Academic Settings";
+    ViewData["Title"] = Localizer["Nav_AcademicSettings"];
 }
 
 <link rel="stylesheet" href="~/css/superadmin-hub.css" asp-append-version="true" />
@@ -8,8 +8,8 @@
 <div class="sa-hub">
     <a asp-action="Hub" class="sa-back"><i class="fas fa-arrow-left"></i> Control center</a>
     <div class="sa-hero" style="padding:1.5rem;margin-bottom:1.25rem">
-        <h1 style="font-size:1.35rem">Grade & attendance rules</h1>
-        <p style="font-size:0.85rem">These limits apply to professors and admin grade entry.</p>
+        <h1 style="font-size:1.35rem">@Localizer["Label_GradeRules"]</h1>
+        <p style="font-size:0.85rem">@Localizer["Msg_AcademicSettingsHint"]</p>
     </div>
     <div class="sa-settings-panel">
         <form asp-action="AcademicSettings" method="post">
@@ -17,26 +17,26 @@
             <div asp-validation-summary="All" class="alert alert-danger"></div>
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Minimum grade</label>
+                    <label class="form-label fw-semibold">@Localizer["Label_MinGrade"]</label>
                     <input asp-for="GradeMinimum" type="number" class="form-control" min="1" max="20" required />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Maximum grade</label>
+                    <label class="form-label fw-semibold">@Localizer["Label_MaxGrade"]</label>
                     <input asp-for="GradeMaximum" type="number" class="form-control" min="1" max="20" required />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Passing grade</label>
+                    <label class="form-label fw-semibold">@Localizer["Label_PassingGrade"]</label>
                     <input asp-for="GradePassingMinimum" type="number" class="form-control" min="1" max="20" required />
                 </div>
                 <div class="col-12">
-                    <label class="form-label fw-semibold">Lessons per school day</label>
+                    <label class="form-label fw-semibold">@Localizer["Label_LessonsPerDay"]</label>
                     <input asp-for="LessonsPerDay" type="number" class="form-control" min="1" max="12" required />
-                    <div class="form-text">Attendance grid columns for professors (e.g. 6).</div>
+                    <div class="form-text">@Localizer["Msg_AttendanceColumns"]</div>
                 </div>
             </div>
             <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="um-btn-primary">Save settings</button>
-                <a asp-action="Hub" class="btn btn-light border">Cancel</a>
+                <button type="submit" class="um-btn-primary">@Localizer["Msg_SaveSettings"]</button>
+                <a asp-action="Hub" class="btn btn-light border">@Localizer["Common_Cancel"]</a>
             </div>
         </form>
     </div>

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,12 +6,14 @@ using Microsoft.Extensions.Options;
 using UM_Project.Data;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 namespace UM_Project.Controllers
 {
     [Authorize(Roles = RoleNames.AdminPanel)]
     public class ProfessorsController : Controller
     {
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAccountProvisioningService _provisioning;
@@ -25,8 +27,10 @@ namespace UM_Project.Controllers
             IAccountProvisioningService provisioning,
             IEmailService emailService,
             IAdminPasswordService passwordService,
-            IOptions<AccountProvisioningSettings> settings)
+            IOptions<AccountProvisioningSettings> settings, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _userManager = userManager;
             _provisioning = provisioning;
@@ -42,13 +46,13 @@ namespace UM_Project.Controllers
             var prof = await _context.Professors.FindAsync(professorId);
             if (prof == null || string.IsNullOrEmpty(prof.UserId))
             {
-                TempData["Error"] = "Professor has no login account.";
+                TempData["Error"] = _ui["Flash_ProfessorNoLogin"];
                 return RedirectToAction(nameof(Index));
             }
 
             var pwd = string.IsNullOrWhiteSpace(newPassword) ? _settings.DefaultPassword : newPassword;
             var (ok, err) = await _passwordService.ResetPasswordAsync(prof.UserId, pwd, requireChange);
-            TempData[ok ? "Success" : "Error"] = ok ? $"Password reset. New password: {pwd}" : err;
+            TempData[ok ? "Success" : "Error"] = ok ? _ui.Format("Flash_PasswordReset", pwd) : err;
             return RedirectToAction(nameof(Index));
         }
 
@@ -91,7 +95,7 @@ namespace UM_Project.Controllers
             await _emailService.SendWelcomeEmailAsync(
                 result.Email, professor.FullName, result.TemporaryPassword, RoleNames.Professor);
 
-            TempData["Success"] = $"Professor created. Login: {result.Email} · Staff ID: {result.GeneratedId} · Temp password: {result.TemporaryPassword} (change on first login).";
+            TempData["Success"] = _ui.Format("Flash_ProfessorCreated", result.Email, result.GeneratedId, result.TemporaryPassword);
             return RedirectToAction(nameof(Index));
         }
 
@@ -132,7 +136,7 @@ namespace UM_Project.Controllers
                     await _userManager.UpdateAsync(user);
                 }
 
-                TempData["Success"] = "Professor updated!";
+                TempData["Success"] = _ui["Flash_ProfessorUpdated"];
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Departments = await _context.Departments.ToListAsync();
@@ -154,7 +158,7 @@ namespace UM_Project.Controllers
                 }
                 _context.Professors.Remove(professor);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Professor and login account deleted.";
+                TempData["Success"] = _ui["Flash_ProfessorDeleted"];
             }
             return RedirectToAction(nameof(Index));
         }

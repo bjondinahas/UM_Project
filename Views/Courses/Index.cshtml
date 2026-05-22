@@ -1,9 +1,9 @@
-@model IEnumerable<UM_Project.Models.Course>
+﻿@model IEnumerable<UM_Project.Models.Course>
 @{
-    ViewData["Title"] = "Courses";
-    ViewData["PageTitle"] = "Courses";
+    ViewData["Title"] = Localizer["Nav_Courses"];
+    ViewData["PageTitle"] = Localizer["Nav_Courses"];
     ViewData["PageIcon"] = "fa-book";
-    ViewData["PageSubtitle"] = "Course catalog, credits, and professor assignments";
+    ViewData["PageSubtitle"] = Localizer["Page_Courses_Subtitle"];
     ViewData["CreateController"] = "Courses";
 }
 
@@ -11,12 +11,15 @@
     <partial name="_AdminPageHeader" />
     <div class="um-panel">
         <div class="um-panel-toolbar">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search code, name, department..." />
+            <div class="um-search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="form-control" placeholder="@Localizer["Search_Courses"]" />
+            </div>
         </div>
         <div class="table-responsive">
             <table class="um-table" id="dataTable">
                 <thead>
-                    <tr><th>Code</th><th>Name</th><th>Semester</th><th>Credits</th><th>Docs</th><th>Department</th><th>Professor</th><th>Actions</th></tr>
+                    <tr><th>@Localizer["Table_Code"]</th><th>@Localizer["Table_Name"]</th><th>@Localizer["Table_Semester"]</th><th>@Localizer["Table_Credits"]</th><th>@Localizer["Table_Docs"]</th><th>@Localizer["Nav_Departments"]</th><th>@Localizer["Table_Professor"]</th><th>@Localizer["Common_Actions"]</th></tr>
                 </thead>
                 <tbody>
                     @foreach (var c in Model)
@@ -33,7 +36,7 @@
                             <td>@(c.Professor?.FullName ?? "—")</td>
                             <td>
                                 <div class="um-actions">
-                                    <a asp-action="Details" asp-route-id="@c.CourseId" class="um-btn-sm um-btn-edit" title="Details"><i class="fas fa-eye"></i></a>
+                                    <a asp-action="Details" asp-route-id="@c.CourseId" class="um-btn-sm um-btn-edit" title="@Localizer["Title_Details"]"><i class="fas fa-eye"></i></a>
                                     <a asp-action="Edit" asp-route-id="@c.CourseId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i></a>
                                     <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@c.CourseId', '@c.CourseName')"><i class="fas fa-trash"></i></button>
                                 </div>

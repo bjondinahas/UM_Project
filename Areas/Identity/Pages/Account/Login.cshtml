@@ -1,164 +1,47 @@
 @page
-
 @model LoginModel
-
 @{
-
     Layout = "/Views/Shared/_AuthLayout.cshtml";
-
     ViewData["Title"] = Localizer["Login_SignIn"];
-
-    ViewData["AuthMode"] = "login";
-
 }
 
+<h2>@Localizer["Login_SignIn"]</h2>
 
+<form method="post" class="auth-form">
+    <div asp-validation-summary="ModelOnly" class="validation-summary-errors" role="alert"></div>
 
-<div class="mb-8">
-
-    <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-600/30 mb-5">
-
-        <i class="fas fa-right-to-bracket text-2xl"></i>
-
+    <div class="auth-field">
+        <label asp-for="Input.Email">@Localizer["Login_Email"] <span class="req">*</span></label>
+        <input asp-for="Input.Email" type="email" autocomplete="username" placeholder="admin@umproject.com" />
+        <span asp-validation-for="Input.Email" class="field-validation-error"></span>
     </div>
 
-    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">@Localizer["Login_SignIn"]</h2>
-
-    <p class="mt-2 text-gray-500">@Localizer["Login_Subtitle"]</p>
-
-</div>
-
-
-
-<form method="post" class="space-y-5">
-
-    <div asp-validation-summary="ModelOnly" class="rounded-xl bg-red-50 border border-red-200 text-brand-800 px-4 py-3 text-sm" role="alert"></div>
-
-
-
-    <div>
-
-        <label asp-for="Input.Email" class="block text-sm font-semibold text-gray-700 mb-2">
-
-            <i class="fas fa-envelope text-brand-600 mr-1.5 w-4"></i>@Localizer["Login_Email"]
-
-        </label>
-
-        <div class="auth-input-wrap flex items-center rounded-xl border-2 border-gray-200 bg-white overflow-hidden transition">
-
-            <span class="auth-input-icon pl-4 text-gray-400 transition">
-
-                <i class="fas fa-at"></i>
-
-            </span>
-
-            <input asp-for="Input.Email" type="email" autocomplete="username"
-
-                   class="flex-1 py-3.5 pr-4 pl-3 bg-transparent border-0 focus:ring-0 text-gray-900 placeholder-gray-400 w-full"
-
-                   placeholder="you@university.edu" />
-
-        </div>
-
-        <span asp-validation-for="Input.Email" class="text-sm text-brand-600 mt-1 block"></span>
-
+    <div class="auth-field" style="margin-top: 1rem;">
+        <label asp-for="Input.Password">@Localizer["Login_Password"] <span class="req">*</span></label>
+        <input asp-for="Input.Password" type="password" autocomplete="current-password" placeholder="••••••••" />
+        <span asp-validation-for="Input.Password" class="field-validation-error"></span>
     </div>
 
+    <label class="auth-remember">
+        <input asp-for="Input.RememberMe" type="checkbox" />
+        @Localizer["Login_RememberMe"]
+    </label>
 
-
-    <div>
-
-        <label asp-for="Input.Password" class="block text-sm font-semibold text-gray-700 mb-2">
-
-            <i class="fas fa-key text-brand-600 mr-1.5 w-4"></i>@Localizer["Login_Password"]
-
-        </label>
-
-        <div class="auth-input-wrap flex items-center rounded-xl border-2 border-gray-200 bg-white overflow-hidden transition">
-
-            <span class="auth-input-icon pl-4 text-gray-400 transition">
-
-                <i class="fas fa-lock"></i>
-
-            </span>
-
-            <input asp-for="Input.Password" type="password" autocomplete="current-password"
-
-                   class="flex-1 py-3.5 pr-4 pl-3 bg-transparent border-0 focus:ring-0 text-gray-900 placeholder-gray-400 w-full"
-
-                   placeholder="••••••••" />
-
-        </div>
-
-        <span asp-validation-for="Input.Password" class="text-sm text-brand-600 mt-1 block"></span>
-
-    </div>
-
-
-
-    <div class="flex items-center justify-between">
-
-        <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
-
-            <input asp-for="Input.RememberMe" type="checkbox"
-
-                   class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500" />
-
-            <i class="fas fa-clock text-gray-400 text-xs"></i>
-
-            @Localizer["Login_RememberMe"]
-
-        </label>
-
-    </div>
-
-
-
-    <button type="submit"
-
-            class="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-brand-600/25 hover:shadow-xl hover:-translate-y-0.5">
-
-        <i class="fas fa-sign-in-alt"></i>
-
-        @Localizer["Login_Submit"]
-
-    </button>
-
+    <button type="submit" class="auth-submit">@Localizer["Login_Submit"]</button>
 </form>
 
-
-
-<div class="mt-8 pt-6 border-t border-gray-100 text-center">
-
-    <p class="text-gray-600 text-sm">
-
-        <i class="fas fa-user-plus text-brand-500 mr-1"></i>
-
-        Don't have an account?
-
-        <a asp-page="./Register" class="font-semibold text-brand-600 hover:text-brand-700 ml-1">Create one</a>
-
-    </p>
-
+<div class="auth-demo">
+    <div class="auth-demo-title">@Localizer["Login_DemoTitle"]</div>
+    <div class="auth-demo-badges">
+        <span class="auth-demo-badge auth-demo-badge--super">@Localizer["Role_SuperAdmin"]</span>
+        <span class="auth-demo-badge auth-demo-badge--admin">@Localizer["Role_Admin"]</span>
+        <span class="auth-demo-badge auth-demo-badge--prof">@Localizer["Role_Professor"]</span>
+        <span class="auth-demo-badge auth-demo-badge--student">@Localizer["Role_Student"]</span>
+        <span class="auth-demo-badge auth-demo-badge--parent">@Localizer["Role_Parent"]</span>
+    </div>
+    <p class="auth-demo-hint">Fjalëkalimi: <strong>Admin@123</strong> — superadmin@umproject.com, admin@umproject.com, prof.elena.marku@umproject.edu, stu.ana.gashi@umproject.edu, par.artan.gashi@umproject.edu</p>
 </div>
-
-
-
-<div class="mt-6 rounded-xl bg-red-50 border border-red-100 p-4 text-sm text-gray-600 space-y-2">
-
-    <p class="font-semibold text-brand-800 flex items-center gap-2"><i class="fas fa-circle-info"></i> @Localizer["Login_DemoTitle"]</p>
-
-    <p><i class="fas fa-crown text-brand-500 w-4"></i> SuperAdmin: superadmin@umproject.com</p>
-
-    <p><i class="fas fa-user-shield text-brand-500 w-4"></i> Admin: admin@umproject.com</p>
-
-</div>
-
-
 
 @section Scripts {
-
     <partial name="_ValidationScriptsPartial" />
-
 }
-

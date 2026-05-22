@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,19 +9,19 @@ using UM_Project.Data;
 using UM_Project.Models;
 
 using UM_Project.Services.Interfaces;
+using UM_Project.Services;
 
 
 
 namespace UM_Project.Controllers
 
 {
-
     [Authorize(Roles = RoleNames.Professor)]
 
     public class ProfessorController : Controller
 
     {
-
+        private readonly IUiText _ui;
         private readonly ApplicationDbContext _context;
 
         private readonly IEmailService _emailService;
@@ -33,8 +33,10 @@ namespace UM_Project.Controllers
             ApplicationDbContext context,
             IEmailService emailService,
             ISystemSettingsService settings,
-            ISchoolCalendarService calendar)
+            ISchoolCalendarService calendar, IUiText ui)
         {
+            _ui = ui;
+
             _context = context;
             _emailService = emailService;
             _settings = settings;
@@ -46,7 +48,6 @@ namespace UM_Project.Controllers
         private async Task<Professor?> GetCurrentProfessorAsync()
 
         {
-
             var userEmail = User.Identity?.Name;
 
             return await _context.Professors
@@ -62,7 +63,6 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> Dashboard()
 
         {
-
             var professor = await GetCurrentProfessorAsync();
 
             if (professor == null) return View("NoProfile");
@@ -116,7 +116,6 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> CourseStudents(int id)
 
         {
-
             var professor = await GetCurrentProfessorAsync();
 
             if (professor == null) return View("NoProfile");
@@ -168,7 +167,6 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> SetGrade(int studentId, int courseId, int gradeValue)
 
         {
-
             var professor = await GetCurrentProfessorAsync();
 
             if (professor == null) return View("NoProfile");
@@ -186,10 +184,9 @@ namespace UM_Project.Controllers
             if (!await _settings.IsValidGradeAsync(gradeValue))
 
             {
-
                 var academic = await _settings.GetAcademicSettingsAsync();
 
-                TempData["Error"] = $"Grade must be between {academic.GradeMinimum} and {academic.GradeMaximum}.";
+                TempData["Error"] = _ui.Format("Flash_GradeRange", academic.GradeMinimum, academic.GradeMaximum);
 
                 return RedirectToAction(nameof(CourseStudents), new { id = courseId });
 
@@ -206,8 +203,7 @@ namespace UM_Project.Controllers
             if (existingGrade != null)
 
             {
-
-                TempData["Error"] = "Grade already assigned. Contact admin to change it.";
+                TempData["Error"] = _ui["Flash_GradeAlreadyAssigned"];
 
                 return RedirectToAction(nameof(CourseStudents), new { id = courseId });
 
@@ -218,7 +214,6 @@ namespace UM_Project.Controllers
             _context.Add(new Grade
 
             {
-
                 StudentId = studentId,
 
                 CourseId = courseId,
@@ -241,7 +236,7 @@ namespace UM_Project.Controllers
 
 
 
-            TempData["Success"] = "Grade saved successfully.";
+            TempData["Success"] = _ui["Flash_GradeSaved"];
 
             return RedirectToAction(nameof(CourseStudents), new { id = courseId });
 
@@ -252,7 +247,6 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> Attendance(int id, DateTime? date)
 
         {
-
             var professor = await GetCurrentProfessorAsync();
 
             if (professor == null) return View("NoProfile");
@@ -319,7 +313,6 @@ namespace UM_Project.Controllers
             var vm = new ProfessorAttendanceViewModel
 
             {
-
                 Course = course,
 
                 Date = attendanceDate,
@@ -345,7 +338,6 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> SaveAttendance(int courseId, DateTime date, string[]? absent)
 
         {
-
             var professor = await GetCurrentProfessorAsync();
 
             if (professor == null) return View("NoProfile");
@@ -361,7 +353,7 @@ namespace UM_Project.Controllers
             var attendanceDate = date.Date;
             if (!await _calendar.IsAttendanceAllowedAsync(attendanceDate))
             {
-                TempData["Error"] = await _calendar.GetBlockReasonAsync(attendanceDate) ?? "Attendance blocked for this date.";
+                TempData["Error"] = await _calendar.GetBlockReasonAsync(attendanceDate) ?? _ui["Flash_AttendanceBlocked"];
                 return RedirectToAction(nameof(Attendance), new { id = courseId, date = attendanceDate.ToString("yyyy-MM-dd") });
             }
 
@@ -396,11 +388,9 @@ namespace UM_Project.Controllers
             foreach (var studentId in studentIds)
 
             {
-
                 foreach (var slot in slots)
 
                 {
-
                     var key = $"{studentId}:{slot.LessonSlotId}";
 
                     var isPresent = !absentSet.Contains(key);
@@ -422,11 +412,9 @@ namespace UM_Project.Controllers
                     if (record == null)
 
                     {
-
                         _context.AttendanceRecords.Add(new AttendanceRecord
 
                         {
-
                             StudentId = studentId,
 
                             CourseId = courseId,
@@ -448,7 +436,6 @@ namespace UM_Project.Controllers
                     else
 
                     {
-
                         record.IsPresent = isPresent;
 
                         record.ProfessorId = professor.ProfessorId;
@@ -467,7 +454,7 @@ namespace UM_Project.Controllers
 
             var absentCount = absentSet.Count;
 
-            TempData["Success"] = $"Attendance saved for {attendanceDate:dd MMM yyyy} ({absentCount} absence marks).";
+            TempData["Success"] = _ui.Format("Flash_AttendanceSaved", attendanceDate, absentCount);
 
             return RedirectToAction(nameof(Attendance), new { id = courseId, date = attendanceDate.ToString("yyyy-MM-dd") });
 
@@ -478,7 +465,6 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> Schedules()
 
         {
-
             var professor = await GetCurrentProfessorAsync();
 
             if (professor == null) return View("NoProfile");

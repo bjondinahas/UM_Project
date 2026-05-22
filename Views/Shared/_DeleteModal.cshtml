@@ -1,20 +1,20 @@
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
-            <div class="modal-header text-white" style="background: linear-gradient(135deg, #f87171, #ef4444);">
-                <h5 class="modal-title"><i class="fas fa-trash-alt me-2"></i>Confirm Delete</h5>
+            <div class="modal-header text-white" style="background: var(--navy-800);">
+                <h5 class="modal-title"><i class="fas fa-trash-alt me-2"></i>@Localizer["Modal_DeleteTitle"]</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body py-4">
-                <p class="mb-2">Delete <strong id="deleteItemName"></strong>?</p>
-                <p class="text-danger small mb-0"><i class="fas fa-exclamation-triangle me-1"></i>This cannot be undone.</p>
+                <p class="mb-2">@Localizer["Modal_DeleteQuestion"] <strong id="deleteItemName"></strong>?</p>
+                <p class="text-danger small mb-0"><i class="fas fa-exclamation-triangle me-1"></i>@Localizer["Modal_CannotUndo"]</p>
             </div>
             <div class="modal-footer border-0 bg-light">
                 <form id="deleteForm" method="post" asp-action="DeleteConfirmed">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="id" id="deleteItemId" />
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@Localizer["Common_Cancel"]</button>
+                    <button type="submit" class="btn btn-danger">@Localizer["Modal_DeleteConfirm"]</button>
                 </form>
             </div>
         </div>

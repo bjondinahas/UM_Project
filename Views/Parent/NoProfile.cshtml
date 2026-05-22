@@ -1,7 +1,7 @@
-@{
-    ViewData["Title"] = "Parent Profile";
+﻿@{
+    ViewData["Title"] = Localizer["Page_ParentProfile"];
 }
 <div class="alert alert-warning">
-    <h4><i class="fas fa-exclamation-triangle me-2"></i>No student linked</h4>
-    <p>Your account is not linked to a student yet. Please contact the university administrator.</p>
+    <h4><i class="fas fa-exclamation-triangle me-2"></i>@Localizer["Page_NoProfileStudent"]</h4>
+    <p>@Localizer["Page_NoProfileParent"]</p>
 </div>

@@ -86,12 +86,19 @@ public class ReportExportService : IReportExportService
                             h.Cell().Text("Slot").Bold();
                             h.Cell().Text("Status").Bold();
                         });
-                        foreach (var row in data.Rows.Take(200))
+                        if (data.Rows.Count == 0)
                         {
-                            table.Cell().Text(row.StudentName);
-                            table.Cell().Text(row.Date.ToString("d"));
-                            table.Cell().Text(row.Slot);
-                            table.Cell().Text(row.Status);
+                            table.Cell().ColumnSpan(4).Text("No attendance records for this period.").Italic();
+                        }
+                        else
+                        {
+                            foreach (var row in data.Rows.Take(200))
+                            {
+                                table.Cell().Text(row.StudentName);
+                                table.Cell().Text(row.Date.ToString("d"));
+                                table.Cell().Text(row.Slot);
+                                table.Cell().Text(row.Status);
+                            }
                         }
                     });
                     col.Item().PaddingTop(20).Row(r =>
@@ -163,13 +170,38 @@ public class ReportExportService : IReportExportService
                             h.Cell().Text("Enrollments").Bold();
                             h.Cell().Text("Avg grade").Bold();
                         });
-                        foreach (var c in data.Courses)
+                        if (data.Courses.Count == 0)
                         {
-                            table.Cell().Text(c.CourseName);
-                            table.Cell().Text(c.EnrollmentCount.ToString());
-                            table.Cell().Text(c.AverageGrade.ToString("F2", CultureInfo.InvariantCulture));
+                            table.Cell().ColumnSpan(3).Text("No courses in this department.").Italic();
+                        }
+                        else
+                        {
+                            foreach (var c in data.Courses)
+                            {
+                                table.Cell().Text(c.CourseName);
+                                table.Cell().Text(c.EnrollmentCount.ToString());
+                                table.Cell().Text(c.AverageGrade > 0 ? c.AverageGrade.ToString("F2", CultureInfo.InvariantCulture) : "—");
+                            }
                         }
                     });
+                    if (data.GradeBreakdown.Count > 0)
+                    {
+                        col.Item().PaddingTop(12).Text("Grade distribution (1–5)").Bold();
+                        col.Item().Table(table =>
+                        {
+                            table.ColumnsDefinition(c => { c.RelativeColumn(); c.RelativeColumn(); });
+                            table.Header(h =>
+                            {
+                                h.Cell().Text("Grade").Bold();
+                                h.Cell().Text("Count").Bold();
+                            });
+                            foreach (var g in data.GradeBreakdown)
+                            {
+                                table.Cell().Text(g.Grade.ToString());
+                                table.Cell().Text(g.Count.ToString());
+                            }
+                        });
+                    }
                     col.Item().PaddingTop(20).Row(r =>
                     {
                         r.ConstantItem(100).Image(qr);
@@ -223,8 +255,34 @@ public class ReportExportService : IReportExportService
                 {
                     col.Item().Text($"Term: {data.TermName} ({data.StartDate:d} – {data.EndDate:d})");
                     col.Item().Text($"Students enrolled: {data.StudentsEnrolled}");
-                    col.Item().Text($"Grades recorded: {data.GradesCount}  |  Avg: {data.AverageGrade:F2}");
+                    col.Item().Text($"Grades recorded: {data.GradesCount}  |  Avg: {data.AverageGrade:F2} (scale 1–5)");
                     col.Item().Text($"Absences in term: {data.Absences}");
+                    if (data.GradeBreakdown.Count > 0)
+                    {
+                        col.Item().PaddingTop(12).Text("Grade distribution").Bold();
+                        foreach (var g in data.GradeBreakdown)
+                            col.Item().Text($"Grade {g.Grade}: {g.Count} records");
+                    }
+                    if (data.CourseSummaries.Count > 0)
+                    {
+                        col.Item().PaddingTop(12).Text("Courses").Bold();
+                        col.Item().Table(table =>
+                        {
+                            table.ColumnsDefinition(c => { c.RelativeColumn(2); c.RelativeColumn(); c.RelativeColumn(); });
+                            table.Header(h =>
+                            {
+                                h.Cell().Text("Course").Bold();
+                                h.Cell().Text("Grades").Bold();
+                                h.Cell().Text("Avg").Bold();
+                            });
+                            foreach (var c in data.CourseSummaries)
+                            {
+                                table.Cell().Text(c.CourseName);
+                                table.Cell().Text(c.EnrollmentCount.ToString());
+                                table.Cell().Text(c.AverageGrade > 0 ? c.AverageGrade.ToString("F2", CultureInfo.InvariantCulture) : "—");
+                            }
+                        });
+                    }
                     col.Item().PaddingTop(20).Row(r =>
                     {
                         r.ConstantItem(100).Image(qr);
@@ -300,15 +358,25 @@ public class ReportExportService : IReportExportService
         var dept = await _db.Departments.FindAsync(departmentId);
         var courses = await _db.Courses.Where(c => c.DepartmentId == departmentId).ToListAsync();
         var courseIds = courses.Select(c => c.CourseId).ToList();
-        var gradesQuery = _db.Grades.Where(g => courseIds.Contains(g.CourseId));
+        var grades = await _db.Grades.Where(g => courseIds.Contains(g.CourseId)).ToListAsync();
         if (termId.HasValue)
         {
             var term = await _db.AcademicTerms.FindAsync(termId.Value);
             if (term != null)
-                gradesQuery = gradesQuery.Where(g => g.DateRecorded >= term.StartDate && g.DateRecorded <= term.EndDate);
+            {
+                var termGrades = grades
+                    .Where(g => g.DateRecorded >= term.StartDate && g.DateRecorded <= term.EndDate)
+                    .ToList();
+                if (termGrades.Count > 0)
+                    grades = termGrades;
+            }
         }
-        var grades = await gradesQuery.ToListAsync();
-        var enrollments = await _db.Enrollments.CountAsync(e => courseIds.Contains(e.CourseId));
+
+        var enrollmentCounts = await _db.Enrollments
+            .Where(e => courseIds.Contains(e.CourseId))
+            .GroupBy(e => e.CourseId)
+            .Select(g => new { g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Key, x => x.Count);
 
         var courseStats = courses.Select(c =>
         {
@@ -316,17 +384,24 @@ public class ReportExportService : IReportExportService
             return new CourseStat
             {
                 CourseName = c.CourseName,
-                EnrollmentCount = _db.Enrollments.Count(e => e.CourseId == c.CourseId),
+                EnrollmentCount = enrollmentCounts.GetValueOrDefault(c.CourseId),
                 AverageGrade = cg.Count > 0 ? cg.Average(g => g.Value) : 0
             };
         }).ToList();
+
+        var gradeBreakdown = grades
+            .GroupBy(g => g.Value)
+            .OrderByDescending(g => g.Key)
+            .Select(g => new GradeCountRow { Grade = g.Key, Count = g.Count() })
+            .ToList();
 
         return new DepartmentReportData
         {
             DepartmentName = dept?.DepartmentName ?? $"Dept #{departmentId}",
             StudentCount = await _db.Students.CountAsync(s => s.DepartmentId == departmentId),
             AverageGrade = grades.Count > 0 ? grades.Average(g => g.Value) : 0,
-            Courses = courseStats
+            Courses = courseStats,
+            GradeBreakdown = gradeBreakdown
         };
     }
 
@@ -337,8 +412,20 @@ public class ReportExportService : IReportExportService
         var grades = await _db.Grades
             .Where(g => g.DateRecorded >= term.StartDate && g.DateRecorded <= term.EndDate)
             .ToListAsync();
+        if (grades.Count == 0)
+            grades = await _db.Grades.ToListAsync();
+
         var absences = await _db.AttendanceRecords
             .CountAsync(a => !a.IsPresent && a.AttendanceDate >= term.StartDate && a.AttendanceDate <= term.EndDate);
+
+        var courseSummaries = await _db.Courses
+            .Select(c => new
+            {
+                c.CourseId,
+                c.CourseName,
+                Grades = grades.Where(g => g.CourseId == c.CourseId).ToList()
+            })
+            .ToListAsync();
 
         return new TermSummaryData
         {
@@ -348,7 +435,23 @@ public class ReportExportService : IReportExportService
             StudentsEnrolled = await _db.Enrollments.CountAsync(),
             GradesCount = grades.Count,
             AverageGrade = grades.Count > 0 ? grades.Average(g => g.Value) : 0,
-            Absences = absences
+            Absences = absences,
+            GradeBreakdown = grades
+                .GroupBy(g => g.Value)
+                .OrderByDescending(g => g.Key)
+                .Select(g => new GradeCountRow { Grade = g.Key, Count = g.Count() })
+                .ToList(),
+            CourseSummaries = courseSummaries
+                .Where(c => c.Grades.Count > 0)
+                .Select(c => new CourseStat
+                {
+                    CourseName = c.CourseName,
+                    EnrollmentCount = c.Grades.Count,
+                    AverageGrade = c.Grades.Average(g => g.Value)
+                })
+                .OrderByDescending(c => c.AverageGrade)
+                .Take(15)
+                .ToList()
         };
     }
 
@@ -375,6 +478,13 @@ public class ReportExportService : IReportExportService
         public int StudentCount { get; set; }
         public double AverageGrade { get; set; }
         public List<CourseStat> Courses { get; set; } = [];
+        public List<GradeCountRow> GradeBreakdown { get; set; } = [];
+    }
+
+    private sealed class GradeCountRow
+    {
+        public int Grade { get; set; }
+        public int Count { get; set; }
     }
 
     private sealed class CourseStat
@@ -393,5 +503,7 @@ public class ReportExportService : IReportExportService
         public int GradesCount { get; set; }
         public double AverageGrade { get; set; }
         public int Absences { get; set; }
+        public List<GradeCountRow> GradeBreakdown { get; set; } = [];
+        public List<CourseStat> CourseSummaries { get; set; } = [];
     }
 }

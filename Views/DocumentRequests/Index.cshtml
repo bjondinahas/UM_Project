@@ -1,22 +1,22 @@
-@model IEnumerable<UM_Project.Models.DocumentRequest>
+﻿@model IEnumerable<UM_Project.Models.DocumentRequest>
 @{
-    ViewData["Title"] = "Document requests";
+    ViewData["Title"] = Localizer["Nav_DocumentRequests"];
     var children = ViewBag.Children as List<UM_Project.Models.ParentGuardian> ?? new();
 }
 
 <link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
 
 <div class="max-w-4xl mx-auto pb-8">
-    <h1 class="text-2xl font-extrabold text-red-900 mb-2">Document requests</h1>
-    <p class="text-gray-600 mb-4">Request official transcripts for your linked children.</p>
+    <h1 class="text-2xl font-extrabold text-red-900 mb-2">@Localizer["Doc_RequestsTitle"]</h1>
+    <p class="text-gray-600 mb-4">@Localizer["Doc_RequestsSubtitle"] for your linked children.</p>
 
     <div class="um-card mb-4">
-        <h3 class="h6 fw-bold text-red-900 mb-3">Request transcript</h3>
+        <h3 class="h6 fw-bold text-red-900 mb-3">@Localizer["Doc_RequestTranscript"]</h3>
         <form asp-action="RequestTranscript" method="post" class="row g-2 um-form-row-stack">
             @Html.AntiForgeryToken()
             <div class="col-md-6">
                 <select name="studentId" class="form-select" required>
-                    <option value="">Select child</option>
+                    <option value="">@Localizer["Form_SelectStudent"]</option>
                     @foreach (var c in children)
                     {
                         <option value="@c.StudentId">@c.Student?.StudentNumber — @c.Student?.FullName</option>
@@ -24,23 +24,23 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <input type="text" name="notes" class="form-control" placeholder="Optional note" />
+                <input type="text" name="notes" class="form-control" placeholder="@Localizer["Placeholder_OptionalNote"]" />
             </div>
             <div class="col-12">
-                <button type="submit" class="um-btn-primary">Submit request</button>
+                <button type="submit" class="um-btn-primary">@Localizer["Msg_SubmitRequest"]</button>
             </div>
         </form>
     </div>
 
     <div class="um-card">
-        <h3 class="h6 fw-bold mb-3">Your requests</h3>
+        <h3 class="h6 fw-bold mb-3">@Localizer["Doc_YourRequests"]</h3>
         <div class="um-table-wrap">
             <table class="um-table table-sm">
-                <thead><tr><th>Student</th><th>Type</th><th>Status</th><th>Requested</th></tr></thead>
+                <thead><tr><th>@Localizer["Table_Student"]</th><th>Type</th><th>Status</th><th>Requested</th></tr></thead>
                 <tbody>
                     @if (!Model.Any())
                     {
-                        <tr><td colspan="4" class="text-muted">No requests yet.</td></tr>
+                        <tr><td colspan="4" class="text-muted">@Localizer["Msg_NoRequests"]</td></tr>
                     }
                     @foreach (var r in Model)
                     {

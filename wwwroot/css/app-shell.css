@@ -1,63 +1,58 @@
-/* App shell — main area + topbar */
 .app-main {
-    background: #f8fafc;
+    background: var(--surface-page);
 }
 
 .app-main-content {
-    padding: 1.25rem 1.5rem 2rem;
-    max-width: 1400px;
+    padding: 1.5rem 2rem 2.5rem;
+    max-width: 1440px;
     margin: 0 auto;
     width: 100%;
 }
 
 .app-topbar {
     display: none;
-    background: #fff;
-    padding: 0.5rem 1rem;
+    background: var(--surface-card);
+    padding: 0.65rem 1rem;
     align-items: center;
     gap: 0.75rem;
     position: sticky;
     top: 0;
     z-index: 1030;
-    border-bottom: 1px solid #e5e7eb;
-    min-height: 52px;
+    border-bottom: 1px solid var(--surface-border);
+    min-height: 56px;
 }
 
 .app-topbar-title {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    color: #111827;
-    letter-spacing: -0.02em;
+    color: var(--navy-800);
 }
 
 .app-topbar-toggle {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    color: #374151;
-    padding: 0.35rem 0.55rem;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    line-height: 1;
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    color: var(--navy-800);
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
 }
 
-.app-topbar-toggle:hover {
-    background: var(--brand-50, #fff5f5);
-    border-color: #fecdd3;
-    color: var(--brand-700);
-}
+.app-topbar-desktop-lang { display: none; }
 
 .app-topbar-actions .btn-light {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.65rem;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid var(--surface-border);
+    background: var(--navy-800);
+    color: #fff;
+}
+
+.app-topbar-actions .btn-light:hover {
+    background: var(--navy-700);
+    color: #fff;
 }
 
 @media (max-width: 991.98px) {
-    .app-topbar {
-        display: flex;
-    }
-    .app-main-content {
-        padding: 1rem;
-    }
+    .app-topbar { display: flex; }
+    .app-main-content { padding: 1rem; }
 }
