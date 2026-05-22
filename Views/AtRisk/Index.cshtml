@@ -1,0 +1,57 @@
+@model IEnumerable<UM_Project.Models.AtRiskStudentViewModel>
+@{
+    ViewData["Title"] = Localizer["Nav_AtRisk"];
+    ViewData["PageTitle"] = Localizer["Nav_AtRisk"];
+    ViewData["PageIcon"] = "fa-triangle-exclamation";
+    ViewData["PageSubtitle"] = Localizer["AtRisk_Subtitle"];
+    ViewData["ShowCreate"] = false;
+}
+
+<link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
+
+<div class="um-page">
+    <partial name="_AdminPageHeader" />
+    @if (!Model.Any())
+    {
+        <div class="um-card text-center py-5 text-muted">@Localizer["AtRisk_None"]</div>
+    }
+    else
+    {
+        <div class="um-page-grid">
+            @foreach (var item in Model)
+            {
+                <div class="um-card">
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                        <div>
+                            <span class="um-badge um-badge-gray">@item.Student.StudentNumber</span>
+                            <h3 class="h6 fw-bold mb-0 mt-1">@item.Student.FullName</h3>
+                            <p class="small text-muted mb-0">@(item.Student.Department?.DepartmentName ?? "—")</p>
+                        </div>
+                        <a asp-controller="Students" asp-action="Details" asp-route-id="@item.Student.StudentId" class="um-btn-sm um-btn-edit">@Localizer["AtRisk_Profile"]</a>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mb-2">
+                        <span class="badge bg-danger-subtle text-danger border">@Localizer["AtRisk_Avg"] @item.AverageGrade</span>
+                        <span class="badge bg-warning-subtle text-dark border">@item.AbsencesLast30Days @Localizer["AtRisk_Absences"]</span>
+                        <span class="badge bg-secondary-subtle border">@item.LowGradeCount @Localizer["AtRisk_LowGrades"]</span>
+                    </div>
+                    <ul class="small ps-3 mb-3">
+                        @foreach (var reason in item.Reasons) { <li>@reason</li> }
+                    </ul>
+                    @if (item.Notes.Any())
+                    {
+                        <div class="small border-top pt-2 mb-2">
+                            <strong>@Localizer["AtRisk_Notes"]</strong>
+                            @foreach (var n in item.Notes) { <div class="text-muted">@n.Note <span class="fst-italic">(@n.CreatedAtUtc.ToLocalTime().ToString("g"))</span></div> }
+                        </div>
+                    }
+                    <form asp-action="AddNote" method="post" class="d-flex gap-2 flex-wrap">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="studentId" value="@item.Student.StudentId" />
+                        <input type="text" name="note" class="form-control form-control-sm flex-grow-1" placeholder="@Localizer["AtRisk_NotePlaceholder"]" required />
+                        <button type="submit" class="um-btn-sm um-btn-edit">@Localizer["Common_Save"]</button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+</div>

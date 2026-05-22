@@ -1,0 +1,56 @@
+@model IEnumerable<UM_Project.Models.DocumentRequest>
+@{
+    ViewData["Title"] = "Document requests";
+    ViewData["PageTitle"] = "Document requests";
+    ViewData["PageIcon"] = "fa-file-pdf";
+    ViewData["PageSubtitle"] = "Approve transcripts and generate PDF";
+    ViewData["ShowCreate"] = false;
+}
+
+<link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
+
+<div class="um-page">
+    <partial name="_AdminPageHeader" />
+    <div class="um-table-wrap um-panel p-0">
+        <table class="um-table">
+            <thead>
+                <tr><th>Student</th><th>Dept</th><th>Status</th><th>Requested</th><th>Parent note</th><th class="hide-mobile">Actions</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="um-badge um-badge-gray me-1">@r.Student?.StudentNumber</span>
+                            @r.Student?.FullName
+                        </td>
+                        <td class="hide-mobile">@(r.Student?.Department?.DepartmentName ?? "—")</td>
+                        <td><span class="um-badge um-badge-gray">@r.Status</span></td>
+                        <td class="text-nowrap small">@r.RequestedAtUtc.ToLocalTime().ToString("g")</td>
+                        <td class="small">@(r.ParentNotes ?? "—")</td>
+                        <td>
+                            @if (r.Status == UM_Project.Models.DocumentRequestStatuses.Pending)
+                            {
+                                <form asp-action="Approve" method="post" class="d-inline-flex gap-1 flex-wrap">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@r.DocumentRequestId" />
+                                    <input type="text" name="adminNotes" class="form-control form-control-sm" style="max-width:120px" placeholder="Note" />
+                                    <button type="submit" class="um-btn-sm um-btn-edit">Approve</button>
+                                </form>
+                                <form asp-action="Reject" method="post" class="d-inline" onsubmit="return confirm('Reject?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@r.DocumentRequestId" />
+                                    <button type="submit" class="um-btn-sm um-btn-delete">Reject</button>
+                                </form>
+                            }
+                            @if (r.Status == UM_Project.Models.DocumentRequestStatuses.Approved || r.Status == UM_Project.Models.DocumentRequestStatuses.Completed)
+                            {
+                                <a asp-action="DownloadPdf" asp-route-id="@r.DocumentRequestId" class="um-btn-sm um-btn-edit"><i class="fas fa-download"></i> PDF</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

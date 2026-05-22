@@ -1,74 +1,41 @@
 @{
     ViewData["Title"] = "Assign Grade";
+    ViewData["FormTitle"] = "Assign Grade";
+    ViewData["FormIcon"] = "fa-star";
     var students = ViewBag.Students as List<UM_Project.Models.Student>;
     var courses = ViewBag.Courses as List<UM_Project.Models.Course>;
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white text-center py-3">
-                    <h3 class="mb-0"><i class="fas fa-star me-2"></i>Assign Grade to Student</h3>
-                </div>
-                <div class="card-body p-4">
-                    <form method="post" asp-action="Create">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-                        <div class="form-floating mb-3">
-                            <select name="studentId" class="form-select" required>
-                                <option value="">-- Select Student --</option>
-                                @if (students != null)
-                                {
-                                    foreach (var s in students)
-                                    {
-                                        <option value="@s.StudentId">@s.FullName (@s.StudentNumber)</option>
-                                    }
-                                }
-                            </select>
-                            <label>Student</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <select name="courseId" class="form-select" required>
-                                <option value="">-- Select Course --</option>
-                                @if (courses != null)
-                                {
-                                    foreach (var c in courses)
-                                    {
-                                        <option value="@c.CourseId">@c.CourseCode - @c.CourseName</option>
-                                    }
-                                }
-                            </select>
-                            <label>Course</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <select name="value" class="form-select" required>
-                                <option value="">-- Select Grade --</option>
-                                <option value="10">10 (Excellent)</option>
-                                <option value="9">9 (Very Good)</option>
-                                <option value="8">8 (Good)</option>
-                                <option value="7">7 (Satisfactory)</option>
-                                <option value="6">6 (Pass)</option>
-                                <option value="5">5 (Fail)</option>
-                            </select>
-                            <label>Grade (5-10)</label>
-                        </div>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Assign Grade
-                            </button>
-                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        </div>
-                    </form>
-                </div>
+<div class="um-page">
+    <partial name="_AdminFormHeader" />
+    <div class="um-form-panel">
+        <form method="post" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="mb-3">
+                <label class="form-label">Student</label>
+                <select name="studentId" class="form-select" required>
+                    <option value="">Select student</option>
+                    @if (students != null) { foreach (var s in students) { <option value="@s.StudentId">@s.FullName</option> } }
+                </select>
             </div>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Course</label>
+                <select name="courseId" class="form-select" required>
+                    <option value="">Select course</option>
+                    @if (courses != null) { foreach (var c in courses) { <option value="@c.CourseId">@c.CourseCode — @c.CourseName</option> } }
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Grade (5–10)</label>
+                <select name="value" class="form-select" required>
+                    <option value="">Select grade</option>
+                    @for (int i = 10; i >= 5; i--) { <option value="@i">@i</option> }
+                </select>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Assign Grade</button>
+                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

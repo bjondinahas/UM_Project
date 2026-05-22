@@ -2,28 +2,38 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using UM_Project.Models;
 using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleNames.SuperAdmin)]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
+        private readonly IAdminPasswordService _passwordService;
+        private readonly AccountProvisioningSettings _settings;
 
-        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
+        public UsersController(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IEmailService emailService,
+            IAdminPasswordService passwordService,
+            IOptions<AccountProvisioningSettings> settings)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
+            _passwordService = passwordService;
+            _settings = settings.Value;
         }
 
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users.OrderBy(u => u.FullName).ToListAsync();
             var userRoles = new Dictionary<string, string>();
             foreach (var user in users)
             {
@@ -31,12 +41,13 @@ namespace UM_Project.Controllers
                 userRoles[user.Id] = roles.FirstOrDefault() ?? "No Role";
             }
             ViewBag.UserRoles = userRoles;
+            ViewBag.IsSuperAdmin = true;
             return View(users);
         }
 
         public IActionResult Create()
         {
-            ViewBag.Roles = _roleManager.Roles.ToList();
+            ViewBag.Roles = _roleManager.Roles.OrderBy(r => r.Name).ToList();
             return View();
         }
 
@@ -53,20 +64,22 @@ namespace UM_Project.Controllers
                     FullName = model.FullName,
                     CustomId = model.CustomId,
                     Address = model.Address,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    MustChangePassword = true
                 };
-                var result = await _userManager.CreateAsync(user, password);
+                var pwd = string.IsNullOrWhiteSpace(password) ? _settings.DefaultPassword : password;
+                var result = await _userManager.CreateAsync(user, pwd);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, role);
-                    await _emailService.SendWelcomeEmailAsync(user.Email, user.FullName, password, role);
-                    TempData["Success"] = $"User {user.Email} created! Email sent.";
+                    await _emailService.SendWelcomeEmailAsync(user.Email!, user.FullName, pwd, role);
+                    TempData["Success"] = $"User {user.Email} created with role {role}.";
                     return RedirectToAction(nameof(Index));
                 }
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
             }
-            ViewBag.Roles = _roleManager.Roles.ToList();
+            ViewBag.Roles = _roleManager.Roles.OrderBy(r => r.Name).ToList();
             return View(model);
         }
 
@@ -76,7 +89,9 @@ namespace UM_Project.Controllers
             if (user == null) return NotFound();
             var roles = await _userManager.GetRolesAsync(user);
             ViewBag.CurrentRole = roles.FirstOrDefault();
-            ViewBag.Roles = _roleManager.Roles.ToList();
+            ViewBag.Roles = _roleManager.Roles.OrderBy(r => r.Name).ToList();
+            ViewBag.DefaultPassword = _settings.DefaultPassword;
+            ViewBag.CanEditRole = true;
             return View(user);
         }
 
@@ -86,17 +101,35 @@ namespace UM_Project.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
+
             user.Email = model.Email;
             user.UserName = model.Email;
             user.FullName = model.FullName;
             user.CustomId = model.CustomId;
             user.Address = model.Address;
             await _userManager.UpdateAsync(user);
+
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
             await _userManager.AddToRoleAsync(user, role);
-            TempData["Success"] = "User updated!";
+
+            TempData["Success"] = "User and role updated.";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string id, string? newPassword, bool requireChange = true)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var pwd = string.IsNullOrWhiteSpace(newPassword) ? _settings.DefaultPassword : newPassword;
+            var (ok, err) = await _passwordService.ResetPasswordAsync(id, pwd, requireChange);
+            TempData[ok ? "Success" : "Error"] = ok
+                ? $"Password reset for {user.Email}. New password: {pwd}"
+                : err;
+            return RedirectToAction(nameof(Edit), new { id });
         }
 
         [HttpPost]
@@ -104,14 +137,14 @@ namespace UM_Project.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user != null && user.Email != "admin@umproject.com")
+            if (user != null && user.Email != "superadmin@umproject.com")
             {
                 await _userManager.DeleteAsync(user);
-                TempData["Success"] = "User deleted successfully!";
+                TempData["Success"] = "User deleted.";
             }
             else
             {
-                TempData["Error"] = "Cannot delete the main admin!";
+                TempData["Error"] = "Cannot delete the primary SuperAdmin account.";
             }
             return RedirectToAction(nameof(Index));
         }

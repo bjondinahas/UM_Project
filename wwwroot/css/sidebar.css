@@ -1,0 +1,381 @@
+/* Modern app shell — light sidebar, red accent */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: 272px;
+    min-width: 272px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1040;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-sidebar-brand {
+    padding: 1.15rem 1.25rem;
+    text-decoration: none;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.app-sidebar-brand:hover {
+    color: #991b1b;
+}
+
+.app-sidebar-brand-icon {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+}
+
+.app-sidebar-brand-text {
+    line-height: 1.2;
+}
+
+.app-sidebar-brand-text strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.app-sidebar-brand-text span {
+    font-size: 0.7rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.app-sidebar-user {
+    margin: 0.85rem 1rem;
+    padding: 0.85rem 1rem;
+    background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+}
+
+.app-sidebar-user-name {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-sidebar-user-email {
+    font-size: 0.72rem;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0.15rem;
+}
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.role-badge--super {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #78350f;
+}
+
+.role-badge--admin {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.role-badge--professor { background: #dbeafe; color: #1e40af; }
+.role-badge--student { background: #dcfce7; color: #166534; }
+.role-badge--parent { background: #ffedd5; color: #9a3412; }
+
+.sidebar-search {
+    margin: 0 1rem 0.5rem;
+    position: relative;
+}
+
+.sidebar-search input {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+    font-size: 0.8rem;
+    background: #f9fafb;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sidebar-search input:focus {
+    outline: none;
+    border-color: #fca5a5;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+    background: #fff;
+}
+
+.sidebar-search i {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.75rem;
+}
+
+.app-sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.35rem 0.75rem 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
+
+.nav-group {
+    margin-bottom: 0.35rem;
+}
+
+.nav-group-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 0.65rem;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.nav-group-toggle:hover {
+    background: #f9fafb;
+    color: #374151;
+}
+
+.nav-group-toggle i.chevron {
+    font-size: 0.6rem;
+    transition: transform 0.2s;
+}
+
+.nav-group.collapsed .nav-group-toggle i.chevron {
+    transform: rotate(-90deg);
+}
+
+.nav-group.collapsed .nav-group-items {
+    display: none;
+}
+
+.nav-group-items {
+    padding: 0.15rem 0 0.35rem;
+}
+
+.app-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 0.75rem;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 2px;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+}
+
+.app-sidebar-link:hover {
+    background: #f9fafb;
+    color: #991b1b;
+}
+
+.app-sidebar-link.active {
+    background: linear-gradient(135deg, #fef2f2, #fff5f5);
+    color: #991b1b;
+    border-color: #fecaca;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(220, 38, 38, 0.08);
+}
+
+.app-sidebar-link.active .nav-icon {
+    background: #dc2626;
+    color: #fff;
+}
+
+.app-sidebar-link--featured {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border-color: #fcd34d;
+    color: #92400e;
+}
+
+.app-sidebar-link--featured:hover {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+.app-sidebar-link--featured.active {
+    background: linear-gradient(135deg, #fde68a, #fcd34d);
+    border-color: #f59e0b;
+    color: #78350f;
+}
+
+.nav-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 9px;
+    background: #f3f4f6;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: all 0.15s;
+}
+
+.app-sidebar-link:hover .nav-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.nav-badge {
+    margin-left: auto;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    background: #dc2626;
+    color: #fff;
+}
+
+.app-sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #f3f4f6;
+    background: #fafafa;
+}
+
+.sidebar-logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: #fff;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sidebar-logout-btn:hover {
+    background: #dc2626;
+    color: #fff;
+    border-color: #dc2626;
+}
+
+.app-main {
+    flex: 1;
+    margin-left: 272px;
+    min-height: 100vh;
+    background: #f4f5f7;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main-content {
+    flex: 1;
+    padding: 1.5rem 1.75rem;
+    max-width: 100%;
+}
+
+.app-topbar {
+    display: none;
+    background: #fff;
+    color: #111827;
+    padding: 0.75rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.app-topbar-toggle {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 0.45rem 0.7rem;
+    border-radius: 10px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 1035;
+    backdrop-filter: blur(2px);
+}
+
+body.sidebar-open .sidebar-overlay {
+    display: block;
+}
+
+@media (max-width: 991.98px) {
+    .app-sidebar {
+        transform: translateX(-100%);
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.12);
+    }
+    body.sidebar-open .app-sidebar {
+        transform: translateX(0);
+    }
+    .app-main {
+        margin-left: 0;
+    }
+    .app-topbar {
+        display: flex;
+    }
+}
+
+body.app-layout {
+    margin-bottom: 0 !important;
+}
+
+body.app-layout .footer {
+    display: none;
+}

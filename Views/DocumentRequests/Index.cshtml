@@ -1,0 +1,61 @@
+@model IEnumerable<UM_Project.Models.DocumentRequest>
+@{
+    ViewData["Title"] = "Document requests";
+    var children = ViewBag.Children as List<UM_Project.Models.ParentGuardian> ?? new();
+}
+
+<link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
+
+<div class="max-w-4xl mx-auto pb-8">
+    <h1 class="text-2xl font-extrabold text-red-900 mb-2">Document requests</h1>
+    <p class="text-gray-600 mb-4">Request official transcripts for your linked children.</p>
+
+    <div class="um-card mb-4">
+        <h3 class="h6 fw-bold text-red-900 mb-3">Request transcript</h3>
+        <form asp-action="RequestTranscript" method="post" class="row g-2 um-form-row-stack">
+            @Html.AntiForgeryToken()
+            <div class="col-md-6">
+                <select name="studentId" class="form-select" required>
+                    <option value="">Select child</option>
+                    @foreach (var c in children)
+                    {
+                        <option value="@c.StudentId">@c.Student?.StudentNumber — @c.Student?.FullName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="notes" class="form-control" placeholder="Optional note" />
+            </div>
+            <div class="col-12">
+                <button type="submit" class="um-btn-primary">Submit request</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="um-card">
+        <h3 class="h6 fw-bold mb-3">Your requests</h3>
+        <div class="um-table-wrap">
+            <table class="um-table table-sm">
+                <thead><tr><th>Student</th><th>Type</th><th>Status</th><th>Requested</th></tr></thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="4" class="text-muted">No requests yet.</td></tr>
+                    }
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.Student?.FullName</td>
+                            <td>@r.RequestType</td>
+                            <td>
+                                <span class="um-badge @(r.Status == "Pending" ? "um-badge-orange" : r.Status == "Approved" || r.Status == "Completed" ? "um-badge-green" : "um-badge-red")">@r.Status</span>
+                            </td>
+                            <td class="text-nowrap">@r.RequestedAtUtc.ToLocalTime().ToString("g")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a asp-controller="Parent" asp-action="Dashboard" class="text-danger fw-semibold mt-3 d-inline-block">← Dashboard</a>
+</div>

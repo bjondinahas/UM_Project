@@ -1,0 +1,102 @@
+@{
+    ViewData["Title"] = Localizer["Nav_ControlCenter"];
+    var settings = ViewBag.Settings as UM_Project.Models.AcademicSettingsDto;
+    var gMin = settings?.GradeMinimum ?? 5;
+    var gMax = settings?.GradeMaximum ?? 10;
+    var gPass = settings?.GradePassingMinimum ?? 6;
+    var slots = (int)(ViewBag.LessonSlotCount ?? 0);
+    var users = (int)(ViewBag.UserCount ?? 0);
+    var lessonsDay = settings?.LessonsPerDay ?? 6;
+}
+
+<link rel="stylesheet" href="~/css/superadmin-hub.css" asp-append-version="true" />
+
+<div class="sa-hub">
+    <div class="sa-hero">
+        <p class="text-sm opacity-75 mb-2"><i class="fas fa-crown me-1"></i> @Localizer["SA_Only"]</p>
+        <h1>@Localizer["SA_ControlCenter"]</h1>
+        <p>@Localizer["SA_ControlDesc"]</p>
+        <div class="sa-stat-row">
+            <span class="sa-stat-pill">@Localizer.Format("SA_GradesRange", gMin, gMax, gPass)</span>
+            <span class="sa-stat-pill">@Localizer.Format("SA_LessonSlotsDay", slots)</span>
+            <span class="sa-stat-pill">@Localizer.Format("SA_UserAccounts", users)</span>
+        </div>
+    </div>
+
+    <div class="sa-grid">
+        <a asp-action="AcademicSettings" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--gold"><i class="fas fa-sliders"></i></span>
+            <h3>@Localizer["SA_GradeRules"]</h3>
+            <p>@Localizer["SA_GradeRulesDesc"]</p>
+            <span class="sa-card-meta">@Localizer.Format("SA_LessonsDayConfigured", lessonsDay)</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-action="LessonSlots" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--red"><i class="fas fa-clock"></i></span>
+            <h3>@Localizer["SA_DailyLessonSchedule"]</h3>
+            <p>@Localizer["SA_DailyLessonDesc"]</p>
+            <span class="sa-card-meta">@Localizer.Format("SA_ActivePeriods", slots)</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="Users" asp-action="Index" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--blue"><i class="fas fa-users-cog"></i></span>
+            <h3>@Localizer["Nav_UsersRoles"]</h3>
+            <p>@Localizer["SA_UsersRolesDesc"]</p>
+            <span class="sa-card-meta">@Localizer.Format("SA_Accounts", users)</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="Admin" asp-action="AuthLogs" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--slate"><i class="fas fa-shield-halved"></i></span>
+            <h3>@Localizer["Nav_LoginActivity"]</h3>
+            <p>@Localizer["SA_LoginActivityDesc"]</p>
+            <span class="sa-card-meta">@Localizer["SA_Security"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="Admin" asp-action="ActivityLogs" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--slate"><i class="fas fa-list-check"></i></span>
+            <h3>@Localizer["SA_AdminChangeLog"]</h3>
+            <p>@Localizer["SA_AdminChangeDesc"]</p>
+            <span class="sa-card-meta">@Localizer["SA_AuditTrail"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="AcademicCalendar" asp-action="Index" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--red"><i class="fas fa-calendar-days"></i></span>
+            <h3>@Localizer["Nav_AcademicCalendar"]</h3>
+            <p>@Localizer["SA_AcademicCalendarDesc"]</p>
+            <span class="sa-card-meta">@Localizer["SA_Scheduling"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="AtRisk" asp-action="Index" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--red"><i class="fas fa-triangle-exclamation"></i></span>
+            <h3>@Localizer["Nav_AtRisk"]</h3>
+            <p>@Localizer["SA_AtRiskDesc"]</p>
+            <span class="sa-card-meta">@Localizer["SA_StudentSuccess"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="DocumentRequests" asp-action="Admin" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--blue"><i class="fas fa-file-pdf"></i></span>
+            <h3>@Localizer["Nav_DocumentRequests"]</h3>
+            <p>@Localizer["SA_DocumentDesc"]</p>
+            <span class="sa-card-meta">@Localizer["SA_Transcripts"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="Statistics" asp-action="Index" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--slate"><i class="fas fa-chart-pie"></i></span>
+            <h3>@Localizer["Dash_FullAnalytics"]</h3>
+            <p>@Localizer["SA_FullAnalyticsDesc"]</p>
+            <span class="sa-card-meta">@Localizer["SA_Reporting"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+        <a asp-controller="Reports" asp-action="Index" class="sa-card">
+            <span class="sa-card-icon sa-card-icon--slate"><i class="fas fa-file-export"></i></span>
+            <h3>@Localizer["Nav_Reports"]</h3>
+            <p>@Localizer["Reports_Subtitle"]</p>
+            <span class="sa-card-meta">@Localizer["SA_Reporting"]</span>
+            <span class="sa-card-arrow"><i class="fas fa-arrow-right"></i></span>
+        </a>
+    </div>
+
+    <p class="text-center mt-4">
+        <a asp-controller="Admin" asp-action="Dashboard" class="sa-back"><i class="fas fa-arrow-left"></i> @Localizer["Common_ToDashboard"]</a>
+    </p>
+</div>

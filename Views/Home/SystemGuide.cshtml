@@ -1,0 +1,95 @@
+@using UM_Project.Models
+@{
+    ViewData["Title"] = "How It Works";
+}
+
+<div class="dash-wrap">
+    <div class="dash-hero">
+        <h1 class="dash-hero-title"><i class="fas fa-circle-info me-2"></i>How This System Works</h1>
+        <p class="dash-hero-sub mb-0">University Manager has <strong>@RoleNames.All.Length roles</strong> — each person sees only what they need.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="dash-card h-100">
+                <div class="dash-card-head"><i class="fas fa-crown me-2"></i>SuperAdmin</div>
+                <div class="dash-card-body">
+                    <p class="small text-muted mb-2">Full control of the system.</p>
+                    <ul class="small mb-0">
+                        <li>Manage all users & assign roles</li>
+                        <li>Everything an Admin can do</li>
+                        <li>Login activity & system settings</li>
+                    </ul>
+                    <p class="mt-3 mb-0 small"><strong>Login:</strong> superadmin@umproject.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="dash-card h-100">
+                <div class="dash-card-head"><i class="fas fa-user-shield me-2"></i>Admin</div>
+                <div class="dash-card-body">
+                    <p class="small text-muted mb-2">Runs day-to-day university operations.</p>
+                    <ul class="small mb-0">
+                        <li>Students, professors, parents</li>
+                        <li>Courses, enrollments, schedules</li>
+                        <li>Grades & statistics</li>
+                    </ul>
+                    <p class="mt-3 mb-0 small"><strong>Login:</strong> admin@umproject.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="dash-card h-100">
+                <div class="dash-card-head"><i class="fas fa-chalkboard-teacher me-2"></i>Professor</div>
+                <div class="dash-card-body">
+                    <p class="small text-muted mb-2">Teaching staff.</p>
+                    <ul class="small mb-0">
+                        <li>View assigned courses</li>
+                        <li>See enrolled students</li>
+                        <li>Submit & manage grades</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="dash-card h-100">
+                <div class="dash-card-head"><i class="fas fa-user-graduate me-2"></i>Student</div>
+                <div class="dash-card-body">
+                    <p class="small text-muted mb-2">Enrolled learners.</p>
+                    <ul class="small mb-0">
+                        <li>Personal dashboard</li>
+                        <li>Class schedule</li>
+                        <li>Own grades & enrollments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="dash-card h-100">
+                <div class="dash-card-head"><i class="fas fa-people-roof me-2"></i>Parent</div>
+                <div class="dash-card-body">
+                    <p class="small text-muted mb-2">Guardian linked to a student.</p>
+                    <ul class="small mb-0">
+                        <li>View child's grades</li>
+                        <li>View child's schedule</li>
+                        <li>Read-only access</li>
+                    </ul>
+                    <p class="mt-3 mb-0 small text-muted">Admin links parent → student in <strong>Parents</strong> menu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dash-card mt-4">
+        <div class="dash-card-head"><i class="fas fa-diagram-project me-2"></i>Typical flow</div>
+        <div class="dash-card-body">
+            <ol class="mb-0">
+                <li class="mb-2"><strong>SuperAdmin</strong> creates users and assigns a role (or users self-register as Student).</li>
+                <li class="mb-2"><strong>Admin</strong> sets up departments, courses, professors, and enrolls students.</li>
+                <li class="mb-2"><strong>Professor</strong> teaches courses and records grades.</li>
+                <li class="mb-2"><strong>Student</strong> logs in to see schedule and grades.</li>
+                <li><strong>Parent</strong> is linked to a student by Admin — then can monitor progress.</li>
+            </ol>
+        </div>
+    </div>
+</div>

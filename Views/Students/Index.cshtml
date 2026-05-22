@@ -1,46 +1,51 @@
 @model IEnumerable<UM_Project.Models.Student>
 @{
     ViewData["Title"] = "Students";
+    ViewData["PageTitle"] = "Students";
+    ViewData["PageIcon"] = "fa-user-graduate";
+    ViewData["PageSubtitle"] = "Manage student records and department assignments";
+    ViewData["CreateController"] = "Students";
+    ViewData["CreateText"] = "Register student";
 }
-<style>.btn-xs{padding:.2rem .5rem;font-size:.7rem}.table td,.table th{vertical-align:middle}.action-btns{display:flex;gap:6px}</style>
-<div class="container-fluid mt-4">
-    <div class="d-flex align-items-center mb-4">
-        <a href="/Admin/Dashboard" class="back-arrow" style="font-size:1.5rem;color:#1F4959;margin-right:10px;"><i class="fas fa-arrow-left"></i></a>
-        <h1><i class="fas fa-user-graduate"></i> Students</h1>
-    </div>
-    @if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
-    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
-    <div class="card shadow-sm">
-        <div class="card-body"><input type="text" id="searchInput" class="form-control" placeholder="Search by name, email or number..." /></div>
-        <div class="card-body p-0">
-            <table class="table table-hover mb-0" id="dataTable">
-                <thead class="table-dark"><tr><th>Full Name</th><th>Email</th><th>Student Number</th><th>Department</th><th style="width:120px">Actions</th></td></thead>
+
+<div class="um-page">
+    <partial name="_AdminPageHeader" />
+    <div class="um-panel">
+        <div class="um-panel-toolbar">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email or student number..." />
+        </div>
+        <div class="table-responsive">
+            <table class="um-table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Student #</th>
+                        <th>Department</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @foreach (var s in Model)
                     {
                         <tr>
-                            <td>@s.FullName</td>
-                            <td>@s.Email</td>
-                            <td>@s.StudentNumber</td>
-                            <td>@(s.Department?.DepartmentName ?? "N/A")</td>
+                            <td><span class="um-badge um-badge-gray">@s.StudentNumber</span></td>
+                            <td class="fw-semibold">@s.FullName</td>
+                            <td><code class="small">@s.Email</code></td>
+                            <td>@(s.Department?.DepartmentName ?? "—")</td>
                             <td>
-                                <div class="action-btns">
-                                    <a asp-action="Edit" asp-route-id="@s.StudentId" class="btn btn-info btn-xs">Edit</a>
-                                    <button type="button" class="btn btn-secondary btn-xs" onclick="showDeleteModal('@s.StudentId', '@s.FullName')">Delete</button>
+                                <div class="um-actions">
+                                    <a asp-action="Details" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-edit"><i class="fas fa-eye"></i> Profile</a>
+                                    <a asp-action="Edit" asp-route-id="@s.StudentId" class="um-btn-sm um-btn-edit"><i class="fas fa-pen"></i></a>
+                                    <button type="button" class="um-btn-sm um-btn-delete" onclick="showDeleteModal('@s.StudentId', '@s.FullName')"><i class="fas fa-trash"></i></button>
                                 </div>
-                             </td>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-        <div class="card-footer text-end"><a asp-action="Create" class="btn btn-primary">+ Create New</a></div>
     </div>
 </div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-danger text-white"><h5 class="modal-title">Confirm Delete</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Are you sure you want to delete <strong id="deleteItemName"></strong>?</p><p class="text-danger">This action cannot be undone.</p></div><div class="modal-footer"><form id="deleteForm" method="post" asp-action="DeleteConfirmed">@Html.AntiForgeryToken()<input type="hidden" name="id" id="deleteItemId" /><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-danger">Yes, Delete</button></form></div></div></div></div>
-
-<script>
-    document.getElementById('searchInput').addEventListener('keyup', function() { var filter = this.value.toLowerCase(); var rows = document.querySelectorAll('#dataTable tbody tr'); rows.forEach(row => { var text = row.textContent.toLowerCase(); row.style.display = text.includes(filter) ? '' : 'none'; }); });
-    function showDeleteModal(id, name) { document.getElementById('deleteItemId').value = id; document.getElementById('deleteItemName').innerText = name; new bootstrap.Modal(document.getElementById('deleteModal')).show(); }
-</script>
+<partial name="_DeleteModal" />
+<partial name="_TableSearchScript" />

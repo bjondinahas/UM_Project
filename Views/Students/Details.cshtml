@@ -1,0 +1,178 @@
+@model UM_Project.Models.StudentDetailViewModel
+@{
+    ViewData["Title"] = Model.Student.FullName;
+    var s = Model.Student;
+}
+
+<div class="max-w-7xl mx-auto pb-8">
+    <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+            <a asp-action="Index" class="text-sm font-semibold text-red-700 hover:underline mb-2 inline-block"><i class="fas fa-arrow-left me-1"></i> All students</a>
+            <h1 class="text-2xl font-extrabold text-red-900">@s.FullName</h1>
+            <p class="text-gray-500">@s.StudentNumber · @s.Email · @(s.Department?.DepartmentName ?? "—")</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+            <a asp-action="Edit" asp-route-id="@s.StudentId" class="um-btn-primary"><i class="fas fa-pen"></i> Edit</a>
+            <a asp-controller="Statistics" asp-action="Index" asp-route-search="@s.FullName" class="btn btn-light border fw-semibold"><i class="fas fa-chart-line"></i> Analytics</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+        <div class="rounded-xl border border-red-100 bg-white p-4 text-center shadow-sm">
+            <div class="text-2xl font-extrabold text-red-800">@Model.Enrollments.Count</div>
+            <div class="text-xs text-gray-500 font-bold uppercase">Courses</div>
+        </div>
+        <div class="rounded-xl border border-red-100 bg-white p-4 text-center shadow-sm">
+            <div class="text-2xl font-extrabold text-red-800">@(Model.AverageGrade?.ToString("0.00") ?? "—")</div>
+            <div class="text-xs text-gray-500 font-bold uppercase">Avg grade</div>
+        </div>
+        <div class="rounded-xl border border-green-100 bg-green-50 p-4 text-center">
+            <div class="text-2xl font-extrabold text-green-800">@Model.PassedCount</div>
+            <div class="text-xs text-green-700 font-bold uppercase">Passed</div>
+        </div>
+        <div class="rounded-xl border border-red-100 bg-red-50 p-4 text-center">
+            <div class="text-2xl font-extrabold text-red-800">@Model.FailedCount</div>
+            <div class="text-xs text-red-700 font-bold uppercase">Failed</div>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6 mb-6">
+        <!-- Enroll in course (links student → professor via course) -->
+        <div class="rounded-2xl border border-red-100 bg-white p-5 shadow-sm">
+            <h3 class="font-bold text-red-900 mb-3"><i class="fas fa-book me-2"></i>Courses & professors</h3>
+            @if (!Model.Enrollments.Any())
+            {
+                <p class="text-muted small">Not enrolled in any courses yet.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="um-table table-sm">
+                        <thead><tr><th>Course</th><th>Professor</th><th></th></tr></thead>
+                        <tbody>
+                            @foreach (var e in Model.Enrollments)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="fw-semibold">@e.Course?.CourseCode</span><br />
+                                        <span class="small text-muted">@e.Course?.CourseName</span>
+                                    </td>
+                                    <td>@(e.Course?.Professor?.FullName ?? "—")</td>
+                                    <td>
+                                        <form asp-action="UnenrollCourse" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="studentId" value="@s.StudentId" />
+                                            <input type="hidden" name="enrollmentId" value="@e.EnrollmentId" />
+                                            <button type="submit" class="um-btn-sm um-btn-delete" title="Remove enrollment"><i class="fas fa-times"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            @if (Model.AvailableCourses.Any())
+            {
+                <form asp-action="EnrollCourse" method="post" class="mt-3 d-flex gap-2">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="studentId" value="@s.StudentId" />
+                    <select name="courseId" class="form-select form-select-sm flex-grow-1" required>
+                        <option value="">Add to course…</option>
+                        @foreach (var c in Model.AvailableCourses)
+                        {
+                            <option value="@c.CourseId">@c.CourseCode — @c.CourseName (@(c.Professor?.FullName ?? "TBA"))</option>
+                        }
+                    </select>
+                    <button type="submit" class="um-btn-sm um-btn-edit">Enroll</button>
+                </form>
+            }
+        </div>
+
+        <!-- Parents -->
+        <div class="rounded-2xl border border-red-100 bg-white p-5 shadow-sm">
+            <h3 class="font-bold text-red-900 mb-3"><i class="fas fa-people-roof me-2"></i>Parents / guardians</h3>
+            @if (!Model.Parents.Any())
+            {
+                <p class="text-muted small mb-3">No parent linked.</p>
+            }
+            @foreach (var p in Model.Parents)
+            {
+                <div class="border border-red-50 rounded-lg p-3 mb-2">
+                    <div class="fw-semibold">@p.FullName</div>
+                    <div class="small text-muted">@p.Email</div>
+                </div>
+            }
+            <p class="small text-muted mb-2">
+                <a asp-controller="Parents" asp-action="AssignChild" asp-route-studentId="@s.StudentId" class="text-danger">Assign to an existing parent</a>
+                (use student # in the list if names are duplicated).
+            </p>
+            <form asp-action="LinkParent" method="post" class="mt-2">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="studentId" value="@s.StudentId" />
+                <div class="row g-2">
+                    <div class="col-md-5">
+                        <input type="text" name="parentFullName" class="form-control form-control-sm" placeholder="Parent full name" required />
+                    </div>
+                    <div class="col-md-5">
+                        <input type="email" name="parentEmail" class="form-control form-control-sm" placeholder="Email (optional)" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="um-btn-sm um-btn-edit w-100">Add</button>
+                    </div>
+                </div>
+            </form>
+            <p class="text-xs text-muted mt-2 mb-0">Leave email empty for auto <code>par.*</code> address, or use an existing parent email to link.</p>
+        </div>
+    </div>
+
+    <!-- Grades -->
+    <div class="rounded-2xl border border-red-100 bg-white p-5 shadow-sm mb-6">
+        <h3 class="font-bold text-red-900 mb-3"><i class="fas fa-star me-2"></i>Grades</h3>
+        @if (!Model.Grades.Any())
+        {
+            <p class="text-muted">No grades recorded.</p>
+        }
+        else
+        {
+            <table class="um-table">
+                <thead><tr><th>Course</th><th>Professor</th><th>Grade</th><th>Status</th><th>Date</th></tr></thead>
+                <tbody>
+                    @foreach (var g in Model.Grades.OrderByDescending(x => x.DateRecorded))
+                    {
+                        <tr>
+                            <td>@g.Course?.CourseName</td>
+                            <td>@g.Course?.Professor?.FullName</td>
+                            <td><span class="um-badge @(g.Value >= 6 ? "um-badge-green" : "um-badge-red")">@g.Value</span></td>
+                            <td>@(g.Value >= 6 ? "Pass" : "Fail")</td>
+                            <td class="small">@g.DateRecorded.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <!-- Reset password -->
+    <div class="rounded-2xl border border-amber-200 bg-amber-50/50 p-5">
+        <h3 class="font-bold text-amber-900 mb-2"><i class="fas fa-key me-2"></i>Reset login password</h3>
+        <p class="small text-muted mb-3">For forgotten passwords. Default: <code>@Model.DefaultPassword</code></p>
+        <form asp-action="ResetPassword" method="post" class="row g-2 align-items-end max-w-xl">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="studentId" value="@s.StudentId" />
+            <div class="col-md-5">
+                <label class="form-label small">New password (blank = default)</label>
+                <input type="text" name="newPassword" class="form-control form-control-sm" placeholder="@Model.DefaultPassword" />
+            </div>
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="requireChange" value="true" checked id="reqCh" />
+                    <label class="form-check-label small" for="reqCh">Must change on login</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="um-btn-primary w-100 justify-content-center"><i class="fas fa-key"></i> Reset password</button>
+            </div>
+        </form>
+    </div>
+</div>

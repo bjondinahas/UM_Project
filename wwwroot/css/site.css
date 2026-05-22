@@ -1,7 +1,7 @@
 :root {
-    --primary-dark: #011425;
-    --primary-medium: #1F4959;
-    --primary-light: #5C7C89;
+    --primary-dark: #7f1d1d;
+    --primary-medium: #dc2626;
+    --primary-light: #f87171;
     --white: #FFFFFF;
     --bg-gradient: linear-gradient(135deg, #e8f0f2 0%, #d4e4e8 100%);
     --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -16,6 +16,11 @@ body {
 }
 
 /* Navbar */
+.um-navbar,
+.navbar.um-navbar {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%) !important;
+}
+
 .navbar {
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%) !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);

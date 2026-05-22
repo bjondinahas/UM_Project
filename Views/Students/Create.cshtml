@@ -1,66 +1,92 @@
-@model UM_Project.Models.Student
+@model UM_Project.Models.StudentRegistrationViewModel
 @{
-    ViewData["Title"] = "Create Student";
+    ViewData["Title"] = "Register Student";
+    ViewData["FormTitle"] = "Register student";
+    ViewData["FormIcon"] = "fa-user-plus";
     var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white text-center py-3">
-                    <h3 class="mb-0"><i class="fas fa-user-plus me-2"></i>Create New Student</h3>
-                </div>
-                <div class="card-body p-4">
-                    <form asp-action="Create" method="post">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-                        <div class="form-floating mb-3">
-                            <input asp-for="FullName" class="form-control" placeholder="Full Name" required />
-                            <label asp-for="FullName">Full Name</label>
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input asp-for="Email" class="form-control" type="email" placeholder="email@example.com" required />
-                            <label asp-for="Email">Email Address</label>
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input asp-for="StudentNumber" class="form-control" placeholder="Student Number" required />
-                            <label asp-for="StudentNumber">Student Number</label>
-                            <span asp-validation-for="StudentNumber" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <select asp-for="DepartmentId" class="form-select" required>
-                                <option value="">-- Select Department --</option>
-                                @if (departments != null)
-                                {
-                                    foreach (var dept in departments)
-                                    {
-                                        <option value="@dept.DepartmentId">@dept.DepartmentName</option>
-                                    }
-                                }
-                            </select>
-                            <label asp-for="DepartmentId">Department</label>
-                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Save Student
-                            </button>
-                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="um-page">
+    <partial name="_AdminFormHeader" />
+    <div class="um-form-panel" style="max-width:800px">
+        <div class="rounded-xl border border-blue-100 bg-blue-50/80 p-4 mb-4 text-sm text-blue-900">
+            <p class="font-bold mb-2">One-step registration</p>
+            <ol class="mb-0 ps-3">
+                <li>Enter student name and department — account is created automatically.</li>
+                <li>Optionally add a parent on the same screen (or link later from the student profile).</li>
+                <li>After save, open the student profile for enrollments and credentials.</li>
+            </ol>
         </div>
+
+        <form asp-action="Create" method="post" id="registerForm">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="alert alert-danger"></div>
+
+            <fieldset class="border border-red-100 rounded-xl p-4 mb-4">
+                <legend class="float-none w-auto px-2 h6 fw-bold text-danger mb-0">1. Student</legend>
+                <div class="row g-3 mt-1">
+                    <div class="col-md-8">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" placeholder="John Smith" required />
+                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="DepartmentId" class="form-label"></label>
+                        <select asp-for="DepartmentId" class="form-select" required>
+                            <option value="">Department</option>
+                            @if (departments != null)
+                            {
+                                foreach (var dept in departments)
+                                {
+                                    <option value="@dept.DepartmentId">@dept.DepartmentName</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="DepartmentId" class="text-danger small"></span>
+                    </div>
+                </div>
+                <p class="text-muted small mb-0 mt-2">
+                    Auto login: <code>stu.firstname.lastname001@umproject.edu</code> · student # <code>STU@(DateTime.UtcNow.Year)####</code>
+                </p>
+            </fieldset>
+
+            <fieldset class="border border-red-100 rounded-xl p-4 mb-4">
+                <legend class="float-none w-auto px-2 h6 fw-bold text-danger mb-0">2. Parent (optional)</legend>
+                <div class="form-check mb-3">
+                    <input asp-for="AddParent" class="form-check-input" type="checkbox" id="addParentCheck" />
+                    <label class="form-check-label" for="addParentCheck">Add parent / guardian now</label>
+                </div>
+                <div id="parentFields" class="row g-3" style="display:none">
+                    <div class="col-md-6">
+                        <label asp-for="ParentFullName" class="form-label"></label>
+                        <input asp-for="ParentFullName" class="form-control" placeholder="Jane Doe" />
+                        <span asp-validation-for="ParentFullName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ParentEmail" class="form-label"></label>
+                        <input asp-for="ParentEmail" class="form-control" type="email" placeholder="Leave empty to auto-generate" />
+                        <div class="form-text">Use an existing parent email to link without creating a duplicate account.</div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="submit" class="um-btn-primary"><i class="fas fa-user-plus"></i> Register student</button>
+                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const check = document.getElementById('addParentCheck');
+            const fields = document.getElementById('parentFields');
+            const toggle = () => { fields.style.display = check.checked ? '' : 'none'; };
+            check.addEventListener('change', toggle);
+            toggle();
+        })();
+    </script>
 }

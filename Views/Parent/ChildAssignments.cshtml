@@ -1,0 +1,56 @@
+@model IEnumerable<UM_Project.Models.CourseAssignment>
+@{
+    ViewData["Title"] = "Assignments";
+    var upcoming = ViewBag.Upcoming as List<UM_Project.Models.CourseAssignment> ?? new();
+    var past = ViewBag.Past as List<UM_Project.Models.CourseAssignment> ?? new();
+}
+
+<link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
+
+<div class="max-w-4xl mx-auto pb-8">
+    <a asp-action="Dashboard" asp-route-studentId="@ViewBag.SelectedStudentId" class="text-sm font-semibold text-red-700">← Dashboard</a>
+    <h1 class="text-2xl font-extrabold text-red-900 mt-2">Assignments — @ViewBag.StudentName</h1>
+    <partial name="_ParentChildSelector" />
+
+    <h2 class="text-lg font-bold text-red-800 mt-4 mb-2"><i class="fas fa-clock me-1"></i> Upcoming deadlines</h2>
+    @if (!upcoming.Any())
+    {
+        <p class="text-muted">No upcoming assignments.</p>
+    }
+    else
+    {
+        <div class="space-y-2 mb-4">
+            @foreach (var a in upcoming)
+            {
+                <div class="um-card">
+                    <div class="d-flex flex-wrap justify-content-between gap-2">
+                        <div>
+                            <div class="fw-bold">@a.Title</div>
+                            <div class="small text-muted">@a.Course?.CourseCode — @a.Course?.CourseName</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold text-red-700">@a.DueDate.ToString("ddd, MMM d · HH:mm")</div>
+                            <div class="small">Weight @a.WeightPercent%</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (past.Any())
+    {
+        <h2 class="text-lg font-bold text-gray-600 mb-2">Past due</h2>
+        <div class="um-table-wrap">
+            <table class="um-table table-sm">
+                <thead><tr><th>Title</th><th>Course</th><th>Due</th></tr></thead>
+                <tbody>
+                    @foreach (var a in past.Take(20))
+                    {
+                        <tr><td>@a.Title</td><td>@a.Course?.CourseCode</td><td>@a.DueDate.ToString("g")</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

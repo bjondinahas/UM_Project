@@ -6,25 +6,29 @@ using UM_Project.Models;
 
 namespace UM_Project.Controllers
 {
-    [Authorize(Roles = "Student")]
+    [Authorize(Roles = RoleNames.Student)]
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext _context;
         public StudentController(ApplicationDbContext context) => _context = context;
 
-        public async Task<IActionResult> Dashboard()
+        private async Task<Student?> GetCurrentStudentAsync()
         {
             var userEmail = User.Identity?.Name;
-            var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == userEmail);
+            return await _context.Students
+                .Include(s => s.Department)
+                .FirstOrDefaultAsync(s => s.Email == userEmail);
+        }
+
+        public async Task<IActionResult> Dashboard()
+        {
+            var student = await GetCurrentStudentAsync();
             if (student == null) return View("NoProfile");
-            
+
             var enrollments = await _context.Enrollments
-                .Include(e => e.Course)
-                    .ThenInclude(c => c.Department)
-                .Include(e => e.Course)
-                    .ThenInclude(c => c.Professor)
-                .Include(e => e.Course)
-                    .ThenInclude(c => c.Schedules)  
+                .Include(e => e.Course).ThenInclude(c => c!.Department)
+                .Include(e => e.Course).ThenInclude(c => c!.Professor)
+                .Include(e => e.Course).ThenInclude(c => c!.Schedules)
                 .Where(e => e.StudentId == student.StudentId)
                 .ToListAsync();
 
@@ -32,31 +36,34 @@ namespace UM_Project.Controllers
                 .Where(g => g.StudentId == student.StudentId)
                 .ToDictionaryAsync(g => g.CourseId, g => g);
 
+            var gradeList = grades.Values.ToList();
             ViewBag.StudentName = student.FullName;
             ViewBag.StudentNumber = student.StudentNumber;
+            ViewBag.Department = student.Department?.DepartmentName ?? "—";
             ViewBag.Grades = grades;
+            ViewBag.AverageGrade = gradeList.Any() ? Math.Round(gradeList.Average(g => g.Value), 2) : 0;
+            ViewBag.PassedCourses = gradeList.Count(g => g.Value >= 6);
+            ViewBag.FailedCourses = gradeList.Count(g => g.Value == 5);
+            ViewBag.GradedCount = gradeList.Count;
+
             return View(enrollments);
         }
 
         public async Task<IActionResult> MyGrades()
         {
-            var userEmail = User.Identity?.Name;
-            var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == userEmail);
+            var student = await GetCurrentStudentAsync();
             if (student == null) return View("NoProfile");
             var grades = await _context.Grades
-                .Include(g => g.Course)
-                    .ThenInclude(c => c.Department)
+                .Include(g => g.Course).ThenInclude(c => c!.Department)
                 .Where(g => g.StudentId == student.StudentId)
                 .ToListAsync();
             ViewBag.StudentName = student.FullName;
-            ViewBag.StudentNumber = student.StudentNumber;
             return View(grades);
         }
 
         public async Task<IActionResult> Schedules()
         {
-            var userEmail = User.Identity?.Name;
-            var student = await _context.Students.FirstOrDefaultAsync(s => s.Email == userEmail);
+            var student = await GetCurrentStudentAsync();
             if (student == null) return View("NoProfile");
             var enrolledCourseIds = await _context.Enrollments
                 .Where(e => e.StudentId == student.StudentId)

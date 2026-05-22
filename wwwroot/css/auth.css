@@ -1,0 +1,34 @@
+html, body {
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.auth-panel {
+    background-image: url('/images/home/hero-campus.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.auth-panel-overlay {
+    background: linear-gradient(145deg, rgba(127, 29, 29, 0.94) 0%, rgba(185, 28, 28, 0.88) 45%, rgba(153, 27, 27, 0.92) 100%);
+}
+
+.auth-input-wrap:focus-within {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
+
+.auth-input-wrap:focus-within .auth-input-icon {
+    color: #dc2626;
+}
+
+.field-validation-error,
+.validation-summary-errors {
+    color: #b91c1c;
+    font-size: 0.875rem;
+}
+
+.input-validation-error {
+    border-color: #dc2626 !important;
+}

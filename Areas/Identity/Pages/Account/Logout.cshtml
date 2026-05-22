@@ -1,12 +1,13 @@
 @page
-@using Microsoft.AspNetCore.Identity
-@using UM_Project.Models
-@inject SignInManager<ApplicationUser> SignInManager
+@model LogoutModel
 @{
-    ViewData["Title"] = "Log out";
+    Layout = null;
 }
-
-@{
-    await SignInManager.SignOutAsync();
-    Response.Redirect("/");
-}
+<!DOCTYPE html>
+<html>
+<head><title>Signing out...</title></head>
+<body>
+    <form method="post" asp-page="/Account/Logout" asp-area="Identity" id="logout-form"></form>
+    <script>document.getElementById('logout-form').submit();</script>
+</body>
+</html>

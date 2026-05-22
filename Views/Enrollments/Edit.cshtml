@@ -1,39 +1,37 @@
 @model UM_Project.Models.Enrollment
 @{
     ViewData["Title"] = "Edit Enrollment";
+    ViewData["FormTitle"] = "Edit Enrollment";
+    ViewData["FormIcon"] = "fa-pen";
     var students = ViewBag.Students as List<UM_Project.Models.Student>;
     var courses = ViewBag.Courses as List<UM_Project.Models.Course>;
 }
 
-<div class="container">
-    <h2>Edit Enrollment</h2>
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="EnrollmentId" />
-        <div class="form-group">
-            <label>Student</label>
-            <select asp-for="StudentId" class="form-control">
-                <option value="">-- Select Student --</option>
-                @foreach (var s in students)
-                {
-                    <option value="@s.StudentId" selected="@(s.StudentId == Model.StudentId)">@s.FullName</option>
-                }
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Course</label>
-            <select asp-for="CourseId" class="form-control">
-                <option value="">-- Select Course --</option>
-                @foreach (var c in courses)
-                {
-                    <option value="@c.CourseId" selected="@(c.CourseId == Model.CourseId)">@c.CourseName</option>
-                }
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Enrollment Date</label>
-            <input asp-for="EnrollmentDate" class="form-control" type="date" />
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </form>
+<div class="um-page">
+    <partial name="_AdminFormHeader" />
+    <div class="um-form-panel">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="EnrollmentId" />
+            <div class="mb-3">
+                <label class="form-label">Student</label>
+                <select asp-for="StudentId" class="form-select" required>
+                    @if (students != null) { foreach (var s in students) { <option value="@s.StudentId">@s.FullName</option> } }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Course</label>
+                <select asp-for="CourseId" class="form-select" required>
+                    @if (courses != null) { foreach (var c in courses) { <option value="@c.CourseId">@c.CourseName</option> } }
+                </select>
+            </div>
+            <div class="mb-4">
+                <label asp-for="EnrollmentDate" class="form-label"></label>
+                <input asp-for="EnrollmentDate" class="form-control" type="date" />
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save</button>
+                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>

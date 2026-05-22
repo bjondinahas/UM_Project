@@ -1,0 +1,25 @@
+@{
+    var title = ViewData["PageTitle"]?.ToString() ?? ViewData["Title"]?.ToString() ?? "Page";
+    var subtitle = ViewData["PageSubtitle"]?.ToString();
+    var icon = ViewData["PageIcon"]?.ToString() ?? "fa-folder";
+    var createController = ViewData["CreateController"]?.ToString();
+    var createAction = ViewData["CreateAction"]?.ToString() ?? "Create";
+    var createText = ViewData["CreateText"]?.ToString() ?? Localizer["Common_AddNew"];
+    var showCreate = ViewData["ShowCreate"] as bool? ?? !string.IsNullOrEmpty(createController);
+}
+
+<div class="um-page-header">
+    <div>
+        <h1><i class="fas @icon"></i> @title</h1>
+        @if (!string.IsNullOrEmpty(subtitle))
+        {
+            <p class="um-page-subtitle">@subtitle</p>
+        }
+    </div>
+    @if (showCreate && !string.IsNullOrEmpty(createController))
+    {
+        <a asp-controller="@createController" asp-action="@createAction" class="um-btn-primary">
+            <i class="fas fa-plus"></i> @createText
+        </a>
+    }
+</div>

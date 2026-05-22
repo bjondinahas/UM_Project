@@ -1,87 +1,161 @@
+@using System.Text.Json
 @{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = Localizer["Nav_Dashboard"];
+    var gradeLabels = ViewBag.GradeLabels as List<string> ?? new List<string>();
+    var gradeCounts = ViewBag.GradeCounts as List<int> ?? new List<int>();
+    var deptLabels = ViewBag.DeptLabels as List<string> ?? new List<string>();
+    var deptCounts = ViewBag.DeptStudentCounts as List<int> ?? new List<int>();
+    var loginLabels = ViewBag.LoginChartLabels as List<string> ?? new List<string>();
+    var loginData = ViewBag.LoginChartData as List<int> ?? new List<int>();
+    var recent = ViewBag.RecentActivity as IEnumerable<UM_Project.Models.AdminActivityLog> ?? Enumerable.Empty<UM_Project.Models.AdminActivityLog>();
+    var chartPassing = Localizer["Chart_Passing"];
+    var chartFailing = Localizer["Chart_Failing"];
+    var chartLogins = Localizer["Chart_Logins"];
 }
-<style>
-    .stat-card { background: white; border-radius: 20px; padding: 20px; text-align: center; transition: all 0.3s; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
-    .stat-number { font-size: 2rem; font-weight: bold; color: #1F4959; }
-    .quick-action { background: linear-gradient(135deg, #1F4959, #5C7C89); color: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; cursor: pointer; transition: all 0.3s; }
-    .quick-action:hover { transform: translateX(5px); background: linear-gradient(135deg, #011425, #1F4959); }
-.welcome-banner {
-    background: linear-gradient(135deg, #011425, #1F4959);
-    border-radius: 24px;
-    padding: 30px;
-    color: white;
-    margin-top: 25px; 
-    margin-bottom: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}</style>
 
-<div class="container-fluid">
-    <div class="welcome-banner">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="display-5 fw-bold">Welcome back, Admin!</h1>
-                <p class="lead">Here's what's happening with your system today.</p>
-                <div class="mt-3">
-                    <span class="badge bg-light text-dark me-2"><i class="fas fa-calendar"></i> @DateTime.Now.ToString("dddd, MMMM dd, yyyy")</span>
-                    <span class="badge bg-light text-dark"><i class="fas fa-clock"></i> @DateTime.Now.ToString("hh:mm tt")</span>
-                </div>
+<link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+
+<div class="adm-dash">
+    <div class="adm-hero">
+        <div>
+            <p class="text-xs font-bold uppercase tracking-wider text-red-600 mb-1">@Localizer["Dash_AdminOverview"]</p>
+            <h1>@Localizer["Dash_WelcomeBack"]</h1>
+            <p class="adm-hero-sub">@DateTime.Now.ToString("dddd, MMMM d, yyyy") — @Localizer["Dash_Snapshot"]</p>
+        </div>
+        <div class="adm-hero-actions">
+            @if (User.IsInRole(UM_Project.Models.RoleNames.SuperAdmin))
+            {
+                <a asp-controller="SuperAdmin" asp-action="Hub" class="adm-btn adm-btn--gold"><i class="fas fa-crown"></i> @Localizer["Nav_ControlCenter"]</a>
+            }
+            <a asp-controller="Statistics" asp-action="Index" class="adm-btn adm-btn--primary"><i class="fas fa-chart-pie"></i> @Localizer["Dash_FullAnalytics"]</a>
+            <a asp-controller="Students" asp-action="Create" class="adm-btn adm-btn--outline"><i class="fas fa-user-plus"></i> @Localizer["Dash_RegisterStudent"]</a>
+        </div>
+    </div>
+
+    <div class="adm-kpi-grid">
+        @{
+            var kpis = new (string icon, string labelKey, object val, string color)[]
+            {
+                ("fa-users", "Dash_KpiUsers", ViewBag.TotalUsers, "#fee2e2"),
+                ("fa-user-graduate", "Dash_KpiStudents", ViewBag.TotalStudents, "#dbeafe"),
+                ("fa-chalkboard-teacher", "Dash_KpiProfessors", ViewBag.TotalProfessors, "#e0e7ff"),
+                ("fa-people-roof", "Dash_KpiParents", ViewBag.TotalParents, "#ffedd5"),
+                ("fa-book", "Dash_KpiCourses", ViewBag.TotalCourses, "#fce7f3"),
+                ("fa-clipboard-list", "Dash_KpiEnrollments", ViewBag.TotalEnrollments, "#d1fae5"),
+                ("fa-star", "Dash_KpiAvgGrade", ViewBag.AverageGrade, "#fef3c7"),
+                ("fa-percent", "Dash_KpiPassRate", $"{ViewBag.PassRate}%", "#dcfce7"),
+                ("fa-user-xmark", "Dash_KpiAbsencesMo", ViewBag.AbsencesThisMonth, "#fecaca"),
+                ("fa-clipboard-check", "Dash_KpiAttendanceRows", ViewBag.AttendanceRecordsTotal, "#f3e8ff"),
+                ("fa-arrow-trend-up", "Dash_KpiEnrollments7d", ViewBag.NewEnrollments7d, "#cffafe"),
+                ("fa-right-to-bracket", "Dash_KpiLoginsToday", ViewBag.LoginsToday, "#e5e7eb"),
+            };
+        }
+        @foreach (var k in kpis)
+        {
+            <div class="adm-kpi @(k.labelKey == "Dash_KpiPassRate" ? "adm-kpi--highlight" : "")">
+                <div class="adm-kpi-icon" style="background:@k.color;color:#374151"><i class="fas @k.icon"></i></div>
+                <div class="adm-kpi-value">@k.val</div>
+                <div class="adm-kpi-label">@Localizer[k.labelKey]</div>
             </div>
-            <div class="col-md-4 text-center"><i class="fas fa-chart-line fa-4x opacity-50"></i></div>
+        }
+    </div>
+
+    <div class="adm-charts">
+        <div class="adm-chart-card adm-chart-card--wide">
+            <h3><i class="fas fa-chart-line text-red-600 me-2"></i>@Localizer["Dash_Logins7Days"]</h3>
+            <div class="adm-chart-wrap"><canvas id="loginChart"></canvas></div>
+        </div>
+        <div class="adm-chart-card adm-chart-card--narrow">
+            <h3><i class="fas fa-chart-pie text-red-600 me-2"></i>@Localizer["Dash_PassVsFail"]</h3>
+            <div class="adm-chart-wrap"><canvas id="passingChart"></canvas></div>
+        </div>
+        <div class="adm-chart-card adm-chart-card--half">
+            <h3><i class="fas fa-building text-red-600 me-2"></i>@Localizer["Dash_StudentsByDept"]</h3>
+            <div class="adm-chart-wrap"><canvas id="deptChart"></canvas></div>
+        </div>
+        <div class="adm-chart-card adm-chart-card--half">
+            <h3><i class="fas fa-star text-red-600 me-2"></i>@Localizer["Dash_GradeDistribution"] (@ViewBag.GradeMin–@ViewBag.GradeMax)</h3>
+            <div class="adm-chart-wrap"><canvas id="gradeChart"></canvas></div>
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-md-2 col-6 mb-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Users")'"><i class="fas fa-users fa-2x"></i><div class="stat-number">@ViewBag.TotalUsers</div><div>Users</div></div></div>
-        <div class="col-md-2 col-6 mb-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Departments")'"><i class="fas fa-building fa-2x"></i><div class="stat-number">@ViewBag.TotalDepartments</div><div>Departments</div></div></div>
-        <div class="col-md-2 col-6 mb-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Courses")'"><i class="fas fa-book fa-2x"></i><div class="stat-number">@ViewBag.TotalCourses</div><div>Courses</div></div></div>
-        <div class="col-md-2 col-6 mb-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Professors")'"><i class="fas fa-chalkboard-teacher fa-2x"></i><div class="stat-number">@ViewBag.TotalProfessors</div><div>Professors</div></div></div>
-        <div class="col-md-2 col-6 mb-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Students")'"><i class="fas fa-user-graduate fa-2x"></i><div class="stat-number">@ViewBag.TotalStudents</div><div>Students</div></div></div>
-        <div class="col-md-2 col-6 mb-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Enrollments")'"><i class="fas fa-registered fa-2x"></i><div class="stat-number">@ViewBag.TotalEnrollments</div><div>Enrollments</div></div></div>
-    </div>
-
-    <div class="row mb-4">
-        <div class="col-md-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Grades")'"><i class="fas fa-star fa-2x"></i><div class="stat-number">@ViewBag.TotalGrades</div><div>Grades</div></div></div>
-        <div class="col-md-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Statistics")'"><i class="fas fa-chart-line fa-2x"></i><div class="stat-number">@ViewBag.AverageGrade</div><div>Average Grade</div></div></div>
-        <div class="col-md-3"><div class="stat-card" onclick="location.href='@Url.Action("Index", "Schedules")'"><i class="fas fa-calendar-alt fa-2x"></i><div class="stat-number">@ViewBag.TotalSchedules</div><div>Schedules</div></div></div>
-    </div>
-
-    <!-- Quick Actions & System Status (remain same) -->
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card"><div class="card-header" style="background: linear-gradient(135deg, #011425, #1F4959); color: white;"><i class="fas fa-bolt me-2"></i> Quick Actions</div>
-            <div class="card-body">
-                <div class="quick-action" onclick="location.href='@Url.Action("Create", "Students")'"><i class="fas fa-user-plus me-2"></i> Add New Student</div>
-                <div class="quick-action" onclick="location.href='@Url.Action("Create", "Professors")'"><i class="fas fa-chalkboard-teacher me-2"></i> Add New Professor</div>
-                <div class="quick-action" onclick="location.href='@Url.Action("Create", "Courses")'"><i class="fas fa-book me-2"></i> Add New Course</div>
-                <div class="quick-action" onclick="location.href='@Url.Action("Create", "Enrollments")'"><i class="fas fa-registered me-2"></i> New Enrollment</div>
-            </div></div>
+    <div class="adm-insights">
+        <div class="adm-chart-card">
+            <h3><i class="fas fa-clock-rotate-left text-red-600 me-2"></i>@Localizer["Dash_RecentAdminActivity"]</h3>
+            @if (!recent.Any())
+            {
+                <p class="text-muted small mb-0">@Localizer["Dash_NoAdminActivity"]</p>
+            }
+            else
+            {
+                <ul class="adm-insight-list">
+                    @foreach (var log in recent)
+                    {
+                        <li>
+                            <span><strong>@log.Action</strong> @log.EntityType <span class="text-muted">@log.Email</span></span>
+                            <span class="text-muted small">@log.CreatedAtUtc.ToLocalTime().ToString("g")</span>
+                        </li>
+                    }
+                </ul>
+                <a asp-controller="Admin" asp-action="ActivityLogs" class="small fw-semibold text-danger">@Localizer["Dash_ViewAll"]</a>
+            }
         </div>
-        <div class="col-md-6">
-            <div class="card"><div class="card-header" style="background: linear-gradient(135deg, #011425, #1F4959); color: white;"><i class="fas fa-chart-line me-2"></i> System Status</div>
-            <div class="card-body">
-                <div class="mb-3"><div class="d-flex justify-content-between"><span>Database Connection</span><span class="text-success"><i class="fas fa-check-circle"></i> Connected</span></div><div class="progress mt-1" style="height:5px"><div class="progress-bar bg-success" style="width:100%"></div></div></div>
-                <div class="alert alert-info mt-3 mb-0"><i class="fas fa-info-circle me-2"></i>Last backup: @DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH:mm")</div>
-            </div></div>
+        <div class="adm-chart-card">
+            <h3><i class="fas fa-bolt text-red-600 me-2"></i>@Localizer["Dash_QuickActions"]</h3>
+            <div class="adm-quick-links">
+                <a asp-controller="Students" asp-action="Index" class="adm-quick-link"><i class="fas fa-user-graduate"></i> @Localizer["Nav_Students"]</a>
+                <a asp-controller="Courses" asp-action="Index" class="adm-quick-link"><i class="fas fa-book"></i> @Localizer["Nav_Courses"]</a>
+                <a asp-controller="Parents" asp-action="Index" class="adm-quick-link"><i class="fas fa-people-roof"></i> @Localizer["Nav_Parents"]</a>
+                <a asp-controller="Enrollments" asp-action="Create" class="adm-quick-link"><i class="fas fa-plus"></i> @Localizer["Dash_Enroll"]</a>
+                <a asp-controller="Admin" asp-action="AuthLogs" class="adm-quick-link"><i class="fas fa-shield-halved"></i> @Localizer["Dash_AuthLogs"]</a>
+                <a asp-controller="Statistics" asp-action="Index" class="adm-quick-link"><i class="fas fa-filter"></i> @Localizer["Dash_Filters"]</a>
+                <a asp-controller="AtRisk" asp-action="Index" class="adm-quick-link"><i class="fas fa-triangle-exclamation"></i> @Localizer["Nav_AtRisk"]</a>
+                <a asp-controller="AcademicCalendar" asp-action="Index" class="adm-quick-link"><i class="fas fa-calendar-days"></i> @Localizer["Nav_AcademicCalendar"]</a>
+                <a asp-controller="DocumentRequests" asp-action="Admin" class="adm-quick-link"><i class="fas fa-file-pdf"></i> @Localizer["Nav_DocumentRequests"]</a>
+            </div>
+            <p class="text-muted small mt-3 mb-0"><i class="fas fa-info-circle me-1"></i>@ViewBag.LoginsWeek @Localizer["Dash_LoginsWeekNote"]</p>
         </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="row mt-4">
-        <div class="col-md-6"><div class="card"><div class="card-header" style="background: linear-gradient(135deg, #011425, #1F4959); color: white;"><i class="fas fa-chart-pie me-2"></i> Grade Distribution</div><div class="card-body"><canvas id="gradeChart" style="height:300px"></canvas></div></div></div>
-        <div class="col-md-6"><div class="card"><div class="card-header" style="background: linear-gradient(135deg, #011425, #1F4959); color: white;"><i class="fas fa-chart-bar me-2"></i> Passing vs Failing</div><div class="card-body"><canvas id="passingChart" style="height:300px"></canvas></div></div></div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/um-charts.js" asp-append-version="true"></script>
 <script>
-    new Chart(document.getElementById('gradeChart'), {
-        type: 'doughnut',
-        data: { labels: ['10','9','8','7','6','5'], datasets: [{ data: [@ViewBag.Grade10, @ViewBag.Grade9, @ViewBag.Grade8, @ViewBag.Grade7, @ViewBag.Grade6, @ViewBag.Grade5], backgroundColor: ['#2ecc71','#27ae60','#f39c12','#e67e22','#e74c3c','#c0392b'] }] }
+    const red = '#dc2626', redDark = '#991b1b', redLight = '#fca5a5';
+    const lblPassing = @Html.Raw(JsonSerializer.Serialize(chartPassing));
+    const lblFailing = @Html.Raw(JsonSerializer.Serialize(chartFailing));
+    const lblLogins = @Html.Raw(JsonSerializer.Serialize(chartLogins));
+    UmCharts.create('loginChart', {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(JsonSerializer.Serialize(loginLabels)),
+            datasets: [{ label: lblLogins, data: @Html.Raw(JsonSerializer.Serialize(loginData)),
+                borderColor: red, backgroundColor: 'rgba(220,38,38,0.1)', fill: true, tension: 0.35 }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
     });
-    new Chart(document.getElementById('passingChart'), {
+    UmCharts.create('passingChart', {
+        type: 'doughnut',
+        data: {
+            labels: [lblPassing, lblFailing],
+            datasets: [{ data: [@ViewBag.PassingCount, @ViewBag.FailingCount], backgroundColor: [red, '#e5e7eb'], borderWidth: 0 }]
+        },
+        options: { cutout: '60%' }
+    });
+    UmCharts.create('deptChart', {
         type: 'bar',
-        data: { labels: ['Passing (6-10)', 'Failing (5)'], datasets: [{ label: 'Students', data: [@ViewBag.PassingCount, @ViewBag.FailingCount], backgroundColor: ['#27ae60','#e74c3c'] }] }
+        data: {
+            labels: @Html.Raw(JsonSerializer.Serialize(deptLabels)),
+            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(deptCounts)), backgroundColor: red, borderRadius: 6 }]
+        },
+        options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+    UmCharts.create('gradeChart', {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonSerializer.Serialize(gradeLabels)),
+            datasets: [{ data: @Html.Raw(JsonSerializer.Serialize(gradeCounts)), backgroundColor: [redDark, red, '#ef4444', redLight, '#fecaca', '#fee2e2'], borderRadius: 6 }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
     });
 </script>

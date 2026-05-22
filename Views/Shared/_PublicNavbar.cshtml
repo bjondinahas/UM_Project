@@ -1,0 +1,65 @@
+@using UM_Project.Models
+@{
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    bool NavActive(string c, string a) =>
+        string.Equals(ctrl, c, StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(action, a, StringComparison.OrdinalIgnoreCase);
+    var linkClass = "home-nav-link";
+    var activeClass = "home-nav-link--active";
+}
+
+<header class="home-header" id="home-header">
+    <nav class="home-nav" aria-label="Main navigation">
+        <div class="home-nav-inner">
+            <a asp-controller="Home" asp-action="Index" class="home-nav-brand">
+                <span class="home-nav-brand-text">
+                    <strong>@Localizer["App_Title"]</strong>
+                    <small>@Localizer["Brand_Subtitle"]</small>
+                </span>
+            </a>
+
+            <div class="home-nav-links" id="home-nav-desktop">
+                <a asp-controller="Home" asp-action="Index"
+                   class="@linkClass @(NavActive("Home", "Index") ? activeClass : "")">@Localizer["Nav_Home"]</a>
+                <a asp-controller="Home" asp-action="Features"
+                   class="@linkClass @(NavActive("Home", "Features") ? activeClass : "")">@Localizer["Home_Features"]</a>
+                <a asp-controller="Home" asp-action="About"
+                   class="@linkClass @(NavActive("Home", "About") ? activeClass : "")">@Localizer["Home_About"]</a>
+                <a asp-controller="Home" asp-action="Index" asp-fragment="roles" class="@linkClass">@Localizer["Nav_Roles"]</a>
+                <a asp-controller="Home" asp-action="Contact"
+                   class="@linkClass @(NavActive("Home", "Contact") ? activeClass : "")">@Localizer["Nav_Contact"]</a>
+                <a asp-controller="Home" asp-action="Privacy"
+                   class="@linkClass @(NavActive("Home", "Privacy") ? activeClass : "")">@Localizer["Nav_Privacy"]</a>
+            </div>
+
+            <div class="home-nav-end">
+                <partial name="_LoginPartialHome" />
+                <div class="home-nav-lang" id="home-nav-lang-desktop">
+                    <partial name="_LanguageSwitcher" />
+                </div>
+            </div>
+
+            <button type="button" class="home-nav-toggle" id="home-nav-toggle" aria-expanded="false" aria-controls="home-nav-panel" aria-label="Menu">
+                <span class="home-nav-toggle-bar"></span>
+                <span class="home-nav-toggle-bar"></span>
+                <span class="home-nav-toggle-bar"></span>
+            </button>
+        </div>
+
+        <div class="home-nav-panel" id="home-nav-panel" hidden>
+            <a asp-controller="Home" asp-action="Index" class="home-nav-panel-link @(NavActive("Home", "Index") ? "active" : "")">@Localizer["Nav_Home"]</a>
+            <a asp-controller="Home" asp-action="Features" class="home-nav-panel-link @(NavActive("Home", "Features") ? "active" : "")">@Localizer["Home_Features"]</a>
+            <a asp-controller="Home" asp-action="About" class="home-nav-panel-link @(NavActive("Home", "About") ? "active" : "")">@Localizer["Home_About"]</a>
+            <a asp-controller="Home" asp-action="Index" asp-fragment="roles" class="home-nav-panel-link">@Localizer["Nav_Roles"]</a>
+            <a asp-controller="Home" asp-action="Contact" class="home-nav-panel-link @(NavActive("Home", "Contact") ? "active" : "")">@Localizer["Nav_Contact"]</a>
+            <a asp-controller="Home" asp-action="Privacy" class="home-nav-panel-link @(NavActive("Home", "Privacy") ? "active" : "")">@Localizer["Nav_Privacy"]</a>
+            <div class="home-nav-panel-auth">
+                <partial name="_LoginPartialHome" />
+            </div>
+            <div class="home-nav-panel-lang">
+                <partial name="_LanguageSwitcher" />
+            </div>
+        </div>
+    </nav>
+</header>

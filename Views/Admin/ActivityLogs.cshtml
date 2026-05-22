@@ -1,0 +1,90 @@
+@model IEnumerable<UM_Project.Models.AdminActivityLog>
+@{
+    ViewData["Title"] = Localizer["Admin_ActivityTitle"];
+    ViewData["PageTitle"] = Localizer["Admin_ActivityTitle"];
+    ViewData["PageIcon"] = "fa-list-check";
+    ViewData["PageSubtitle"] = Localizer["Admin_ActivitySubtitle"];
+    ViewData["ShowCreate"] = false;
+}
+
+<div class="um-page max-w-7xl mx-auto">
+    <partial name="_AdminPageHeader" />
+
+    <div class="rounded-2xl border border-red-100 bg-white shadow-sm mb-4 p-4">
+        <form method="get" class="grid md:grid-cols-4 gap-3 items-end">
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">@Localizer["Common_Entity"]</label>
+                <select name="entityType" class="form-select rounded-lg border-red-100">
+                    <option value="">@Localizer["Common_All"]</option>
+                    @foreach (var et in (IEnumerable<string>)ViewBag.EntityTypes)
+                    {
+                        <option value="@et" selected="@(ViewBag.CurrentEntityType as string == et)">@et</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">@Localizer["Common_Action"]</label>
+                <select name="action" class="form-select rounded-lg border-red-100">
+                    <option value="">@Localizer["Common_All"]</option>
+                    @foreach (var a in (IEnumerable<string>)ViewBag.Actions)
+                    {
+                        <option value="@a" selected="@(ViewBag.CurrentAction as string == a)">@a</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="um-btn-primary justify-center w-full"><i class="fas fa-filter"></i> @Localizer["Common_Search"]</button>
+            <a asp-action="ActivityLogs" class="btn btn-light border rounded-lg w-full text-center">@Localizer["Common_Reset"]</a>
+        </form>
+    </div>
+
+    <div class="um-panel">
+        <div class="table-responsive">
+            <table class="um-table">
+                <thead>
+                    <tr><th>@Localizer["Common_Time"]</th><th>@Localizer["Role_Admin"]</th><th>@Localizer["Common_Action"]</th><th>@Localizer["Common_Entity"]</th><th>@Localizer["Common_ID"]</th><th>@Localizer["Common_Location"]</th><th>IP</th><th>@Localizer["Common_Details"]</th></tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="8" class="text-center text-muted py-4">No activity logged yet. Run admin_audit.sql if the table is missing.</td></tr>
+                    }
+                    @foreach (var log in Model)
+                    {
+                        <tr>
+                            <td class="text-nowrap small">@log.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td class="small">@(log.Email ?? "—")</td>
+                            <td><span class="um-badge um-badge-red">@log.Action</span></td>
+                            <td><span class="um-badge um-badge-gray">@log.EntityType</span></td>
+                            <td class="small">@(log.EntityId ?? "—")</td>
+                            <td class="small">
+                                @if (!string.IsNullOrEmpty(log.City) || !string.IsNullOrEmpty(log.Country))
+                                {
+                                    <span>@log.City@(!string.IsNullOrEmpty(log.City) && !string.IsNullOrEmpty(log.Country) ? ", " : "")@log.Country</span>
+                                }
+                                else { <span class="text-muted">—</span> }
+                            </td>
+                            <td class="small font-mono">@(log.IpAddress ?? "—")</td>
+                            <td class="small text-muted text-truncate" style="max-width:200px" title="@log.Details">@(log.Details ?? "—")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="p-3 border-t flex justify-between items-center bg-red-50/50 text-sm">
+                <span class="text-gray-600">@ViewBag.TotalLogs records · Page @ViewBag.Page of @ViewBag.TotalPages</span>
+                <div class="flex gap-2">
+                    @if (ViewBag.Page > 1)
+                    {
+                        <a asp-action="ActivityLogs" asp-route-page="@((int)ViewBag.Page - 1)" asp-route-entityType="@ViewBag.CurrentEntityType" asp-route-action="@ViewBag.CurrentAction" class="px-3 py-1 rounded-lg border text-red-800 text-sm font-semibold hover:bg-white">@Localizer["Common_Prev"]</a>
+                    }
+                    @if (ViewBag.Page < ViewBag.TotalPages)
+                    {
+                        <a asp-action="ActivityLogs" asp-route-page="@((int)ViewBag.Page + 1)" asp-route-entityType="@ViewBag.CurrentEntityType" asp-route-action="@ViewBag.CurrentAction" class="px-3 py-1 rounded-lg border text-red-800 text-sm font-semibold hover:bg-white">@Localizer["Common_Next"]</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = Localizer["Pub_About_Title"];
+}
+
+<section class="pub-hero pub-page min-h-[40vh] flex items-center"
+         style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1920&q=80');">
+    <div class="pub-hero-overlay w-full py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h1 class="text-4xl sm:text-5xl font-extrabold">@Localizer["Pub_About_Title"]</h1>
+            <p class="mt-5 text-lg text-red-100 max-w-2xl mx-auto">@Localizer["Pub_About_Subtitle"]</p>
+        </div>
+    </div>
+</section>
+
+<section class="pub-section bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=900&q=80"
+                     alt="" class="w-full aspect-[4/3] object-cover" loading="lazy" />
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-brand-800">@Localizer["Pub_About_Mission"]</h2>
+                <p class="mt-4 text-gray-600 leading-relaxed">@Localizer["Pub_About_MissionDesc"]</p>
+                <h2 class="text-2xl font-bold text-brand-800 mt-10">@Localizer["Pub_About_Vision"]</h2>
+                <p class="mt-4 text-gray-600 leading-relaxed">@Localizer["Pub_About_VisionDesc"]</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pub-section bg-red-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="order-2 lg:order-1">
+                <h2 class="text-3xl font-bold text-gray-900">@Localizer["Home_AboutTitle"]</h2>
+                <p class="mt-6 text-gray-600 leading-relaxed">@Localizer["Home_AboutDesc"]</p>
+                <ul class="mt-8 space-y-4">
+                    <li class="flex items-start gap-4 p-4 rounded-xl bg-white border border-red-100">
+                        <span class="flex-shrink-0 h-10 w-10 rounded-xl bg-brand-600 text-white flex items-center justify-center"><i class="fas fa-gauge-high"></i></span>
+                        <span class="text-gray-700 pt-1">@Localizer["Home_AboutLi1"]</span>
+                    </li>
+                    <li class="flex items-start gap-4 p-4 rounded-xl bg-white border border-red-100">
+                        <span class="flex-shrink-0 h-10 w-10 rounded-xl bg-brand-600 text-white flex items-center justify-center"><i class="fas fa-clipboard-list"></i></span>
+                        <span class="text-gray-700 pt-1">@Localizer["Home_AboutLi2"]</span>
+                    </li>
+                    <li class="flex items-start gap-4 p-4 rounded-xl bg-white border border-red-100">
+                        <span class="flex-shrink-0 h-10 w-10 rounded-xl bg-brand-600 text-white flex items-center justify-center"><i class="fas fa-mobile-screen"></i></span>
+                        <span class="text-gray-700 pt-1">@Localizer["Home_AboutLi3"]</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="order-1 lg:order-2 relative rounded-3xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=900&q=80"
+                     alt="" class="w-full aspect-[4/3] object-cover" loading="lazy" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="pub-section bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-gray-900">@Localizer["Pub_About_Values"]</h2>
+        <ul class="mt-8 space-y-4 text-left">
+            <li class="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100">
+                <i class="fas fa-circle-check text-brand-600"></i>
+                <span class="text-gray-700">@Localizer["Pub_About_Value1"]</span>
+            </li>
+            <li class="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100">
+                <i class="fas fa-circle-check text-brand-600"></i>
+                <span class="text-gray-700">@Localizer["Pub_About_Value2"]</span>
+            </li>
+            <li class="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100">
+                <i class="fas fa-circle-check text-brand-600"></i>
+                <span class="text-gray-700">@Localizer["Pub_About_Value3"]</span>
+            </li>
+        </ul>
+    </div>
+</section>

@@ -1,39 +1,237 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using UM_Project.Data;
+using UM_Project.Helpers;
 using UM_Project.Models;
+using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleNames.AdminPanel)]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public StudentsController(ApplicationDbContext context) => _context = context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAccountProvisioningService _provisioning;
+        private readonly IEmailService _emailService;
+        private readonly IAdminPasswordService _passwordService;
+        private readonly AccountProvisioningSettings _settings;
 
-        public async Task<IActionResult> Index() => View(await _context.Students.Include(s => s.Department).ToListAsync());
-
-        public async Task<IActionResult> Create()
+        public StudentsController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            IAccountProvisioningService provisioning,
+            IEmailService emailService,
+            IAdminPasswordService passwordService,
+            IOptions<AccountProvisioningSettings> settings)
         {
-            ViewBag.Departments = await _context.Departments.ToListAsync();
-            return View();
+            _context = context;
+            _userManager = userManager;
+            _provisioning = provisioning;
+            _emailService = emailService;
+            _passwordService = passwordService;
+            _settings = settings.Value;
+        }
+
+        public async Task<IActionResult> Index() =>
+            View(await _context.Students.Include(s => s.Department).OrderBy(s => s.FullName).ToListAsync());
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var student = await _context.Students
+                .Include(s => s.Department)
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+            if (student == null) return NotFound();
+
+            var enrolledIds = await _context.Enrollments
+                .Where(e => e.StudentId == id)
+                .Select(e => e.CourseId)
+                .ToListAsync();
+
+            var grades = await _context.Grades
+                .Include(g => g.Course).ThenInclude(c => c!.Professor)
+                .Include(g => g.Course).ThenInclude(c => c!.Department)
+                .Where(g => g.StudentId == id)
+                .ToListAsync();
+
+            var vm = new StudentDetailViewModel
+            {
+                Student = student,
+                LoginUser = await _userManager.FindByIdAsync(student.UserId),
+                Enrollments = await _context.Enrollments
+                    .Include(e => e.Course).ThenInclude(c => c!.Professor)
+                    .Include(e => e.Course).ThenInclude(c => c!.Department)
+                    .Where(e => e.StudentId == id)
+                    .ToListAsync(),
+                Grades = grades,
+                Parents = await _context.ParentGuardians
+                    .Where(p => p.StudentId == id)
+                    .ToListAsync(),
+                Schedules = await _context.Schedules
+                    .Include(s => s.Course)
+                    .Where(s => enrolledIds.Contains(s.CourseId))
+                    .ToListAsync(),
+                AvailableCourses = await _context.Courses
+                    .Include(c => c.Professor)
+                    .Where(c => !enrolledIds.Contains(c.CourseId))
+                    .OrderBy(c => c.CourseName)
+                    .ToListAsync(),
+                DefaultPassword = _settings.DefaultPassword
+            };
+
+            if (grades.Any())
+            {
+                vm.AverageGrade = Math.Round(grades.Average(g => g.Value), 2);
+                vm.PassedCount = grades.Count(g => g.Value >= 6);
+                vm.FailedCount = grades.Count(g => g.Value == 5);
+            }
+
+            return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Student student)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EnrollCourse(int studentId, int courseId)
         {
-            ModelState.Remove("Department"); ModelState.Remove("Enrollments"); ModelState.Remove("Grades");
-            if (ModelState.IsValid)
+            if (await _context.Enrollments.AnyAsync(e => e.StudentId == studentId && e.CourseId == courseId))
             {
-                student.UserId = Guid.NewGuid().ToString();
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Student created!";
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "Student is already enrolled in this course.";
+                return RedirectToAction(nameof(Details), new { id = studentId });
             }
-            ViewBag.Departments = await _context.Departments.ToListAsync();
-            return View(student);
+
+            _context.Enrollments.Add(new Enrollment
+            {
+                StudentId = studentId,
+                CourseId = courseId,
+                EnrollmentDate = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Student enrolled in course.";
+            return RedirectToAction(nameof(Details), new { id = studentId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UnenrollCourse(int studentId, int enrollmentId)
+        {
+            var enrollment = await _context.Enrollments
+                .FirstOrDefaultAsync(e => e.EnrollmentId == enrollmentId && e.StudentId == studentId);
+            if (enrollment != null)
+            {
+                _context.Enrollments.Remove(enrollment);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Enrollment removed.";
+            }
+            return RedirectToAction(nameof(Details), new { id = studentId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LinkParent(int studentId, string parentFullName, string? parentEmail)
+        {
+            if (string.IsNullOrWhiteSpace(parentFullName))
+            {
+                TempData["Error"] = "Parent name is required.";
+                return RedirectToAction(nameof(Details), new { id = studentId });
+            }
+
+            var result = await _provisioning.LinkOrCreateParentAsync(
+                parentFullName.Trim(), string.IsNullOrWhiteSpace(parentEmail) ? null : parentEmail.Trim(), studentId);
+            if (!result.Success)
+            {
+                TempData["Error"] = result.Error ?? "Could not create parent.";
+                return RedirectToAction(nameof(Details), new { id = studentId });
+            }
+
+            var msg = string.IsNullOrEmpty(result.TemporaryPassword)
+                ? $"Parent linked. Login: {result.Email}"
+                : $"Parent linked. Login: {result.Email} · Password: {result.TemporaryPassword}";
+            TempData["Success"] = msg;
+            return RedirectToAction(nameof(Details), new { id = studentId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(int studentId, string? newPassword, bool requireChange = true)
+        {
+            var student = await _context.Students.FindAsync(studentId);
+            if (student == null) return NotFound();
+
+            var pwd = string.IsNullOrWhiteSpace(newPassword) ? _settings.DefaultPassword : newPassword;
+            var (ok, err) = await _passwordService.ResetPasswordAsync(student.UserId, pwd, requireChange);
+            TempData[ok ? "Success" : "Error"] = ok
+                ? $"Password reset. New password: {pwd}" + (requireChange ? " (user must change on next login)." : ".")
+                : err;
+            return RedirectToAction(nameof(Details), new { id = studentId });
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Departments = await _context.Departments.OrderBy(d => d.DepartmentName).ToListAsync();
+            ViewBag.ExistingParents = await StudentSelectListHelper.BuildParentAccountSelectListAsync(_context);
+            return View(new StudentRegistrationViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(StudentRegistrationViewModel model)
+        {
+            if (model.AddParent && string.IsNullOrWhiteSpace(model.ParentFullName))
+                ModelState.AddModelError(nameof(model.ParentFullName), "Parent name is required when adding a parent.");
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Departments = await _context.Departments.OrderBy(d => d.DepartmentName).ToListAsync();
+                ViewBag.ExistingParents = await StudentSelectListHelper.BuildParentAccountSelectListAsync(_context);
+                return View(model);
+            }
+
+            var result = await _provisioning.ProvisionStudentAsync(model.FullName.Trim(), model.DepartmentId);
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.Error ?? "Could not create student account.");
+                ViewBag.Departments = await _context.Departments.OrderBy(d => d.DepartmentName).ToListAsync();
+                ViewBag.ExistingParents = await StudentSelectListHelper.BuildParentAccountSelectListAsync(_context);
+                return View(model);
+            }
+
+            await _emailService.SendWelcomeEmailAsync(
+                result.Email, model.FullName.Trim(), result.TemporaryPassword, RoleNames.Student);
+
+            var created = await _context.Students
+                .Include(s => s.Department)
+                .FirstAsync(s => s.UserId == result.UserId);
+
+            var messages = new List<string>
+            {
+                $"Student {created.StudentNumber}: login {result.Email}, password {result.TemporaryPassword}"
+            };
+
+            if (model.AddParent)
+            {
+                var parentResult = await _provisioning.LinkOrCreateParentAsync(
+                    model.ParentFullName!.Trim(),
+                    string.IsNullOrWhiteSpace(model.ParentEmail) ? null : model.ParentEmail.Trim(),
+                    created.StudentId);
+
+                if (parentResult.Success)
+                {
+                    var parentMsg = string.IsNullOrEmpty(parentResult.TemporaryPassword)
+                        ? $"Parent linked: {parentResult.Email}"
+                        : $"Parent created: {parentResult.Email}, password {parentResult.TemporaryPassword}";
+                    messages.Add(parentMsg);
+                }
+                else
+                    messages.Add($"Parent not linked: {parentResult.Error}");
+            }
+
+            TempData["Success"] = string.Join(" · ", messages);
+            TempData["ShowCredentials"] = true;
+            return RedirectToAction(nameof(Details), new { id = created.StudentId });
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -46,30 +244,43 @@ namespace UM_Project.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Student student)
         {
             if (id != student.StudentId) return NotFound();
-            ModelState.Remove("Department"); ModelState.Remove("Enrollments"); ModelState.Remove("Grades");
+            ModelState.Remove("Department");
+            ModelState.Remove("Enrollments");
+            ModelState.Remove("Grades");
+            ModelState.Remove(nameof(student.Email));
+            ModelState.Remove(nameof(student.StudentNumber));
+            ModelState.Remove(nameof(student.UserId));
+
             if (ModelState.IsValid)
             {
+                var existing = await _context.Students.AsNoTracking().FirstOrDefaultAsync(s => s.StudentId == id);
+                if (existing == null) return NotFound();
+
+                student.Email = existing.Email;
+                student.StudentNumber = existing.StudentNumber;
+                student.UserId = existing.UserId;
                 _context.Update(student);
                 await _context.SaveChangesAsync();
+
+                var user = await _userManager.FindByIdAsync(existing.UserId);
+                if (user != null)
+                {
+                    user.FullName = student.FullName;
+                    user.CustomId = student.StudentNumber;
+                    await _userManager.UpdateAsync(user);
+                }
+
                 TempData["Success"] = "Student updated!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id });
             }
             ViewBag.Departments = await _context.Departments.ToListAsync();
             return View(student);
         }
 
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null) return NotFound();
-            var student = await _context.Students.Include(s => s.Department).FirstOrDefaultAsync(m => m.StudentId == id);
-            if (student == null) return NotFound();
-            return View(student);
-        }
-
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -77,9 +288,30 @@ namespace UM_Project.Controllers
             var student = await _context.Students.FindAsync(id);
             if (student != null)
             {
+                var parents = await _context.ParentGuardians.Where(p => p.StudentId == id).ToListAsync();
+                foreach (var p in parents)
+                {
+                    if (!string.IsNullOrEmpty(p.UserId))
+                    {
+                        var otherChildren = await _context.ParentGuardians
+                            .CountAsync(g => g.UserId == p.UserId && g.StudentId != id);
+                        if (otherChildren == 0)
+                        {
+                            var pu = await _userManager.FindByIdAsync(p.UserId);
+                            if (pu != null) await _userManager.DeleteAsync(pu);
+                        }
+                    }
+                    _context.ParentGuardians.Remove(p);
+                }
+
+                if (!string.IsNullOrEmpty(student.UserId))
+                {
+                    var user = await _userManager.FindByIdAsync(student.UserId);
+                    if (user != null) await _userManager.DeleteAsync(user);
+                }
                 _context.Students.Remove(student);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Student deleted successfully!";
+                TempData["Success"] = "Student and related accounts deleted.";
             }
             return RedirectToAction(nameof(Index));
         }

@@ -1,60 +1,49 @@
 @model UM_Project.Models.Student
 @{
     ViewData["Title"] = "Edit Student";
+    ViewData["FormTitle"] = "Edit Student";
+    ViewData["FormIcon"] = "fa-pen";
     var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
 }
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-warning text-white text-center py-3">
-                    <h3 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Student</h3>
-                </div>
-                <div class="card-body p-4">
-                    <form asp-action="Edit" method="post">
-                        <input type="hidden" asp-for="StudentId" />
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                        <div class="form-floating mb-3">
-                            <input asp-for="FullName" class="form-control" placeholder="Full Name" required />
-                            <label asp-for="FullName">Full Name</label>
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input asp-for="Email" class="form-control" type="email" placeholder="Email" required />
-                            <label asp-for="Email">Email</label>
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input asp-for="StudentNumber" class="form-control" placeholder="Student Number" required />
-                            <label asp-for="StudentNumber">Student Number</label>
-                            <span asp-validation-for="StudentNumber" class="text-danger"></span>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <select asp-for="DepartmentId" class="form-select" required>
-                                <option value="">-- Select Department --</option>
-                                @if (departments != null)
-                                {
-                                    foreach (var dept in departments)
-                                    {
-                                        <option value="@dept.DepartmentId" selected="@(dept.DepartmentId == Model.DepartmentId)">@dept.DepartmentName</option>
-                                    }
-                                }
-                            </select>
-                            <label asp-for="DepartmentId">Department</label>
-                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
-                        </div>
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Save Changes
-                            </button>
-                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        </div>
-                    </form>
-                </div>
+
+<div class="um-page">
+    <partial name="_AdminFormHeader" />
+    <div class="um-form-panel" style="max-width:720px">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="StudentId" />
+            <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="StudentNumber" />
+            <input type="hidden" asp-for="UserId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="rounded-xl border border-gray-200 bg-gray-50 p-3 mb-4 text-sm">
+                <p class="mb-1"><strong>Login email:</strong> @Model.Email</p>
+                <p class="mb-0"><strong>Student number:</strong> @Model.StudentNumber</p>
+                <p class="text-muted small mt-2 mb-0">Email and student number cannot be changed here (tied to login account).</p>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" required />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+            <div class="mb-4">
+                <label asp-for="DepartmentId" class="form-label">Department</label>
+                <select asp-for="DepartmentId" class="form-select" required>
+                    @if (departments != null)
+                    {
+                        foreach (var dept in departments)
+                        {
+                            <option value="@dept.DepartmentId">@dept.DepartmentName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

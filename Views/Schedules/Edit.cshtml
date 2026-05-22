@@ -1,46 +1,40 @@
 @model UM_Project.Models.Schedule
 @{
     ViewData["Title"] = "Edit Schedule";
+    ViewData["FormTitle"] = "Edit Schedule";
+    ViewData["FormIcon"] = "fa-pen";
     var courses = ViewBag.Courses as List<UM_Project.Models.Course>;
 }
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning text-white">Edit Schedule</div>
-                <div class="card-body">
-                    <form asp-action="Edit">
-                        <input type="hidden" asp-for="ScheduleId" />
-                        <div class="mb-3">
-                            <label asp-for="CourseId" class="form-label"></label>
-                            <select asp-for="CourseId" class="form-select">
-                                @foreach (var c in courses)
-                                {
-                                    <option value="@c.CourseId" selected="@(c.CourseId == Model.CourseId)">@c.CourseName (@c.CourseCode)</option>
-                                }
-                            </select>
-                            <span asp-validation-for="CourseId" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Day" class="form-label"></label>
-                            <input asp-for="Day" class="form-control" required />
-                            <span asp-validation-for="Day" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Time" class="form-label"></label>
-                            <input asp-for="Time" class="form-control" required />
-                            <span asp-validation-for="Time" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Room" class="form-label"></label>
-                            <input asp-for="Room" class="form-control" required />
-                            <span asp-validation-for="Room" class="text-danger"></span>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-                    </form>
-                </div>
+
+<div class="um-page">
+    <partial name="_AdminFormHeader" />
+    <div class="um-form-panel">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="ScheduleId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="mb-3">
+                <label asp-for="CourseId" class="form-label">Course</label>
+                <select asp-for="CourseId" class="form-select" required>
+                    @if (courses != null) { foreach (var c in courses) { <option value="@c.CourseId">@c.CourseName (@c.CourseCode)</option> } }
+                </select>
             </div>
-        </div>
+            <div class="mb-3">
+                <label asp-for="Day" class="form-label"></label>
+                <input asp-for="Day" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Time" class="form-label"></label>
+                <input asp-for="Time" class="form-control" required />
+            </div>
+            <div class="mb-4">
+                <label asp-for="Room" class="form-label"></label>
+                <input asp-for="Room" class="form-control" required />
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save</button>
+                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

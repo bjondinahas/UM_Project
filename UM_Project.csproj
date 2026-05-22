@@ -4,7 +4,14 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>UM_Project</RootNamespace>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\SharedResource.resx" />
+    <EmbeddedResource Update="Resources\SharedResource.sq.resx" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.3.0" />
@@ -16,7 +23,12 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MimeKit" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
+    <PackageReference Include="QuestPDF" Version="2024.12.3" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
   </ItemGroup>
 
 </Project>

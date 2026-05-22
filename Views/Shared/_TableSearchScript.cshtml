@@ -1,0 +1,19 @@
+<script>
+    (function () {
+        const search = document.getElementById('searchInput');
+        const table = document.getElementById('dataTable');
+        if (search && table) {
+            search.addEventListener('keyup', function () {
+                const q = this.value.toLowerCase();
+                table.querySelectorAll('tbody tr').forEach(row => {
+                    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+                });
+            });
+        }
+        window.showDeleteModal = function (id, name) {
+            document.getElementById('deleteItemId').value = id;
+            document.getElementById('deleteItemName').innerText = name;
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        };
+    })();
+</script>

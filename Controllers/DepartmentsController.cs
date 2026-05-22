@@ -6,7 +6,7 @@ using UM_Project.Models;
 
 namespace UM_Project.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleNames.AdminPanel)]
     public class DepartmentsController : Controller
     {
         private readonly ApplicationDbContext _context;

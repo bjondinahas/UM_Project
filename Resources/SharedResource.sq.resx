@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" use="required" type="xsd:string" /><xsd:attribute name="type" type="xsd:string" /><xsd:attribute name="mimetype" type="xsd:string" /></xsd:complexType></xsd:element>
+          <xsd:element name="assembly"><xsd:complexType><xsd:attribute name="alias" type="xsd:string" /><xsd:attribute name="name" type="xsd:string" /></xsd:complexType></xsd:element>
+          <xsd:element name="data"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /><xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" /><xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" /><xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" /></xsd:complexType></xsd:element>
+          <xsd:element name="resheader"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" /></xsd:complexType></xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="App_Title" xml:space="preserve"><value>Menaxheri Universitar</value></data>
+  <data name="Brand_Title" xml:space="preserve"><value>Menaxheri Universitar</value></data>
+  <data name="Brand_Subtitle" xml:space="preserve"><value>Portali akademik</value></data>
+  <data name="Lang_English" xml:space="preserve"><value>Anglisht</value></data>
+  <data name="Lang_Albanian" xml:space="preserve"><value>Shqip</value></data>
+  <data name="Lang_SelectLanguage" xml:space="preserve"><value>Ndrysho gjuhën</value></data>
+  <data name="Home_Welcome" xml:space="preserve"><value>Mirë se vini</value></data>
+  <data name="Home_TrustedPlatform" xml:space="preserve"><value>Platformë Akademike e Besuar</value></data>
+  <data name="Home_HeroTitle1" xml:space="preserve"><value>Menaxhoni Universitetin Tuaj</value></data>
+  <data name="Home_HeroTitle2" xml:space="preserve"><value>Me Besim</value></data>
+  <data name="Home_HeroDesc" xml:space="preserve"><value>Menaxheri Universitar bashkon studentët, profesorët dhe administratorët — regjistrime, orare, nota dhe departamente në një vend të sigurt.</value></data>
+  <data name="Home_Bullet1" xml:space="preserve"><value>Panele sipas roleve</value></data>
+  <data name="Home_Bullet2" xml:space="preserve"><value>Ndjekje notash në kohë reale</value></data>
+  <data name="Home_Bullet3" xml:space="preserve"><value>Akses i sigurt në kampus</value></data>
+  <data name="Home_LoginSystem" xml:space="preserve"><value>Hyr në sistem</value></data>
+  <data name="Home_CreateAccount" xml:space="preserve"><value>Krijo llogari</value></data>
+  <data name="Home_GoDashboard" xml:space="preserve"><value>Shko te paneli</value></data>
+  <data name="Home_ExploreFeatures" xml:space="preserve"><value>Eksploro karakteristikat</value></data>
+  <data name="Home_ThreeRoles" xml:space="preserve"><value>3 Role</value></data>
+  <data name="Home_StatStudents" xml:space="preserve"><value>Studentë</value></data>
+  <data name="Home_StatStudentsDesc" xml:space="preserve"><value>Profile &amp; nota</value></data>
+  <data name="Home_StatFaculty" xml:space="preserve"><value>Fakultet</value></data>
+  <data name="Home_StatFacultyDesc" xml:space="preserve"><value>Lëndë &amp; orare</value></data>
+  <data name="Home_StatCourses" xml:space="preserve"><value>Lëndë</value></data>
+  <data name="Home_StatCoursesDesc" xml:space="preserve"><value>Regjistrime &amp; plane</value></data>
+  <data name="Home_StatSecure" xml:space="preserve"><value>I sigurt</value></data>
+  <data name="Home_StatSecureDesc" xml:space="preserve"><value>Akses sipas roleve</value></data>
+  <data name="Home_FeaturesTitle" xml:space="preserve"><value>Gjithçka që ju nevojitet në kampus</value></data>
+  <data name="Home_FeaturesDesc" xml:space="preserve"><value>Nga regjistrimi deri te diplomimi — thjeshtoni operacionet akademike me mjete të fuqishme sipas roleve.</value></data>
+  <data name="Home_Feat1Title" xml:space="preserve"><value>Menaxhimi i studentëve</value></data>
+  <data name="Home_Feat1Desc" xml:space="preserve"><value>Ndiqni profilet, regjistrimet dhe të dhënat akademike në një sistem të organizuar.</value></data>
+  <data name="Home_Feat2Title" xml:space="preserve"><value>Oraret &amp; lëndët</value></data>
+  <data name="Home_Feat2Desc" xml:space="preserve"><value>Menaxhoni departamentet, katalogët e lëndëve dhe oraret e klasave për çdo semestër.</value></data>
+  <data name="Home_Feat3Title" xml:space="preserve"><value>Notat &amp; raportet</value></data>
+  <data name="Home_Feat3Desc" xml:space="preserve"><value>Profesorët vendosin notat; studentët shohin rezultatet. Adminët mbikëqyrin të gjithë pamjen akademike.</value></data>
+  <data name="Home_LearnMore" xml:space="preserve"><value>Mëso më shumë</value></data>
+  <data name="Home_AboutBadge" xml:space="preserve"><value>Rreth sistemit</value></data>
+  <data name="Home_AboutTitle" xml:space="preserve"><value>Ndërtuar për universitete moderne</value></data>
+  <data name="Home_AboutDesc" xml:space="preserve"><value>Menaxheri Universitar është një platformë e plotë për menaxhimin e studentëve, e dizajnuar për arsimin e lartë. Qoftë administrator, profesor apo student — mjetet e duhura janë gjithmonë në dorë.</value></data>
+  <data name="Home_AboutLi1" xml:space="preserve"><value>Panele sipas roleve — pamje të përshtatura për Admin, Profesor dhe Student.</value></data>
+  <data name="Home_AboutLi2" xml:space="preserve"><value>Rrjedha e regjistrimit — lidhni studentët me lëndët dhe oraret pa pengesa.</value></data>
+  <data name="Home_AboutLi3" xml:space="preserve"><value>Dizajn responsiv — funksionon në desktop, tablet dhe celular.</value></data>
+  <data name="Home_WebAccess" xml:space="preserve"><value>Akses në ueb</value></data>
+  <data name="Home_RolesBadge" xml:space="preserve"><value>Rolet e përdoruesve</value></data>
+  <data name="Home_RolesTitle" xml:space="preserve"><value>Dizajnuar për çdo rol</value></data>
+  <data name="Home_RolesDesc" xml:space="preserve"><value>Çdo lloj përdoruesi merr një përvojë të fokusuar me lejet që i nevojiten.</value></data>
+  <data name="Home_RoleAdmin" xml:space="preserve"><value>Administrator</value></data>
+  <data name="Home_RoleAdminDesc" xml:space="preserve"><value>Menaxhoni përdoruesit, departamentet, lëndët dhe gjithë institucionin.</value></data>
+  <data name="Home_RoleProf" xml:space="preserve"><value>Profesor</value></data>
+  <data name="Home_RoleProfDesc" xml:space="preserve"><value>Shikoni lëndët e caktuara, listat e studentëve dhe vendosni notat.</value></data>
+  <data name="Home_RoleStudent" xml:space="preserve"><value>Student</value></data>
+  <data name="Home_RoleStudentDesc" xml:space="preserve"><value>Kontrolloni oraret, regjistrimet dhe raportet e notave kur të doni.</value></data>
+  <data name="Home_CtaTitle" xml:space="preserve"><value>Gati për të filluar?</value></data>
+  <data name="Home_CtaDesc" xml:space="preserve"><value>Bashkohuni me Menaxherin Universitar dhe merrni kontrollin e rrjedhës së punës akademike sot.</value></data>
+  <data name="Home_LoginNow" xml:space="preserve"><value>Hyr tani</value></data>
+  <data name="Home_RegisterFree" xml:space="preserve"><value>Regjistrohu falas</value></data>
+  <data name="Home_SignedInHint" xml:space="preserve"><value>Jeni të kyçur. Përdorni navigimin sipër për të shkuar te paneli.</value></data>
+  <data name="Nav_Overview" xml:space="preserve"><value>Përmbledhje</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Paneli</value></data>
+  <data name="Nav_Analytics" xml:space="preserve"><value>Analitika</value></data>
+  <data name="Nav_AtRisk" xml:space="preserve"><value>Studentë në rrezik</value></data>
+  <data name="Nav_HowItWorks" xml:space="preserve"><value>Si funksionon</value></data>
+  <data name="Nav_SuperAdmin" xml:space="preserve"><value>SuperAdmin</value></data>
+  <data name="Nav_ControlCenter" xml:space="preserve"><value>Qendra e kontrollit</value></data>
+  <data name="Nav_UsersRoles" xml:space="preserve"><value>Përdorues &amp; role</value></data>
+  <data name="Nav_People" xml:space="preserve"><value>Njërëzit</value></data>
+  <data name="Nav_Students" xml:space="preserve"><value>Studentët</value></data>
+  <data name="Nav_Professors" xml:space="preserve"><value>Profesorët</value></data>
+  <data name="Nav_Parents" xml:space="preserve"><value>Prindërit</value></data>
+  <data name="Nav_Academics" xml:space="preserve"><value>Akademik</value></data>
+  <data name="Nav_Departments" xml:space="preserve"><value>Departamentet</value></data>
+  <data name="Nav_Courses" xml:space="preserve"><value>Lëndët</value></data>
+  <data name="Nav_Enrollments" xml:space="preserve"><value>Regjistrimet</value></data>
+  <data name="Nav_Schedules" xml:space="preserve"><value>Oraret</value></data>
+  <data name="Nav_Grades" xml:space="preserve"><value>Notat</value></data>
+  <data name="Nav_AcademicCalendar" xml:space="preserve"><value>Kalendari akademik</value></data>
+  <data name="Nav_DocumentRequests" xml:space="preserve"><value>Kërkesat për dokumente</value></data>
+  <data name="Nav_Reports" xml:space="preserve"><value>Raportet &amp; eksporti</value></data>
+  <data name="Nav_Security" xml:space="preserve"><value>Siguria</value></data>
+  <data name="Nav_TwoFactor" xml:space="preserve"><value>Autentifikim dyfaktorësh (2FA)</value></data>
+  <data name="Nav_LoginActivity" xml:space="preserve"><value>Aktiviteti i hyrjes</value></data>
+  <data name="Nav_AdminChanges" xml:space="preserve"><value>Ndryshimet e adminit</value></data>
+  <data name="Nav_Professor" xml:space="preserve"><value>Profesor</value></data>
+  <data name="Nav_MySchedules" xml:space="preserve"><value>Oraret e mia</value></data>
+  <data name="Nav_Student" xml:space="preserve"><value>Student</value></data>
+  <data name="Nav_MySchedule" xml:space="preserve"><value>Orari im</value></data>
+  <data name="Nav_MyGrades" xml:space="preserve"><value>Notat e mia</value></data>
+  <data name="Nav_Parent" xml:space="preserve"><value>Prind</value></data>
+  <data name="Nav_ChildGrades" xml:space="preserve"><value>Notat e fëmijës</value></data>
+  <data name="Nav_ChildSchedule" xml:space="preserve"><value>Orari</value></data>
+  <data name="Nav_Attendance" xml:space="preserve"><value>Prezenca</value></data>
+  <data name="Nav_Assignments" xml:space="preserve"><value>Detyrat</value></data>
+  <data name="Nav_Documents" xml:space="preserve"><value>Dokumentet</value></data>
+  <data name="Nav_General" xml:space="preserve"><value>Të përgjithshme</value></data>
+  <data name="Nav_PublicHome" xml:space="preserve"><value>Faqja publike</value></data>
+  <data name="Nav_Privacy" xml:space="preserve"><value>Privatësia</value></data>
+  <data name="Nav_SignOut" xml:space="preserve"><value>Dil</value></data>
+  <data name="Nav_SearchMenu" xml:space="preserve"><value>Kërko në menü...</value></data>
+  <data name="Topbar_Logout" xml:space="preserve"><value>Dil</value></data>
+  <data name="Login_SignIn" xml:space="preserve"><value>Hyr</value></data>
+  <data name="Login_Subtitle" xml:space="preserve"><value>Vendos kredencialet për të hyrë në llogarinë tënde</value></data>
+  <data name="Login_Email" xml:space="preserve"><value>Adresa e emailit</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>Fjalëkalimi</value></data>
+  <data name="Login_RememberMe" xml:space="preserve"><value>Më kujto</value></data>
+  <data name="Login_Submit" xml:space="preserve"><value>Hyr</value></data>
+  <data name="Login_DemoTitle" xml:space="preserve"><value>Hyrje demo (fjalëkalimi: Admin@123)</value></data>
+  <data name="Login_InvalidCredentials" xml:space="preserve"><value>Email ose fjalëkalim i pavlefshëm.</value></data>
+  <data name="Login_2FA_Title" xml:space="preserve"><value>Autentifikim dyfaktorësh</value></data>
+  <data name="Login_2FA_Subtitle" xml:space="preserve"><value>Vendos kodin nga aplikacioni i autentifikimit</value></data>
+  <data name="Login_2FA_Code" xml:space="preserve"><value>Kodi i autentifikimit</value></data>
+  <data name="Login_2FA_RememberMachine" xml:space="preserve"><value>Më kujto këtë pajisje</value></data>
+  <data name="TwoFactor_Title" xml:space="preserve"><value>Autentifikim dyfaktorësh (2FA)</value></data>
+  <data name="TwoFactor_ScanQr" xml:space="preserve"><value>Skano këtë kod QR me Google Authenticator, Microsoft Authenticator ose një aplikacion tjetër TOTP.</value></data>
+  <data name="TwoFactor_ManualKey" xml:space="preserve"><value>Ose vendos këtë çelës manualisht:</value></data>
+  <data name="TwoFactor_Code" xml:space="preserve"><value>Kodi i verifikimit</value></data>
+  <data name="TwoFactor_Enable" xml:space="preserve"><value>Aktivizo 2FA</value></data>
+  <data name="TwoFactor_Enabled" xml:space="preserve"><value>Autentifikimi dyfaktorësh është aktivizuar.</value></data>
+  <data name="TwoFactor_Disabled" xml:space="preserve"><value>Autentifikimi dyfaktorësh është çaktivizuar.</value></data>
+  <data name="TwoFactor_InvalidCode" xml:space="preserve"><value>Kod verifikimi i pavlefshëm. Provo përsëri.</value></data>
+  <data name="TwoFactor_SessionExpired" xml:space="preserve"><value>Seanca skadoi. Hyr përsëri.</value></data>
+  <data name="TwoFactor_AdminCannotDisable" xml:space="preserve"><value>Administratorët duhet ta mbajnë 2FA të aktivizuar.</value></data>
+  <data name="TwoFactor_Required" xml:space="preserve"><value>Autentifikimi dyfaktorësh kërkohet për rolin tënd. Konfiguroje më poshtë.</value></data>
+  <data name="TwoFactor_RecoveryCodes" xml:space="preserve"><value>Ruaj këto kode rikuperimi në një vend të sigurt:</value></data>
+  <data name="TwoFactor_Disable" xml:space="preserve"><value>Çaktivizo 2FA</value></data>
+  <data name="Account_Locked" xml:space="preserve"><value>Shumë përpjekje të dështuara. Provo përsëri pas 15 minutash.</value></data>
+  <data name="Reports_Title" xml:space="preserve"><value>Raportet &amp; eksporti për printim</value></data>
+  <data name="Reports_Subtitle" xml:space="preserve"><value>Raportet PDF dhe Excel përfshijnë kod QR për verifikimin e autenticitetit.</value></data>
+  <data name="Reports_Attendance" xml:space="preserve"><value>Raporti i prezencës së klasës</value></data>
+  <data name="Reports_Department" xml:space="preserve"><value>Performanca e departamentit</value></data>
+  <data name="Reports_Term" xml:space="preserve"><value>Përmbledhja e semestrit</value></data>
+  <data name="Reports_Course" xml:space="preserve"><value>Lënda</value></data>
+  <data name="Reports_DepartmentLabel" xml:space="preserve"><value>Departamenti</value></data>
+  <data name="Reports_TermLabel" xml:space="preserve"><value>Semestri akademik</value></data>
+  <data name="Reports_From" xml:space="preserve"><value>Nga data</value></data>
+  <data name="Reports_To" xml:space="preserve"><value>Deri në datën</value></data>
+  <data name="Common_PDF" xml:space="preserve"><value>Shkarko PDF</value></data>
+  <data name="Common_Excel" xml:space="preserve"><value>Shkarko Excel</value></data>
+  <data name="Common_AllTerms" xml:space="preserve"><value>Të gjitha semestrat</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Ruaj</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Anulo</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Fshi</value></data>
+  <data name="Common_Edit" xml:space="preserve"><value>Ndrysho</value></data>
+  <data name="Common_Back" xml:space="preserve"><value>Kthehu</value></data>
+  <data name="Common_Create" xml:space="preserve"><value>Krijo</value></data>
+  <data name="Common_Search" xml:space="preserve"><value>Kërko</value></data>
+  <data name="Common_Actions" xml:space="preserve"><value>Veprimet</value></data>
+  <data name="Common_Yes" xml:space="preserve"><value>Po</value></data>
+  <data name="Common_No" xml:space="preserve"><value>Jo</value></data>
+  <data name="Role_SuperAdmin" xml:space="preserve"><value>SuperAdmin</value></data>
+  <data name="Role_Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Role_Professor" xml:space="preserve"><value>Profesor</value></data>
+  <data name="Role_Student" xml:space="preserve"><value>Student</value></data>
+  <data name="Role_Parent" xml:space="preserve"><value>Prind</value></data>
+  <data name="Audit_TranscriptDownload" xml:space="preserve"><value>Shkarkim transkripti</value></data>
+  <data name="Audit_AtRiskNote" xml:space="preserve"><value>Shënim ndërhyrjeje për student në rrezik</value></data>
+  <data name="Audit_CalendarChange" xml:space="preserve"><value>Ndryshim kalendari</value></data>
+  <data name="Audit_GradeOverride" xml:space="preserve"><value>Ndryshim note (override)</value></data>
+  <data name="Audit_ReportExport" xml:space="preserve"><value>Eksport raporti</value></data>
+  <data name="Home_Features" xml:space="preserve"><value>Karakteristikat</value></data>
+  <data name="Home_About" xml:space="preserve"><value>Rreth nesh</value></data>
+  <data name="Home_ViewAllFeatures" xml:space="preserve"><value>Shiko të gjitha karakteristikat</value></data>
+  <data name="Nav_Home" xml:space="preserve"><value>Kryefaqja</value></data>
+  <data name="Nav_Contact" xml:space="preserve"><value>Kontakt</value></data>
+  <data name="Nav_Roles" xml:space="preserve"><value>Rolet</value></data>
+  <data name="Auth_Login" xml:space="preserve"><value>Hyr</value></data>
+  <data name="Auth_Register" xml:space="preserve"><value>Regjistrohu</value></data>
+  <data name="Footer_Tagline" xml:space="preserve"><value>Menaxhim modern i studentëve për universitete — regjistrime, nota, orare dhe akses i sigurt sipas roleve.</value></data>
+  <data name="Footer_Explore" xml:space="preserve"><value>Eksploro</value></data>
+  <data name="Footer_Support" xml:space="preserve"><value>Mbështetje</value></data>
+  <data name="Footer_Connect" xml:space="preserve"><value>Lidhhu</value></data>
+  <data name="Pub_Features_Title" xml:space="preserve"><value>Karakteristikat e platformës</value></data>
+  <data name="Pub_Features_Subtitle" xml:space="preserve"><value>Zbuloni çdo mjet që ofron Menaxheri Universitar — nga të dhënat e studentëve te analitika dhe raportimi i sigurt.</value></data>
+  <data name="Pub_Feat4Title" xml:space="preserve"><value>Analitika &amp; njohuri</value></data>
+  <data name="Pub_Feat4Desc" xml:space="preserve"><value>Panele vizuale për trendet e regjistrimit, kalueshmërinë, mungesat dhe performancën e departamenteve.</value></data>
+  <data name="Pub_Feat5Title" xml:space="preserve"><value>Raporte PDF &amp; Excel</value></data>
+  <data name="Pub_Feat5Desc" xml:space="preserve"><value>Eksportoni mungesa, përmbledhje semestri dhe performancë me verifikim QR të integruar.</value></data>
+  <data name="Pub_Feat6Title" xml:space="preserve"><value>Portali i prindërve</value></data>
+  <data name="Pub_Feat6Desc" xml:space="preserve"><value>Prindërit ndjekin notat, mungesat dhe progresin akademik të studentëve të lidhur.</value></data>
+  <data name="Pub_Feat7Title" xml:space="preserve"><value>Kalendari akademik</value></data>
+  <data name="Pub_Feat7Desc" xml:space="preserve"><value>Planifikoni semestrat, pushimet dhe periudhat e provimeve — të gjithë në të njëjtën faqe kohore.</value></data>
+  <data name="Pub_Feat8Title" xml:space="preserve"><value>Monitorimi i rrezikut</value></data>
+  <data name="Pub_Feat8Desc" xml:space="preserve"><value>Identifikoni studentët në vështirësi herët dhe regjistroni shënime ndërhyrjeje për këshilltarët.</value></data>
+  <data name="Pub_Feat9Title" xml:space="preserve"><value>Auditim &amp; siguri</value></data>
+  <data name="Pub_Feat9Desc" xml:space="preserve"><value>Ndiqni veprime sensitive, hyrje dhe akses sipas roleve në të gjithë institucionin.</value></data>
+  <data name="Pub_About_Title" xml:space="preserve"><value>Rreth Menaxherit Universitar</value></data>
+  <data name="Pub_About_Subtitle" xml:space="preserve"><value>Ndihmojmë universitetet të funksionojnë më mirë — duke lidhur administratorët, fakultetin, studentët dhe prindërit në një platformë të besueshme.</value></data>
+  <data name="Pub_About_Mission" xml:space="preserve"><value>Misioni ynë</value></data>
+  <data name="Pub_About_MissionDesc" xml:space="preserve"><value>Të thjeshtojmë operacionet akademike që stafi të kalojë më pak kohë me dokumente dhe më shumë me studentët.</value></data>
+  <data name="Pub_About_Vision" xml:space="preserve"><value>Vizioni ynë</value></data>
+  <data name="Pub_About_VisionDesc" xml:space="preserve"><value>Një kampus ku çdo palë ka akses të qartë dhe të sigurt në informacionin që i nevojitet — në gjuhën e tyre, në çdo pajisje.</value></data>
+  <data name="Pub_About_Values" xml:space="preserve"><value>Vlerat kryesore</value></data>
+  <data name="Pub_About_Value1" xml:space="preserve"><value>Transparencë në nota dhe raporte</value></data>
+  <data name="Pub_About_Value2" xml:space="preserve"><value>Dizajn me prioritet sigurinë dhe gjurmë auditimi</value></data>
+  <data name="Pub_About_Value3" xml:space="preserve"><value>Akses gjithëpërfshirës — anglisht dhe shqip</value></data>
+  <data name="Pub_Contact_Title" xml:space="preserve"><value>Na kontaktoni</value></data>
+  <data name="Pub_Contact_Subtitle" xml:space="preserve"><value>Keni pyetje për demo, implementim apo mbështetje? Na shkruani — përgjigjemi zakonisht brenda një dite pune.</value></data>
+  <data name="Pub_Contact_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Pub_Contact_Phone" xml:space="preserve"><value>Telefon</value></data>
+  <data name="Pub_Contact_Hours" xml:space="preserve"><value>Orari i zyrës</value></data>
+  <data name="Pub_Contact_HoursVal" xml:space="preserve"><value>E hënë – E premte, 9:00 – 17:00</value></data>
+  <data name="Pub_Contact_Send" xml:space="preserve"><value>Dërgo mesazhin</value></data>
+  <data name="Pub_Contact_Name" xml:space="preserve"><value>Emri juaj</value></data>
+  <data name="Pub_Contact_Message" xml:space="preserve"><value>Mesazhi</value></data>
+  <data name="Pub_Contact_Note" xml:space="preserve"><value>Ky formular hap klientin tuaj të emailit — asnjë të dhënë nuk ruhet derisa ta dërgoni.</value></data>
+  <data name="Pub_Privacy_Title" xml:space="preserve"><value>Politika e privatësisë</value></data>
+  <data name="Pub_Privacy_Intro" xml:space="preserve"><value>Privatësia juaj ka rëndësi. Kjo politikë shpjegon çfarë mbledhim dhe si mbrojmë të dhënat akademike.</value></data>
+  <data name="Pub_Privacy_S1" xml:space="preserve"><value>Informacioni që mbledhim</value></data>
+  <data name="Pub_Privacy_S1Desc" xml:space="preserve"><value>Emër, email, rol, regjistrime, nota, mungesa dhe log auditimi të nevojshme për funksionimin e sistemit.</value></data>
+  <data name="Pub_Privacy_S2" xml:space="preserve"><value>Si përdorim të dhënat</value></data>
+  <data name="Pub_Privacy_S2Desc" xml:space="preserve"><value>Të dhënat përdoren vetëm për administrim akademik, raportim dhe akses të sigurt brenda institucionit tuaj.</value></data>
+  <data name="Pub_Privacy_S3" xml:space="preserve"><value>Siguria</value></data>
+  <data name="Pub_Privacy_S3Desc" xml:space="preserve"><value>Lejet sipas roleve, HTTPS dhe regjistrimi i aktivitetit ndihmojnë të parandalojnë aksesin e paautorizuar.</value></data>
+  <data name="Pub_BackHome" xml:space="preserve"><value>Kthehu në kryefaqe</value></data>
+  <data name="Footer_Copyright" xml:space="preserve"><value>Menaxheri Universitar. Të gjitha të drejtat e rezervuara.</value></data>
+  <data name="Dash_AdminOverview" xml:space="preserve"><value>Përmbledhje admin</value></data>
+  <data name="Dash_WelcomeBack" xml:space="preserve"><value>Mirë se u ktheve</value></data>
+  <data name="Dash_Snapshot" xml:space="preserve"><value>pamje e sistemit universitar.</value></data>
+  <data name="Dash_FullAnalytics" xml:space="preserve"><value>Analitika e plotë</value></data>
+  <data name="Dash_RegisterStudent" xml:space="preserve"><value>Regjistro student</value></data>
+  <data name="Dash_KpiUsers" xml:space="preserve"><value>Përdorues</value></data>
+  <data name="Dash_KpiStudents" xml:space="preserve"><value>Studentë</value></data>
+  <data name="Dash_KpiProfessors" xml:space="preserve"><value>Profesorë</value></data>
+  <data name="Dash_KpiParents" xml:space="preserve"><value>Prindër</value></data>
+  <data name="Dash_KpiCourses" xml:space="preserve"><value>Lëndë</value></data>
+  <data name="Dash_KpiEnrollments" xml:space="preserve"><value>Regjistrime</value></data>
+  <data name="Dash_KpiAvgGrade" xml:space="preserve"><value>Nota mes.</value></data>
+  <data name="Dash_KpiPassRate" xml:space="preserve"><value>Shkalla kalimit</value></data>
+  <data name="Dash_KpiAbsencesMo" xml:space="preserve"><value>Mungesa (muaj)</value></data>
+  <data name="Dash_KpiAttendanceRows" xml:space="preserve"><value>Rreshta prezence</value></data>
+  <data name="Dash_KpiEnrollments7d" xml:space="preserve"><value>Regjistrime 7d</value></data>
+  <data name="Dash_KpiLoginsToday" xml:space="preserve"><value>Hyrje sot</value></data>
+  <data name="Dash_Logins7Days" xml:space="preserve"><value>Hyrje — 7 ditët e fundit</value></data>
+  <data name="Dash_PassVsFail" xml:space="preserve"><value>Kalim vs dështim</value></data>
+  <data name="Dash_StudentsByDept" xml:space="preserve"><value>Studentë sipas departamentit</value></data>
+  <data name="Dash_GradeDistribution" xml:space="preserve"><value>Shpërndarja e notave</value></data>
+  <data name="Dash_RecentAdminActivity" xml:space="preserve"><value>Aktiviteti i fundit i adminit</value></data>
+  <data name="Dash_NoAdminActivity" xml:space="preserve"><value>Asnjë ndryshim admin i regjistruar ende.</value></data>
+  <data name="Dash_ViewAll" xml:space="preserve"><value>Shiko të gjitha →</value></data>
+  <data name="Dash_QuickActions" xml:space="preserve"><value>Veprime të shpejta</value></data>
+  <data name="Dash_Enroll" xml:space="preserve"><value>Regjistro</value></data>
+  <data name="Dash_AuthLogs" xml:space="preserve"><value>Regjistrat e hyrjes</value></data>
+  <data name="Dash_Filters" xml:space="preserve"><value>Filtrat</value></data>
+  <data name="Dash_LoginsWeekNote" xml:space="preserve"><value>hyrje të suksesshme në 7 ditët e fundit.</value></data>
+  <data name="Chart_Logins" xml:space="preserve"><value>Hyrje</value></data>
+  <data name="Chart_Passing" xml:space="preserve"><value>Kalojnë</value></data>
+  <data name="Chart_Failing" xml:space="preserve"><value>Dështojnë</value></data>
+  <data name="Analytics_Subtitle" xml:space="preserve"><value>Filtro, kërko dhe eksploro të dhënat universitare</value></data>
+  <data name="Analytics_ClearAll" xml:space="preserve"><value>Pastro të gjitha</value></data>
+  <data name="Analytics_AllDepartments" xml:space="preserve"><value>Të gjitha departamentet</value></data>
+  <data name="Analytics_AllCourses" xml:space="preserve"><value>Të gjitha lëndët</value></data>
+  <data name="Analytics_AllProfessors" xml:space="preserve"><value>Të gjithë profesorët</value></data>
+  <data name="Analytics_AnyGrade" xml:space="preserve"><value>Çdo notë</value></data>
+  <data name="Analytics_Status" xml:space="preserve"><value>Statusi</value></data>
+  <data name="Analytics_PassOnly" xml:space="preserve"><value>Vetëm kalojnë</value></data>
+  <data name="Analytics_FailOnly" xml:space="preserve"><value>Vetëm dështojnë</value></data>
+  <data name="Analytics_ApplyFilters" xml:space="preserve"><value>Apliko filtrat</value></data>
+  <data name="Analytics_FilteredNote" xml:space="preserve"><value>Rezultate të filtruara — grafikët dhe tabelat përditësohen së bashku.</value></data>
+  <data name="Analytics_AvgGradeFiltered" xml:space="preserve"><value>Nota mes. (e filtruar)</value></data>
+  <data name="Analytics_TotalGrades" xml:space="preserve"><value>Nota</value></data>
+  <data name="Analytics_GradesPerCourse" xml:space="preserve"><value>Nota për lëndë</value></data>
+  <data name="Analytics_GradeRecords" xml:space="preserve"><value>Regjistrat e notave</value></data>
+  <data name="Analytics_SearchTable" xml:space="preserve"><value>Kërko në këtë tabelë…</value></data>
+  <data name="Analytics_NoGradesMatch" xml:space="preserve"><value>Asnjë notë nuk përputhet me filtrat.</value></data>
+  <data name="Analytics_SearchStudents" xml:space="preserve"><value>Kërko studentë…</value></data>
+  <data name="Analytics_SearchPlaceholder" xml:space="preserve"><value>Emër, nr. studenti, lëndë…</value></data>
+  <data name="Table_Student" xml:space="preserve"><value>Student</value></data>
+  <data name="Table_StudentNum" xml:space="preserve"><value>Nr. studenti</value></data>
+  <data name="Table_Course" xml:space="preserve"><value>Lënda</value></data>
+  <data name="Table_Dept" xml:space="preserve"><value>Dept.</value></data>
+  <data name="Table_Professor" xml:space="preserve"><value>Profesor</value></data>
+  <data name="Table_Grade" xml:space="preserve"><value>Nota</value></data>
+  <data name="Table_Status" xml:space="preserve"><value>Statusi</value></data>
+  <data name="Table_Date" xml:space="preserve"><value>Data</value></data>
+  <data name="Table_Name" xml:space="preserve"><value>Emri</value></data>
+  <data name="Table_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Table_AvgGrade" xml:space="preserve"><value>Nota mes.</value></data>
+  <data name="Dash_FacultyPortal" xml:space="preserve"><value>Portali i fakultetit</value></data>
+  <data name="Dash_ClassAvgGrade" xml:space="preserve"><value>Nota mes. klase</value></data>
+  <data name="Dash_PassingStudents" xml:space="preserve"><value>Studentë që kalojnë</value></data>
+  <data name="Dash_FailingStudents" xml:space="preserve"><value>Studentë që dështojnë</value></data>
+  <data name="Dash_MyCourses" xml:space="preserve"><value>Lëndët e mia</value></data>
+  <data name="Dash_NoCoursesProfessor" xml:space="preserve"><value>Nuk ka lëndë të caktuara. Kontaktoni administratorin.</value></data>
+  <data name="Dash_GradesBtn" xml:space="preserve"><value>Notat</value></data>
+  <data name="Dash_AttendanceBtn" xml:space="preserve"><value>Prezenca</value></data>
+  <data name="Dash_AssignmentsExams" xml:space="preserve"><value>Detyra &amp; provime</value></data>
+  <data name="Dash_Credits" xml:space="preserve"><value>kredite</value></data>
+  <data name="Dash_StudentPortal" xml:space="preserve"><value>Portali i studentit</value></data>
+  <data name="Dash_Passed" xml:space="preserve"><value>Kaluar</value></data>
+  <data name="Dash_Failed" xml:space="preserve"><value>Dështuar</value></data>
+  <data name="Dash_Graded" xml:space="preserve"><value>Me notë</value></data>
+  <data name="Dash_AllGrades" xml:space="preserve"><value>Të gjitha notat</value></data>
+  <data name="Dash_Schedule" xml:space="preserve"><value>Orari</value></data>
+  <data name="Dash_NoEnrollments" xml:space="preserve"><value>Nuk ka regjistrime ende. Kontaktoni administratorin.</value></data>
+  <data name="Dash_CourseDetails" xml:space="preserve"><value>Detajet e lëndës</value></data>
+  <data name="Dash_NotGraded" xml:space="preserve"><value>Pa notë</value></data>
+  <data name="Dash_NotScheduled" xml:space="preserve"><value>Pa orar</value></data>
+  <data name="Dash_Pass" xml:space="preserve"><value>Kalon</value></data>
+  <data name="Dash_Fail" xml:space="preserve"><value>Dështon</value></data>
+  <data name="Modal_Code" xml:space="preserve"><value>Kodi</value></data>
+  <data name="Modal_Name" xml:space="preserve"><value>Emri</value></data>
+  <data name="Modal_Professor" xml:space="preserve"><value>Profesor</value></data>
+  <data name="Modal_Credits" xml:space="preserve"><value>Kredite</value></data>
+  <data name="Modal_Enrolled" xml:space="preserve"><value>Regjistruar</value></data>
+  <data name="Modal_Grade" xml:space="preserve"><value>Nota</value></data>
+  <data name="Modal_Status" xml:space="preserve"><value>Statusi</value></data>
+  <data name="Modal_Schedule" xml:space="preserve"><value>Orari</value></data>
+  <data name="Dash_ParentPortal" xml:space="preserve"><value>Portali i prindit</value></data>
+  <data name="Dash_Hello" xml:space="preserve"><value>Përshëndetje,</value></data>
+  <data name="Dash_Child" xml:space="preserve"><value>Fëmija:</value></data>
+  <data name="Dash_ChildAvgGrade" xml:space="preserve"><value>Nota mes. e fëmijës</value></data>
+  <data name="Dash_GradesCount" xml:space="preserve"><value>Nota</value></data>
+  <data name="Dash_PassFail" xml:space="preserve"><value>Kalon / Dështon</value></data>
+  <data name="Dash_AbsencesMonth" xml:space="preserve"><value>Mungesa këtë muaj</value></data>
+  <data name="Dash_ChildGradeDist" xml:space="preserve"><value>Shpërndarja e notave të fëmijës</value></data>
+  <data name="Dash_QuickLinks" xml:space="preserve"><value>Lidhje të shpejta</value></data>
+  <data name="Dash_ViewAllGrades" xml:space="preserve"><value>Shiko të gjitha notat</value></data>
+  <data name="Dash_ViewSchedule" xml:space="preserve"><value>Shiko orarin e klasës</value></data>
+  <data name="Dash_AttendanceCalendar" xml:space="preserve"><value>Kalendari i prezencës</value></data>
+  <data name="Dash_AssignmentsDeadlines" xml:space="preserve"><value>Detyra &amp; afate</value></data>
+  <data name="Dash_RequestTranscript" xml:space="preserve"><value>Kërko transkript</value></data>
+  <data name="Dash_OnlyLinkedChild" xml:space="preserve"><value>Shihni vetëm të dhënat për fëmijën tuaj të lidhur — studentët e tjerë nuk janë të dukshëm.</value></data>
+  <data name="SA_Only" xml:space="preserve"><value>Vetëm SuperAdmin</value></data>
+  <data name="SA_ControlCenter" xml:space="preserve"><value>Qendra e kontrollit të sistemit</value></data>
+  <data name="SA_ControlDesc" xml:space="preserve"><value>Konfiguro notat, oraret e mësimit dhe rregullat e platformës. Adminët e rregullt nuk mund t’i ndryshojnë.</value></data>
+  <data name="SA_GradesRange" xml:space="preserve"><value>Nota {0}–{1} (kalon ≥ {2})</value></data>
+  <data name="SA_LessonSlotsDay" xml:space="preserve"><value>{0} orë mësimi / ditë</value></data>
+  <data name="SA_UserAccounts" xml:space="preserve"><value>{0} llogari përdoruesi</value></data>
+  <data name="SA_GradeRules" xml:space="preserve"><value>Rregullat e notave &amp; prezencës</value></data>
+  <data name="SA_GradeRulesDesc" xml:space="preserve"><value>Nota minimale, maksimale dhe kaluese. Vendos sa orë mësimi në ditë shkollore.</value></data>
+  <data name="SA_LessonsDayConfigured" xml:space="preserve"><value>{0} orë/ditë të konfiguruara</value></data>
+  <data name="SA_DailyLessonSchedule" xml:space="preserve"><value>Orari ditor i mësimit</value></data>
+  <data name="SA_DailyLessonDesc" xml:space="preserve"><value>Ndrysho periudhat (ora fillimit/mbarimit). Profesorët shënojnë prezencën sipas këtyre orëve.</value></data>
+  <data name="SA_ActivePeriods" xml:space="preserve"><value>{0} periudha aktive</value></data>
+  <data name="SA_UsersRolesDesc" xml:space="preserve"><value>Krijo adminë, cakto role, rivendos fjalëkalime. Kontroll i plotë i llogarive.</value></data>
+  <data name="SA_Accounts" xml:space="preserve"><value>{0} llogari</value></data>
+  <data name="SA_LoginActivityDesc" xml:space="preserve"><value>Shqyrto hyrjet, dështimet dhe vendndodhjen nga auditimi i hyrjes.</value></data>
+  <data name="SA_Security" xml:space="preserve"><value>Siguria</value></data>
+  <data name="SA_AdminChangeLog" xml:space="preserve"><value>Regjistri i ndryshimeve të adminit</value></data>
+  <data name="SA_AdminChangeDesc" xml:space="preserve"><value>Kush ndryshoi studentë, lëndë, nota dhe regjistra të tjerë.</value></data>
+  <data name="SA_AuditTrail" xml:space="preserve"><value>Gjurmë auditimi</value></data>
+  <data name="SA_AcademicCalendarDesc" xml:space="preserve"><value>Semestra, pushime, javë provimesh — kontrollo bllokimin e prezencës.</value></data>
+  <data name="SA_Scheduling" xml:space="preserve"><value>Planifikimi</value></data>
+  <data name="SA_AtRiskDesc" xml:space="preserve"><value>Lista e ndërhyrjes për nota të ulëta dhe mungesa të larta.</value></data>
+  <data name="SA_StudentSuccess" xml:space="preserve"><value>Suksesi i studentit</value></data>
+  <data name="SA_DocumentDesc" xml:space="preserve"><value>Aprovo kërkesat e prindërve për transkript dhe shkarko PDF.</value></data>
+  <data name="SA_Transcripts" xml:space="preserve"><value>Transkripte</value></data>
+  <data name="SA_FullAnalyticsDesc" xml:space="preserve"><value>Filtra të thellë sipas departamenteve, lëndëve, profesorëve dhe notave.</value></data>
+  <data name="SA_Reporting" xml:space="preserve"><value>Raportimi</value></data>
+  <data name="AtRisk_Subtitle" xml:space="preserve"><value>Nota të ulëta + mungesa të larta — lista e ndërhyrjes</value></data>
+  <data name="AtRisk_None" xml:space="preserve"><value>Asnjë student në rrezik me pragjet aktuale.</value></data>
+  <data name="AtRisk_Profile" xml:space="preserve"><value>Profili</value></data>
+  <data name="AtRisk_Avg" xml:space="preserve"><value>Mes.</value></data>
+  <data name="AtRisk_Absences" xml:space="preserve"><value>mungesa</value></data>
+  <data name="AtRisk_LowGrades" xml:space="preserve"><value>nota të ulëta</value></data>
+  <data name="AtRisk_Notes" xml:space="preserve"><value>Shënime:</value></data>
+  <data name="AtRisk_NotePlaceholder" xml:space="preserve"><value>Shënim ndërhyrjeje...</value></data>
+  <data name="Admin_ActivityTitle" xml:space="preserve"><value>Aktiviteti i adminit</value></data>
+  <data name="Admin_ActivitySubtitle" xml:space="preserve"><value>Krijime, përditësime dhe fshirje nga administratorët (me IP &amp; vendndodhje)</value></data>
+  <data name="Admin_AuthLogsTitle" xml:space="preserve"><value>Regjistrat e autentifikimit</value></data>
+  <data name="Common_Entity" xml:space="preserve"><value>Entiteti</value></data>
+  <data name="Common_Action" xml:space="preserve"><value>Veprimi</value></data>
+  <data name="Common_Reset" xml:space="preserve"><value>Rivendos</value></data>
+  <data name="Common_Prev" xml:space="preserve"><value>Para</value></data>
+  <data name="Common_Next" xml:space="preserve"><value>Tjetër</value></data>
+  <data name="Common_Time" xml:space="preserve"><value>Koha (UTC)</value></data>
+  <data name="Common_Location" xml:space="preserve"><value>Vendndodhja</value></data>
+  <data name="Common_Details" xml:space="preserve"><value>Detajet</value></data>
+  <data name="Common_NoData" xml:space="preserve"><value>Nuk ka të dhëna ende.</value></data>
+  <data name="Common_ID" xml:space="preserve"><value>ID</value></data>
+  <data name="Common_ToDashboard" xml:space="preserve"><value>Kthehu te paneli</value></data>
+  <data name="Common_AddNew" xml:space="preserve"><value>Shto të ri</value></data>
+  <data name="Common_All" xml:space="preserve"><value>Të gjitha</value></data>
+  <data name="Common_Success" xml:space="preserve"><value>Sukses</value></data>
+  <data name="Common_Failed" xml:space="preserve"><value>Dështuar</value></data>
+  <data name="Common_Event" xml:space="preserve"><value>Ngjarja</value></data>
+  <data name="Parent_ViewingChild" xml:space="preserve"><value>Duke parë fëmijën:</value></data>
+  <data name="Admin_AuthSubtitle" xml:space="preserve"><value>Hyrje, dalje dhe përpjekje të dështuara</value></data>
+  <data name="Table_Enrollments" xml:space="preserve"><value>Regjistrime</value></data>
+</root>

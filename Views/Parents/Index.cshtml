@@ -1,0 +1,78 @@
+@model IEnumerable<UM_Project.Models.ParentIndexViewModel>
+@{
+    ViewData["Title"] = "Parents";
+    ViewData["PageTitle"] = "Parents";
+    ViewData["PageIcon"] = "fa-people-roof";
+    ViewData["PageSubtitle"] = "Guardians with login email — assign multiple children per parent";
+    ViewData["CreateController"] = "Parents";
+    ViewData["CreateText"] = "New parent";
+}
+
+<div class="um-page">
+    <partial name="_AdminPageHeader" />
+    <div class="mb-3">
+        <a asp-action="AssignChild" class="btn btn-outline-danger btn-sm">
+            <i class="fas fa-child me-1"></i> Assign child to existing parent
+        </a>
+    </div>
+    <div class="um-panel">
+        <div class="um-panel-toolbar">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search parent, email, or student..." />
+        </div>
+        <div class="table-responsive">
+            <table class="um-table" id="dataTable">
+                <thead>
+                    <tr><th>Parent</th><th>Email (login)</th><th>Children</th><th>Login</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@p.FullName</td>
+                            <td><code class="small">@p.Email</code></td>
+                            <td>
+                                @foreach (var child in p.Children)
+                                {
+                                    <div class="mb-1">
+                                        <a asp-controller="Students" asp-action="Details" asp-route-id="@child.StudentId"
+                                           class="text-danger fw-semibold text-decoration-none">
+                                            <span class="um-badge um-badge-gray me-1">@child.StudentNumber</span>@child.StudentName
+                                        </a>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (string.IsNullOrEmpty(p.UserId))
+                                { <span class="um-badge um-badge-gray">No</span> }
+                                else { <span class="um-badge um-badge-green">Yes</span> }
+                            </td>
+                            <td>
+                                <div class="um-actions flex-wrap">
+                                    <a asp-action="AssignChild" asp-route-parentGuardianId="@p.RepresentativeParentId"
+                                       class="um-btn-sm um-btn-edit" title="Add another child"><i class="fas fa-child"></i></a>
+                                    <a asp-action="Edit" asp-route-id="@p.RepresentativeParentId" class="um-btn-sm um-btn-edit" title="Edit parent"><i class="fas fa-pen"></i></a>
+                                    @if (!string.IsNullOrEmpty(p.UserId))
+                                    {
+                                        <form asp-action="ResetPassword" method="post" class="d-inline" onsubmit="return confirm('Reset password to default?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="parentId" value="@p.RepresentativeParentId" />
+                                            <button type="submit" class="um-btn-sm um-btn-edit" title="Reset password"><i class="fas fa-key"></i></button>
+                                        </form>
+                                    }
+                                    @foreach (var child in p.Children)
+                                    {
+                                        <button type="button" class="um-btn-sm um-btn-delete"
+                                                onclick="showDeleteModal('@child.ParentId', '@p.FullName → @child.StudentName')"
+                                                title="Remove link"><i class="fas fa-unlink"></i></button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<partial name="_DeleteModal" />
+<partial name="_TableSearchScript" />

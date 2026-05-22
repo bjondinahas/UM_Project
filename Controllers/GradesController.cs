@@ -3,15 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UM_Project.Data;
 using UM_Project.Models;
-
+using UM_Project.Services.Interfaces;
 
 namespace UM_Project.Controllers
 {
-    [Authorize(Roles = "Admin,Professor")]
+    [Authorize(Roles = RoleNames.AdminAndProfessor)]
     public class GradesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public GradesController(ApplicationDbContext context) => _context = context;
+        private readonly ISystemSettingsService _settings;
+        private readonly IAdminAuditService _audit;
+
+        public GradesController(ApplicationDbContext context, ISystemSettingsService settings, IAdminAuditService audit)
+        {
+            _context = context;
+            _settings = settings;
+            _audit = audit;
+        }
+
+        private async Task SetGradeRangeViewBagAsync()
+        {
+            var a = await _settings.GetAcademicSettingsAsync();
+            ViewBag.GradeMin = a.GradeMinimum;
+            ViewBag.GradeMax = a.GradeMaximum;
+            ViewBag.GradePassingMin = a.GradePassingMinimum;
+        }
 
         public async Task<IActionResult> Index()
         {
@@ -27,6 +43,7 @@ namespace UM_Project.Controllers
         {
             ViewBag.Students = await _context.Students.ToListAsync();
             ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
+            await SetGradeRangeViewBagAsync();
             return View();
         }
 
@@ -34,11 +51,13 @@ namespace UM_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int studentId, int courseId, int value)
         {
-            if (value < 5 || value > 10)
+            if (!await _settings.IsValidGradeAsync(value))
             {
-                TempData["Error"] = "Grade must be between 5 and 10!";
+                var a = await _settings.GetAcademicSettingsAsync();
+                TempData["Error"] = $"Grade must be between {a.GradeMinimum} and {a.GradeMaximum}!";
                 ViewBag.Students = await _context.Students.ToListAsync();
                 ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
+                await SetGradeRangeViewBagAsync();
                 return View();
             }
             var existing = await _context.Grades.FirstOrDefaultAsync(g => g.StudentId == studentId && g.CourseId == courseId);
@@ -62,6 +81,7 @@ namespace UM_Project.Controllers
             if (grade == null) return NotFound();
             ViewBag.Students = await _context.Students.ToListAsync();
             ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
+            await SetGradeRangeViewBagAsync();
             return View(grade);
         }
 
@@ -71,11 +91,14 @@ namespace UM_Project.Controllers
         {
             var grade = await _context.Grades.FindAsync(id);
             if (grade == null) return NotFound();
-            if (value < 5 || value > 10)
+            var oldValue = grade.Value;
+            if (!await _settings.IsValidGradeAsync(value))
             {
-                TempData["Error"] = "Grade must be between 5 and 10!";
+                var a = await _settings.GetAcademicSettingsAsync();
+                TempData["Error"] = $"Grade must be between {a.GradeMinimum} and {a.GradeMaximum}!";
                 ViewBag.Students = await _context.Students.ToListAsync();
                 ViewBag.Courses = await _context.Courses.Include(c => c.Department).ToListAsync();
+                await SetGradeRangeViewBagAsync();
                 return View(grade);
             }
             grade.StudentId = studentId;
@@ -84,6 +107,11 @@ namespace UM_Project.Controllers
             grade.DateRecorded = DateTime.Now;
             _context.Update(grade);
             await _context.SaveChangesAsync();
+            if (User.IsInRole(RoleNames.SuperAdmin) || User.IsInRole(RoleNames.Admin))
+            {
+                await _audit.LogAsync(HttpContext, AdminActions.GradeOverride, AuditEntityTypes.Grade,
+                    id.ToString(), $"Student={studentId}, Course={courseId}, {oldValue}→{value}");
+            }
             TempData["Success"] = "Grade updated!";
             return RedirectToAction(nameof(Index));
         }

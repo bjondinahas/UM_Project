@@ -1,0 +1,36 @@
+@using Microsoft.AspNetCore.Identity
+@using UM_Project.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="home-nav-actions">
+        @if (User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.SuperAdmin))
+        {
+            <a asp-controller="Admin" asp-action="Dashboard" class="home-nav-auth-link">@Localizer["Nav_Dashboard"]</a>
+        }
+        else if (User.IsInRole(RoleNames.Professor))
+        {
+            <a asp-controller="Professor" asp-action="Dashboard" class="home-nav-auth-link">@Localizer["Nav_Dashboard"]</a>
+        }
+        else if (User.IsInRole(RoleNames.Student))
+        {
+            <a asp-controller="Student" asp-action="Dashboard" class="home-nav-auth-link">@Localizer["Nav_Dashboard"]</a>
+        }
+        else if (User.IsInRole(RoleNames.Parent))
+        {
+            <a asp-controller="Parent" asp-action="Dashboard" class="home-nav-auth-link">@Localizer["Nav_Dashboard"]</a>
+        }
+        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post" class="home-nav-actions-form">
+            <button type="submit" class="home-nav-btn home-nav-btn--outline">@Localizer["Topbar_Logout"]</button>
+        </form>
+    </div>
+}
+else
+{
+    <div class="home-nav-actions">
+        <a asp-area="Identity" asp-page="/Account/Register" class="home-nav-btn home-nav-btn--text">@Localizer["Auth_Register"]</a>
+        <a asp-area="Identity" asp-page="/Account/Login" class="home-nav-btn home-nav-btn--accent">@Localizer["Auth_Login"]</a>
+    </div>
+}

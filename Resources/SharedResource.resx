@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" use="required" type="xsd:string" /><xsd:attribute name="type" type="xsd:string" /><xsd:attribute name="mimetype" type="xsd:string" /></xsd:complexType></xsd:element>
+          <xsd:element name="assembly"><xsd:complexType><xsd:attribute name="alias" type="xsd:string" /><xsd:attribute name="name" type="xsd:string" /></xsd:complexType></xsd:element>
+          <xsd:element name="data"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /><xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" /><xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" /><xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" /></xsd:complexType></xsd:element>
+          <xsd:element name="resheader"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" /></xsd:complexType></xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="App_Title" xml:space="preserve"><value>University Manager</value></data>
+  <data name="Brand_Title" xml:space="preserve"><value>University Manager</value></data>
+  <data name="Brand_Subtitle" xml:space="preserve"><value>Academic portal</value></data>
+  <data name="Lang_English" xml:space="preserve"><value>English</value></data>
+  <data name="Lang_Albanian" xml:space="preserve"><value>Albanian</value></data>
+  <data name="Lang_SelectLanguage" xml:space="preserve"><value>Change language</value></data>
+  <data name="Home_Welcome" xml:space="preserve"><value>Welcome</value></data>
+  <data name="Home_TrustedPlatform" xml:space="preserve"><value>Trusted Academic Platform</value></data>
+  <data name="Home_HeroTitle1" xml:space="preserve"><value>Manage Your University</value></data>
+  <data name="Home_HeroTitle2" xml:space="preserve"><value>With Confidence</value></data>
+  <data name="Home_HeroDesc" xml:space="preserve"><value>University Manager brings students, professors, and administrators together — enrollments, schedules, grades, and departments in one secure place.</value></data>
+  <data name="Home_Bullet1" xml:space="preserve"><value>Role-based dashboards</value></data>
+  <data name="Home_Bullet2" xml:space="preserve"><value>Real-time grade tracking</value></data>
+  <data name="Home_Bullet3" xml:space="preserve"><value>Secure campus access</value></data>
+  <data name="Home_LoginSystem" xml:space="preserve"><value>Login to System</value></data>
+  <data name="Home_CreateAccount" xml:space="preserve"><value>Create Account</value></data>
+  <data name="Home_GoDashboard" xml:space="preserve"><value>Go to Dashboard</value></data>
+  <data name="Home_ExploreFeatures" xml:space="preserve"><value>Explore Features</value></data>
+  <data name="Home_ThreeRoles" xml:space="preserve"><value>3 Roles</value></data>
+  <data name="Home_StatStudents" xml:space="preserve"><value>Students</value></data>
+  <data name="Home_StatStudentsDesc" xml:space="preserve"><value>Profiles &amp; grades</value></data>
+  <data name="Home_StatFaculty" xml:space="preserve"><value>Faculty</value></data>
+  <data name="Home_StatFacultyDesc" xml:space="preserve"><value>Courses &amp; schedules</value></data>
+  <data name="Home_StatCourses" xml:space="preserve"><value>Courses</value></data>
+  <data name="Home_StatCoursesDesc" xml:space="preserve"><value>Enrollments &amp; plans</value></data>
+  <data name="Home_StatSecure" xml:space="preserve"><value>Secure</value></data>
+  <data name="Home_StatSecureDesc" xml:space="preserve"><value>Role-based access</value></data>
+  <data name="Home_FeaturesTitle" xml:space="preserve"><value>Everything You Need on Campus</value></data>
+  <data name="Home_FeaturesDesc" xml:space="preserve"><value>From enrollment to graduation — streamline academic operations with powerful, role-based tools.</value></data>
+  <data name="Home_Feat1Title" xml:space="preserve"><value>Student Management</value></data>
+  <data name="Home_Feat1Desc" xml:space="preserve"><value>Track student profiles, enrollments, and academic records in one organized system.</value></data>
+  <data name="Home_Feat2Title" xml:space="preserve"><value>Schedules &amp; Courses</value></data>
+  <data name="Home_Feat2Desc" xml:space="preserve"><value>Manage departments, course catalogs, and class schedules with clarity for every semester.</value></data>
+  <data name="Home_Feat3Title" xml:space="preserve"><value>Grades &amp; Reports</value></data>
+  <data name="Home_Feat3Desc" xml:space="preserve"><value>Professors submit grades; students view results. Admins oversee the full academic picture.</value></data>
+  <data name="Home_LearnMore" xml:space="preserve"><value>Learn more</value></data>
+  <data name="Home_AboutBadge" xml:space="preserve"><value>About the System</value></data>
+  <data name="Home_AboutTitle" xml:space="preserve"><value>Built for Modern Universities</value></data>
+  <data name="Home_AboutDesc" xml:space="preserve"><value>University Manager is a complete student management platform designed for higher education. Whether you are an administrator coordinating departments, a professor managing courses, or a student tracking your academic progress — the right tools are always at your fingertips.</value></data>
+  <data name="Home_AboutLi1" xml:space="preserve"><value>Role-based dashboards — tailored views for Admin, Professor, and Student.</value></data>
+  <data name="Home_AboutLi2" xml:space="preserve"><value>Enrollment workflow — connect students to courses and schedules seamlessly.</value></data>
+  <data name="Home_AboutLi3" xml:space="preserve"><value>Responsive design — works on desktop, tablet, and mobile.</value></data>
+  <data name="Home_WebAccess" xml:space="preserve"><value>Web-based access</value></data>
+  <data name="Home_RolesBadge" xml:space="preserve"><value>User Roles</value></data>
+  <data name="Home_RolesTitle" xml:space="preserve"><value>Designed for Every Role</value></data>
+  <data name="Home_RolesDesc" xml:space="preserve"><value>Each user type gets a focused experience with the permissions they need.</value></data>
+  <data name="Home_RoleAdmin" xml:space="preserve"><value>Administrator</value></data>
+  <data name="Home_RoleAdminDesc" xml:space="preserve"><value>Manage users, departments, courses, and oversee the entire institution.</value></data>
+  <data name="Home_RoleProf" xml:space="preserve"><value>Professor</value></data>
+  <data name="Home_RoleProfDesc" xml:space="preserve"><value>View assigned courses, manage student lists, and submit grades.</value></data>
+  <data name="Home_RoleStudent" xml:space="preserve"><value>Student</value></data>
+  <data name="Home_RoleStudentDesc" xml:space="preserve"><value>Check schedules, enrollments, and personal grade reports anytime.</value></data>
+  <data name="Home_CtaTitle" xml:space="preserve"><value>Ready to Get Started?</value></data>
+  <data name="Home_CtaDesc" xml:space="preserve"><value>Join University Manager and take control of your academic workflow today.</value></data>
+  <data name="Home_LoginNow" xml:space="preserve"><value>Login Now</value></data>
+  <data name="Home_RegisterFree" xml:space="preserve"><value>Register Free</value></data>
+  <data name="Home_SignedInHint" xml:space="preserve"><value>You are signed in. Use the navigation above to reach your dashboard.</value></data>
+  <data name="Nav_Overview" xml:space="preserve"><value>Overview</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Nav_Analytics" xml:space="preserve"><value>Analytics</value></data>
+  <data name="Nav_AtRisk" xml:space="preserve"><value>At-risk students</value></data>
+  <data name="Nav_HowItWorks" xml:space="preserve"><value>How it works</value></data>
+  <data name="Nav_SuperAdmin" xml:space="preserve"><value>SuperAdmin</value></data>
+  <data name="Nav_ControlCenter" xml:space="preserve"><value>Control center</value></data>
+  <data name="Nav_UsersRoles" xml:space="preserve"><value>Users &amp; roles</value></data>
+  <data name="Nav_People" xml:space="preserve"><value>People</value></data>
+  <data name="Nav_Students" xml:space="preserve"><value>Students</value></data>
+  <data name="Nav_Professors" xml:space="preserve"><value>Professors</value></data>
+  <data name="Nav_Parents" xml:space="preserve"><value>Parents</value></data>
+  <data name="Nav_Academics" xml:space="preserve"><value>Academics</value></data>
+  <data name="Nav_Departments" xml:space="preserve"><value>Departments</value></data>
+  <data name="Nav_Courses" xml:space="preserve"><value>Courses</value></data>
+  <data name="Nav_Enrollments" xml:space="preserve"><value>Enrollments</value></data>
+  <data name="Nav_Schedules" xml:space="preserve"><value>Schedules</value></data>
+  <data name="Nav_Grades" xml:space="preserve"><value>Grades</value></data>
+  <data name="Nav_AcademicCalendar" xml:space="preserve"><value>Academic calendar</value></data>
+  <data name="Nav_DocumentRequests" xml:space="preserve"><value>Document requests</value></data>
+  <data name="Nav_Reports" xml:space="preserve"><value>Reports &amp; export</value></data>
+  <data name="Nav_Security" xml:space="preserve"><value>Security</value></data>
+  <data name="Nav_TwoFactor" xml:space="preserve"><value>Two-factor (2FA)</value></data>
+  <data name="Nav_LoginActivity" xml:space="preserve"><value>Login activity</value></data>
+  <data name="Nav_AdminChanges" xml:space="preserve"><value>Admin changes</value></data>
+  <data name="Nav_Professor" xml:space="preserve"><value>Professor</value></data>
+  <data name="Nav_MySchedules" xml:space="preserve"><value>My schedules</value></data>
+  <data name="Nav_Student" xml:space="preserve"><value>Student</value></data>
+  <data name="Nav_MySchedule" xml:space="preserve"><value>My schedule</value></data>
+  <data name="Nav_MyGrades" xml:space="preserve"><value>My grades</value></data>
+  <data name="Nav_Parent" xml:space="preserve"><value>Parent</value></data>
+  <data name="Nav_ChildGrades" xml:space="preserve"><value>Child's grades</value></data>
+  <data name="Nav_ChildSchedule" xml:space="preserve"><value>Schedule</value></data>
+  <data name="Nav_Attendance" xml:space="preserve"><value>Attendance</value></data>
+  <data name="Nav_Assignments" xml:space="preserve"><value>Assignments</value></data>
+  <data name="Nav_Documents" xml:space="preserve"><value>Documents</value></data>
+  <data name="Nav_General" xml:space="preserve"><value>General</value></data>
+  <data name="Nav_PublicHome" xml:space="preserve"><value>Public home</value></data>
+  <data name="Nav_Privacy" xml:space="preserve"><value>Privacy</value></data>
+  <data name="Nav_SignOut" xml:space="preserve"><value>Sign out</value></data>
+  <data name="Nav_SearchMenu" xml:space="preserve"><value>Search menu...</value></data>
+  <data name="Topbar_Logout" xml:space="preserve"><value>Logout</value></data>
+  <data name="Login_SignIn" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Login_Subtitle" xml:space="preserve"><value>Enter your credentials to access your account</value></data>
+  <data name="Login_Email" xml:space="preserve"><value>Email address</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>Password</value></data>
+  <data name="Login_RememberMe" xml:space="preserve"><value>Remember me</value></data>
+  <data name="Login_Submit" xml:space="preserve"><value>Sign in</value></data>
+  <data name="Login_DemoTitle" xml:space="preserve"><value>Demo logins (password: Admin@123)</value></data>
+  <data name="Login_InvalidCredentials" xml:space="preserve"><value>Invalid email or password.</value></data>
+  <data name="Login_2FA_Title" xml:space="preserve"><value>Two-factor authentication</value></data>
+  <data name="Login_2FA_Subtitle" xml:space="preserve"><value>Enter the code from your authenticator app</value></data>
+  <data name="Login_2FA_Code" xml:space="preserve"><value>Authenticator code</value></data>
+  <data name="Login_2FA_RememberMachine" xml:space="preserve"><value>Remember this device</value></data>
+  <data name="TwoFactor_Title" xml:space="preserve"><value>Two-factor authentication (2FA)</value></data>
+  <data name="TwoFactor_ScanQr" xml:space="preserve"><value>Scan this QR code with Google Authenticator, Microsoft Authenticator, or another TOTP app.</value></data>
+  <data name="TwoFactor_ManualKey" xml:space="preserve"><value>Or enter this key manually:</value></data>
+  <data name="TwoFactor_Code" xml:space="preserve"><value>Verification code</value></data>
+  <data name="TwoFactor_Enable" xml:space="preserve"><value>Enable 2FA</value></data>
+  <data name="TwoFactor_Enabled" xml:space="preserve"><value>Two-factor authentication is enabled.</value></data>
+  <data name="TwoFactor_Disabled" xml:space="preserve"><value>Two-factor authentication has been disabled.</value></data>
+  <data name="TwoFactor_InvalidCode" xml:space="preserve"><value>Invalid verification code. Try again.</value></data>
+  <data name="TwoFactor_SessionExpired" xml:space="preserve"><value>Your session expired. Please sign in again.</value></data>
+  <data name="TwoFactor_AdminCannotDisable" xml:space="preserve"><value>Administrators must keep 2FA enabled.</value></data>
+  <data name="TwoFactor_Required" xml:space="preserve"><value>Two-factor authentication is required for your role. Set it up below.</value></data>
+  <data name="TwoFactor_RecoveryCodes" xml:space="preserve"><value>Save these recovery codes in a safe place:</value></data>
+  <data name="TwoFactor_Disable" xml:space="preserve"><value>Disable 2FA</value></data>
+  <data name="Account_Locked" xml:space="preserve"><value>Too many failed attempts. Please try again in 15 minutes.</value></data>
+  <data name="Reports_Title" xml:space="preserve"><value>Reports &amp; printable export</value></data>
+  <data name="Reports_Subtitle" xml:space="preserve"><value>PDF and Excel reports include a QR code for authenticity verification.</value></data>
+  <data name="Reports_Attendance" xml:space="preserve"><value>Class attendance report</value></data>
+  <data name="Reports_Department" xml:space="preserve"><value>Department performance</value></data>
+  <data name="Reports_Term" xml:space="preserve"><value>Term summary</value></data>
+  <data name="Reports_Course" xml:space="preserve"><value>Course</value></data>
+  <data name="Reports_DepartmentLabel" xml:space="preserve"><value>Department</value></data>
+  <data name="Reports_TermLabel" xml:space="preserve"><value>Academic term</value></data>
+  <data name="Reports_From" xml:space="preserve"><value>From date</value></data>
+  <data name="Reports_To" xml:space="preserve"><value>To date</value></data>
+  <data name="Common_PDF" xml:space="preserve"><value>Download PDF</value></data>
+  <data name="Common_Excel" xml:space="preserve"><value>Download Excel</value></data>
+  <data name="Common_AllTerms" xml:space="preserve"><value>All terms</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Common_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Common_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Common_Create" xml:space="preserve"><value>Create</value></data>
+  <data name="Common_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Common_Actions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Common_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Common_No" xml:space="preserve"><value>No</value></data>
+  <data name="Role_SuperAdmin" xml:space="preserve"><value>SuperAdmin</value></data>
+  <data name="Role_Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Role_Professor" xml:space="preserve"><value>Professor</value></data>
+  <data name="Role_Student" xml:space="preserve"><value>Student</value></data>
+  <data name="Role_Parent" xml:space="preserve"><value>Parent</value></data>
+  <data name="Audit_TranscriptDownload" xml:space="preserve"><value>Transcript download</value></data>
+  <data name="Audit_AtRiskNote" xml:space="preserve"><value>At-risk intervention note</value></data>
+  <data name="Audit_CalendarChange" xml:space="preserve"><value>Calendar change</value></data>
+  <data name="Audit_GradeOverride" xml:space="preserve"><value>Grade override</value></data>
+  <data name="Audit_ReportExport" xml:space="preserve"><value>Report export</value></data>
+  <data name="Home_Features" xml:space="preserve"><value>Features</value></data>
+  <data name="Home_About" xml:space="preserve"><value>About</value></data>
+  <data name="Home_ViewAllFeatures" xml:space="preserve"><value>View all features</value></data>
+  <data name="Nav_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Nav_Contact" xml:space="preserve"><value>Contact</value></data>
+  <data name="Nav_Roles" xml:space="preserve"><value>Roles</value></data>
+  <data name="Auth_Login" xml:space="preserve"><value>Login</value></data>
+  <data name="Auth_Register" xml:space="preserve"><value>Register</value></data>
+  <data name="Footer_Tagline" xml:space="preserve"><value>Modern student management for universities — enrollments, grades, schedules, and secure role-based access.</value></data>
+  <data name="Footer_Explore" xml:space="preserve"><value>Explore</value></data>
+  <data name="Footer_Support" xml:space="preserve"><value>Support</value></data>
+  <data name="Footer_Connect" xml:space="preserve"><value>Connect</value></data>
+  <data name="Pub_Features_Title" xml:space="preserve"><value>Platform Features</value></data>
+  <data name="Pub_Features_Subtitle" xml:space="preserve"><value>Discover every tool University Manager offers — from student records to analytics and secure reporting.</value></data>
+  <data name="Pub_Feat4Title" xml:space="preserve"><value>Analytics &amp; Insights</value></data>
+  <data name="Pub_Feat4Desc" xml:space="preserve"><value>Visual dashboards for enrollment trends, pass rates, attendance, and department performance.</value></data>
+  <data name="Pub_Feat5Title" xml:space="preserve"><value>PDF &amp; Excel Reports</value></data>
+  <data name="Pub_Feat5Desc" xml:space="preserve"><value>Export attendance, term summaries, and performance reports with QR verification built in.</value></data>
+  <data name="Pub_Feat6Title" xml:space="preserve"><value>Parent Portal</value></data>
+  <data name="Pub_Feat6Desc" xml:space="preserve"><value>Parents follow grades, attendance, and academic progress for linked students in one place.</value></data>
+  <data name="Pub_Feat7Title" xml:space="preserve"><value>Academic Calendar</value></data>
+  <data name="Pub_Feat7Desc" xml:space="preserve"><value>Plan terms, holidays, and exam periods — everyone stays aligned on key dates.</value></data>
+  <data name="Pub_Feat8Title" xml:space="preserve"><value>At-Risk Monitoring</value></data>
+  <data name="Pub_Feat8Desc" xml:space="preserve"><value>Flag struggling students early and log intervention notes for advisors and admins.</value></data>
+  <data name="Pub_Feat9Title" xml:space="preserve"><value>Audit &amp; Security</value></data>
+  <data name="Pub_Feat9Desc" xml:space="preserve"><value>Track sensitive actions, auth events, and role-based access across the entire institution.</value></data>
+  <data name="Pub_About_Title" xml:space="preserve"><value>About University Manager</value></data>
+  <data name="Pub_About_Subtitle" xml:space="preserve"><value>We help universities run smarter — connecting administrators, faculty, students, and parents on one trusted platform.</value></data>
+  <data name="Pub_About_Mission" xml:space="preserve"><value>Our Mission</value></data>
+  <data name="Pub_About_MissionDesc" xml:space="preserve"><value>To simplify academic operations so staff spend less time on paperwork and more time supporting students.</value></data>
+  <data name="Pub_About_Vision" xml:space="preserve"><value>Our Vision</value></data>
+  <data name="Pub_About_VisionDesc" xml:space="preserve"><value>A campus where every stakeholder has clear, secure access to the information they need — in their language, on any device.</value></data>
+  <data name="Pub_About_Values" xml:space="preserve"><value>Core Values</value></data>
+  <data name="Pub_About_Value1" xml:space="preserve"><value>Transparency in grades and reporting</value></data>
+  <data name="Pub_About_Value2" xml:space="preserve"><value>Security-first design with audit trails</value></data>
+  <data name="Pub_About_Value3" xml:space="preserve"><value>Inclusive access — English and Albanian</value></data>
+  <data name="Pub_Contact_Title" xml:space="preserve"><value>Contact Us</value></data>
+  <data name="Pub_Contact_Subtitle" xml:space="preserve"><value>Have questions about demos, deployment, or support? Reach out — we typically respond within one business day.</value></data>
+  <data name="Pub_Contact_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Pub_Contact_Phone" xml:space="preserve"><value>Phone</value></data>
+  <data name="Pub_Contact_Hours" xml:space="preserve"><value>Office hours</value></data>
+  <data name="Pub_Contact_HoursVal" xml:space="preserve"><value>Mon – Fri, 9:00 – 17:00</value></data>
+  <data name="Pub_Contact_Send" xml:space="preserve"><value>Send message</value></data>
+  <data name="Pub_Contact_Name" xml:space="preserve"><value>Your name</value></data>
+  <data name="Pub_Contact_Message" xml:space="preserve"><value>Message</value></data>
+  <data name="Pub_Contact_Note" xml:space="preserve"><value>This form opens your email client — no data is stored until you send.</value></data>
+  <data name="Pub_Privacy_Title" xml:space="preserve"><value>Privacy Policy</value></data>
+  <data name="Pub_Privacy_Intro" xml:space="preserve"><value>Your privacy matters. This policy explains what we collect and how we protect academic data.</value></data>
+  <data name="Pub_Privacy_S1" xml:space="preserve"><value>Information we collect</value></data>
+  <data name="Pub_Privacy_S1Desc" xml:space="preserve"><value>Name, email, role, enrollment records, grades, attendance, and audit logs required to operate the system.</value></data>
+  <data name="Pub_Privacy_S2" xml:space="preserve"><value>How we use data</value></data>
+  <data name="Pub_Privacy_S2Desc" xml:space="preserve"><value>Data is used solely for academic administration, reporting, and secure access within your institution.</value></data>
+  <data name="Pub_Privacy_S3" xml:space="preserve"><value>Security</value></data>
+  <data name="Pub_Privacy_S3Desc" xml:space="preserve"><value>Role-based permissions, HTTPS, and activity logging help prevent unauthorized access.</value></data>
+  <data name="Pub_BackHome" xml:space="preserve"><value>Back to home</value></data>
+  <data name="Footer_Copyright" xml:space="preserve"><value>University Manager. All rights reserved.</value></data>
+  <data name="Dash_AdminOverview" xml:space="preserve"><value>Admin overview</value></data>
+  <data name="Dash_WelcomeBack" xml:space="preserve"><value>Welcome back</value></data>
+  <data name="Dash_Snapshot" xml:space="preserve"><value>snapshot of your university system.</value></data>
+  <data name="Dash_FullAnalytics" xml:space="preserve"><value>Full analytics</value></data>
+  <data name="Dash_RegisterStudent" xml:space="preserve"><value>Register student</value></data>
+  <data name="Dash_KpiUsers" xml:space="preserve"><value>Users</value></data>
+  <data name="Dash_KpiStudents" xml:space="preserve"><value>Students</value></data>
+  <data name="Dash_KpiProfessors" xml:space="preserve"><value>Professors</value></data>
+  <data name="Dash_KpiParents" xml:space="preserve"><value>Parents</value></data>
+  <data name="Dash_KpiCourses" xml:space="preserve"><value>Courses</value></data>
+  <data name="Dash_KpiEnrollments" xml:space="preserve"><value>Enrollments</value></data>
+  <data name="Dash_KpiAvgGrade" xml:space="preserve"><value>Avg grade</value></data>
+  <data name="Dash_KpiPassRate" xml:space="preserve"><value>Pass rate</value></data>
+  <data name="Dash_KpiAbsencesMo" xml:space="preserve"><value>Absences (mo)</value></data>
+  <data name="Dash_KpiAttendanceRows" xml:space="preserve"><value>Attendance rows</value></data>
+  <data name="Dash_KpiEnrollments7d" xml:space="preserve"><value>Enrollments 7d</value></data>
+  <data name="Dash_KpiLoginsToday" xml:space="preserve"><value>Logins today</value></data>
+  <data name="Dash_Logins7Days" xml:space="preserve"><value>Logins — last 7 days</value></data>
+  <data name="Dash_PassVsFail" xml:space="preserve"><value>Pass vs fail</value></data>
+  <data name="Dash_StudentsByDept" xml:space="preserve"><value>Students by department</value></data>
+  <data name="Dash_GradeDistribution" xml:space="preserve"><value>Grade distribution</value></data>
+  <data name="Dash_RecentAdminActivity" xml:space="preserve"><value>Recent admin activity</value></data>
+  <data name="Dash_NoAdminActivity" xml:space="preserve"><value>No admin changes logged yet.</value></data>
+  <data name="Dash_ViewAll" xml:space="preserve"><value>View all →</value></data>
+  <data name="Dash_QuickActions" xml:space="preserve"><value>Quick actions</value></data>
+  <data name="Dash_Enroll" xml:space="preserve"><value>Enroll</value></data>
+  <data name="Dash_AuthLogs" xml:space="preserve"><value>Auth logs</value></data>
+  <data name="Dash_Filters" xml:space="preserve"><value>Filters</value></data>
+  <data name="Dash_LoginsWeekNote" xml:space="preserve"><value>successful logins in the last 7 days.</value></data>
+  <data name="Chart_Logins" xml:space="preserve"><value>Logins</value></data>
+  <data name="Chart_Passing" xml:space="preserve"><value>Passing</value></data>
+  <data name="Chart_Failing" xml:space="preserve"><value>Failing</value></data>
+  <data name="Analytics_Subtitle" xml:space="preserve"><value>Filter, search, and explore university data</value></data>
+  <data name="Analytics_ClearAll" xml:space="preserve"><value>Clear all</value></data>
+  <data name="Analytics_AllDepartments" xml:space="preserve"><value>All departments</value></data>
+  <data name="Analytics_AllCourses" xml:space="preserve"><value>All courses</value></data>
+  <data name="Analytics_AllProfessors" xml:space="preserve"><value>All professors</value></data>
+  <data name="Analytics_AnyGrade" xml:space="preserve"><value>Any grade</value></data>
+  <data name="Analytics_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Analytics_PassOnly" xml:space="preserve"><value>Pass only</value></data>
+  <data name="Analytics_FailOnly" xml:space="preserve"><value>Fail only</value></data>
+  <data name="Analytics_ApplyFilters" xml:space="preserve"><value>Apply filters</value></data>
+  <data name="Analytics_FilteredNote" xml:space="preserve"><value>Showing filtered results — charts and tables update together.</value></data>
+  <data name="Analytics_AvgGradeFiltered" xml:space="preserve"><value>Avg grade (filtered)</value></data>
+  <data name="Analytics_TotalGrades" xml:space="preserve"><value>Grades</value></data>
+  <data name="Analytics_GradesPerCourse" xml:space="preserve"><value>Grades per course</value></data>
+  <data name="Analytics_GradeRecords" xml:space="preserve"><value>Grade records</value></data>
+  <data name="Analytics_SearchTable" xml:space="preserve"><value>Search this table…</value></data>
+  <data name="Analytics_NoGradesMatch" xml:space="preserve"><value>No grade records match your filters.</value></data>
+  <data name="Analytics_SearchStudents" xml:space="preserve"><value>Search students…</value></data>
+  <data name="Analytics_SearchPlaceholder" xml:space="preserve"><value>Name, student #, course…</value></data>
+  <data name="Table_Student" xml:space="preserve"><value>Student</value></data>
+  <data name="Table_StudentNum" xml:space="preserve"><value>Student #</value></data>
+  <data name="Table_Course" xml:space="preserve"><value>Course</value></data>
+  <data name="Table_Dept" xml:space="preserve"><value>Dept</value></data>
+  <data name="Table_Professor" xml:space="preserve"><value>Professor</value></data>
+  <data name="Table_Grade" xml:space="preserve"><value>Grade</value></data>
+  <data name="Table_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Table_Date" xml:space="preserve"><value>Date</value></data>
+  <data name="Table_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Table_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Table_AvgGrade" xml:space="preserve"><value>Avg grade</value></data>
+  <data name="Dash_FacultyPortal" xml:space="preserve"><value>Faculty portal</value></data>
+  <data name="Dash_ClassAvgGrade" xml:space="preserve"><value>Class avg grade</value></data>
+  <data name="Dash_PassingStudents" xml:space="preserve"><value>Passing students</value></data>
+  <data name="Dash_FailingStudents" xml:space="preserve"><value>Failing students</value></data>
+  <data name="Dash_MyCourses" xml:space="preserve"><value>My courses</value></data>
+  <data name="Dash_NoCoursesProfessor" xml:space="preserve"><value>No courses assigned. Contact the administrator.</value></data>
+  <data name="Dash_GradesBtn" xml:space="preserve"><value>Grades</value></data>
+  <data name="Dash_AttendanceBtn" xml:space="preserve"><value>Attendance</value></data>
+  <data name="Dash_AssignmentsExams" xml:space="preserve"><value>Assignments &amp; exams</value></data>
+  <data name="Dash_Credits" xml:space="preserve"><value>credits</value></data>
+  <data name="Dash_StudentPortal" xml:space="preserve"><value>Student portal</value></data>
+  <data name="Dash_Passed" xml:space="preserve"><value>Passed</value></data>
+  <data name="Dash_Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Dash_Graded" xml:space="preserve"><value>Graded</value></data>
+  <data name="Dash_AllGrades" xml:space="preserve"><value>All grades</value></data>
+  <data name="Dash_Schedule" xml:space="preserve"><value>Schedule</value></data>
+  <data name="Dash_NoEnrollments" xml:space="preserve"><value>No enrollments yet. Contact the administrator.</value></data>
+  <data name="Dash_CourseDetails" xml:space="preserve"><value>Course details</value></data>
+  <data name="Dash_NotGraded" xml:space="preserve"><value>Not graded</value></data>
+  <data name="Dash_NotScheduled" xml:space="preserve"><value>Not scheduled</value></data>
+  <data name="Dash_Pass" xml:space="preserve"><value>Pass</value></data>
+  <data name="Dash_Fail" xml:space="preserve"><value>Fail</value></data>
+  <data name="Modal_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="Modal_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Modal_Professor" xml:space="preserve"><value>Professor</value></data>
+  <data name="Modal_Credits" xml:space="preserve"><value>Credits</value></data>
+  <data name="Modal_Enrolled" xml:space="preserve"><value>Enrolled</value></data>
+  <data name="Modal_Grade" xml:space="preserve"><value>Grade</value></data>
+  <data name="Modal_Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Modal_Schedule" xml:space="preserve"><value>Schedule</value></data>
+  <data name="Dash_ParentPortal" xml:space="preserve"><value>Parent portal</value></data>
+  <data name="Dash_Hello" xml:space="preserve"><value>Hello,</value></data>
+  <data name="Dash_Child" xml:space="preserve"><value>Child:</value></data>
+  <data name="Dash_ChildAvgGrade" xml:space="preserve"><value>Child avg grade</value></data>
+  <data name="Dash_GradesCount" xml:space="preserve"><value>Grades</value></data>
+  <data name="Dash_PassFail" xml:space="preserve"><value>Pass / Fail</value></data>
+  <data name="Dash_AbsencesMonth" xml:space="preserve"><value>Absences this month</value></data>
+  <data name="Dash_ChildGradeDist" xml:space="preserve"><value>Child grade distribution</value></data>
+  <data name="Dash_QuickLinks" xml:space="preserve"><value>Quick links</value></data>
+  <data name="Dash_ViewAllGrades" xml:space="preserve"><value>View all grades</value></data>
+  <data name="Dash_ViewSchedule" xml:space="preserve"><value>View class schedule</value></data>
+  <data name="Dash_AttendanceCalendar" xml:space="preserve"><value>Attendance calendar</value></data>
+  <data name="Dash_AssignmentsDeadlines" xml:space="preserve"><value>Assignments &amp; deadlines</value></data>
+  <data name="Dash_RequestTranscript" xml:space="preserve"><value>Request transcript</value></data>
+  <data name="Dash_OnlyLinkedChild" xml:space="preserve"><value>You only see data for your linked child — other students are not visible.</value></data>
+  <data name="SA_Only" xml:space="preserve"><value>SuperAdmin only</value></data>
+  <data name="SA_ControlCenter" xml:space="preserve"><value>System control center</value></data>
+  <data name="SA_ControlDesc" xml:space="preserve"><value>Configure grades, lesson times, and platform rules. Regular admins cannot change these settings.</value></data>
+  <data name="SA_GradesRange" xml:space="preserve"><value>Grades {0}–{1} (pass ≥ {2})</value></data>
+  <data name="SA_LessonSlotsDay" xml:space="preserve"><value>{0} lesson slots / day</value></data>
+  <data name="SA_UserAccounts" xml:space="preserve"><value>{0} user accounts</value></data>
+  <data name="SA_GradeRules" xml:space="preserve"><value>Grade &amp; attendance rules</value></data>
+  <data name="SA_GradeRulesDesc" xml:space="preserve"><value>Minimum, maximum, and passing grades. Set how many lessons per school day.</value></data>
+  <data name="SA_LessonsDayConfigured" xml:space="preserve"><value>{0} lessons/day configured</value></data>
+  <data name="SA_DailyLessonSchedule" xml:space="preserve"><value>Daily lesson schedule</value></data>
+  <data name="SA_DailyLessonDesc" xml:space="preserve"><value>Edit lesson periods (start/end times). Professors mark attendance against these slots.</value></data>
+  <data name="SA_ActivePeriods" xml:space="preserve"><value>{0} active periods</value></data>
+  <data name="SA_UsersRolesDesc" xml:space="preserve"><value>Create admins, assign roles, reset passwords. Full account control.</value></data>
+  <data name="SA_Accounts" xml:space="preserve"><value>{0} accounts</value></data>
+  <data name="SA_LoginActivityDesc" xml:space="preserve"><value>Review sign-ins, failures, and geo location from auth audit.</value></data>
+  <data name="SA_Security" xml:space="preserve"><value>Security</value></data>
+  <data name="SA_AdminChangeLog" xml:space="preserve"><value>Admin change log</value></data>
+  <data name="SA_AdminChangeDesc" xml:space="preserve"><value>Who changed students, courses, grades, and other records.</value></data>
+  <data name="SA_AuditTrail" xml:space="preserve"><value>Audit trail</value></data>
+  <data name="SA_AcademicCalendarDesc" xml:space="preserve"><value>Terms, holidays, exam weeks — control attendance blocking.</value></data>
+  <data name="SA_Scheduling" xml:space="preserve"><value>Scheduling</value></data>
+  <data name="SA_AtRiskDesc" xml:space="preserve"><value>Intervention list for low grades and high absences.</value></data>
+  <data name="SA_StudentSuccess" xml:space="preserve"><value>Student success</value></data>
+  <data name="SA_DocumentDesc" xml:space="preserve"><value>Approve parent transcript requests and download PDF.</value></data>
+  <data name="SA_Transcripts" xml:space="preserve"><value>Transcripts</value></data>
+  <data name="SA_FullAnalyticsDesc" xml:space="preserve"><value>Deep filters across departments, courses, professors, and grades.</value></data>
+  <data name="SA_Reporting" xml:space="preserve"><value>Reporting</value></data>
+  <data name="AtRisk_Subtitle" xml:space="preserve"><value>Low grades + high absences — intervention list</value></data>
+  <data name="AtRisk_None" xml:space="preserve"><value>No at-risk students flagged with current thresholds.</value></data>
+  <data name="AtRisk_Profile" xml:space="preserve"><value>Profile</value></data>
+  <data name="AtRisk_Avg" xml:space="preserve"><value>Avg</value></data>
+  <data name="AtRisk_Absences" xml:space="preserve"><value>absences</value></data>
+  <data name="AtRisk_LowGrades" xml:space="preserve"><value>low grades</value></data>
+  <data name="AtRisk_Notes" xml:space="preserve"><value>Notes:</value></data>
+  <data name="AtRisk_NotePlaceholder" xml:space="preserve"><value>Intervention note...</value></data>
+  <data name="Admin_ActivityTitle" xml:space="preserve"><value>Admin Activity</value></data>
+  <data name="Admin_ActivitySubtitle" xml:space="preserve"><value>Creates, updates, and deletes by administrators (with IP &amp; location)</value></data>
+  <data name="Admin_AuthLogsTitle" xml:space="preserve"><value>Authentication logs</value></data>
+  <data name="Common_Entity" xml:space="preserve"><value>Entity</value></data>
+  <data name="Common_Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Common_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Common_Prev" xml:space="preserve"><value>Prev</value></data>
+  <data name="Common_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Common_Time" xml:space="preserve"><value>Time (UTC)</value></data>
+  <data name="Common_Location" xml:space="preserve"><value>Location</value></data>
+  <data name="Common_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Common_NoData" xml:space="preserve"><value>No data yet.</value></data>
+  <data name="Common_ID" xml:space="preserve"><value>ID</value></data>
+  <data name="Common_ToDashboard" xml:space="preserve"><value>Back to dashboard</value></data>
+  <data name="Common_AddNew" xml:space="preserve"><value>Add New</value></data>
+  <data name="Common_All" xml:space="preserve"><value>All</value></data>
+  <data name="Common_Success" xml:space="preserve"><value>Success</value></data>
+  <data name="Common_Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Common_Event" xml:space="preserve"><value>Event</value></data>
+  <data name="Parent_ViewingChild" xml:space="preserve"><value>Viewing child:</value></data>
+  <data name="Admin_AuthSubtitle" xml:space="preserve"><value>Sign-in, sign-out, and failed login attempts</value></data>
+  <data name="Table_Enrollments" xml:space="preserve"><value>Enrollments</value></data>
+</root>

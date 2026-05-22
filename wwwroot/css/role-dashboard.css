@@ -1,0 +1,204 @@
+/* Student / Professor / Parent dashboards — matches admin red theme */
+.role-dash .dash-hero {
+    background: linear-gradient(135deg, #991b1b 0%, #dc2626 55%, #ef4444 100%);
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.role-dash .dash-hero::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -5%;
+    width: 220px;
+    height: 220px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50%;
+}
+
+.role-dash .dash-hero-title {
+    font-size: 1.65rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.role-dash .dash-hero-sub {
+    opacity: 0.9;
+    margin-top: 0.35rem;
+}
+
+.role-dash .role-stat-pill {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    backdrop-filter: blur(6px);
+}
+
+.role-dash .role-stat-pill .num {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.role-dash .role-stat-pill .lbl {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.85;
+}
+
+.role-dash .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.role-dash .section-head h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #991b1b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.role-course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.role-course-card {
+    background: #fff;
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+    padding: 1.15rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.role-course-card:hover {
+    border-color: #dc2626;
+    box-shadow: 0 8px 24px rgba(220, 38, 38, 0.12);
+    transform: translateY(-2px);
+}
+
+.role-course-card .icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.role-course-card .code {
+    font-weight: 800;
+    color: #991b1b;
+    font-size: 1rem;
+}
+
+.role-course-card .name {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 0.15rem;
+}
+
+.role-prof-card {
+    background: #fff;
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.role-prof-card:hover {
+    box-shadow: 0 8px 24px rgba(220, 38, 38, 0.1);
+}
+
+.role-prof-card .card-top {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #fef2f2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.role-prof-card .card-body-inner {
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+.role-empty {
+    background: #fef2f2;
+    border: 1px dashed #fecaca;
+    border-radius: 14px;
+    padding: 2.5rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.role-empty i {
+    font-size: 2.5rem;
+    color: #dc2626;
+    margin-bottom: 0.75rem;
+}
+
+.parent-quick {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.parent-quick a {
+    background: #fff;
+    border: 1px solid #fecaca;
+    border-radius: 14px;
+    padding: 1.25rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+}
+
+.parent-quick a:hover {
+    border-color: #dc2626;
+    background: #fff5f5;
+}
+
+.parent-quick a i {
+    font-size: 1.75rem;
+    color: #dc2626;
+    margin-bottom: 0.5rem;
+}
+
+.parent-quick .pq-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #991b1b;
+}
+
+.parent-quick .pq-lbl {
+    font-size: 0.8rem;
+    color: #6b7280;
+    font-weight: 600;
+}

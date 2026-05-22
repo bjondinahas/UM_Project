@@ -1,88 +1,90 @@
 @model UM_Project.Models.Course
 @{
     ViewData["Title"] = "Edit Course";
+    ViewData["FormTitle"] = "Edit Course";
+    ViewData["FormIcon"] = "fa-pen";
     var departments = ViewBag.Departments as List<UM_Project.Models.Department>;
     var professors = ViewBag.Professors as List<UM_Project.Models.Professor>;
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-warning text-white text-center py-3">
-                    <h3 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Course</h3>
+<div class="um-page">
+    <partial name="_AdminFormHeader" />
+    <div class="um-form-panel" style="max-width:900px">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="CourseId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="CourseCode" class="form-label"></label>
+                    <input asp-for="CourseCode" class="form-control" required />
                 </div>
-                <div class="card-body p-4">
-                    <form asp-action="Edit" method="post">
-                        <input type="hidden" asp-for="CourseId" />
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input asp-for="CourseCode" class="form-control" placeholder="Course Code" required />
-                                    <label asp-for="CourseCode">Course Code</label>
-                                    <span asp-validation-for="CourseCode" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input asp-for="Credits" class="form-control" type="number" min="1" max="10" placeholder="Credits" required />
-                                    <label asp-for="Credits">Credits</label>
-                                    <span asp-validation-for="Credits" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input asp-for="CourseName" class="form-control" placeholder="Course Name" required />
-                            <label asp-for="CourseName">Course Name</label>
-                            <span asp-validation-for="CourseName" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <select asp-for="DepartmentId" class="form-select" required>
-                                <option value="">-- Select Department --</option>
-                                @if (departments != null)
-                                {
-                                    foreach (var dept in departments)
-                                    {
-                                        <option value="@dept.DepartmentId" selected="@(dept.DepartmentId == Model.DepartmentId)">@dept.DepartmentName</option>
-                                    }
-                                }
-                            </select>
-                            <label asp-for="DepartmentId">Department</label>
-                            <span asp-validation-for="DepartmentId" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <select asp-for="ProfessorId" class="form-select" required>
-                                <option value="">-- Select Professor --</option>
-                                @if (professors != null)
-                                {
-                                    foreach (var prof in professors)
-                                    {
-                                        <option value="@prof.ProfessorId" selected="@(prof.ProfessorId == Model.ProfessorId)">@prof.FullName - @prof.Title</option>
-                                    }
-                                }
-                            </select>
-                            <label asp-for="ProfessorId">Professor</label>
-                            <span asp-validation-for="ProfessorId" class="text-danger"></span>
-                        </div>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-save me-2"></i>Save Changes
-                            </button>
-                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        </div>
-                    </form>
+                <div class="col-md-4">
+                    <label asp-for="Credits" class="form-label"></label>
+                    <input asp-for="Credits" class="form-control" type="number" min="1" max="30" required />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Semester" class="form-label">Semester</label>
+                    <input asp-for="Semester" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="CourseName" class="form-label"></label>
+                    <input asp-for="CourseName" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="DepartmentId" class="form-label">Department</label>
+                    <select asp-for="DepartmentId" class="form-select" required>
+                        @if (departments != null) { foreach (var d in departments) { <option value="@d.DepartmentId">@d.DepartmentName</option> } }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ProfessorId" class="form-label">Professor</label>
+                    <select asp-for="ProfessorId" class="form-select" required>
+                        @if (professors != null) { foreach (var p in professors) { <option value="@p.ProfessorId">@p.FullName</option> } }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="MaxEnrollment" class="form-label">Max enrollment</label>
+                    <input asp-for="MaxEnrollment" class="form-control" type="number" min="1" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                </div>
+                <div class="col-12">
+                    <label asp-for="LearningOutcomes" class="form-label">Learning outcomes</label>
+                    <textarea asp-for="LearningOutcomes" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-12">
+                    <label asp-for="Prerequisites" class="form-label">Prerequisites</label>
+                    <textarea asp-for="Prerequisites" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="col-12">
+                    <label asp-for="AdditionalNotes" class="form-label">Additional notes</label>
+                    <textarea asp-for="AdditionalNotes" class="form-control" rows="2"></textarea>
+                </div>
+                @if (Model.Documents?.Any() == true)
+                {
+                    <div class="col-12">
+                        <label class="form-label">Existing documents</label>
+                        <ul class="small mb-0">
+                            @foreach (var doc in Model.Documents)
+                            {
+                                <li><a href="~/@doc.StoredPath" target="_blank">@doc.FileName</a></li>
+                            }
+                        </ul>
+                    </div>
+                }
+                <div class="col-12">
+                    <label class="form-label">Add documents</label>
+                    <input type="file" name="documents" class="form-control" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" />
                 </div>
             </div>
-        </div>
+            <div class="d-flex gap-2 flex-wrap mt-4">
+                <button type="submit" class="um-btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+                <a asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-light border">View details</a>
+                <a asp-action="Index" class="btn btn-light border">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

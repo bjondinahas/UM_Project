@@ -1,0 +1,248 @@
+@using UM_Project.Models
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var displayName = user?.FullName ?? User.Identity?.Name?.Split('@')[0] ?? "User";
+    var roles = user != null ? await UserManager.GetRolesAsync(user) : new List<string>();
+    var primaryRole = roles.Contains(RoleNames.SuperAdmin) ? RoleNames.SuperAdmin
+        : roles.Contains(RoleNames.Admin) ? RoleNames.Admin
+        : roles.Contains(RoleNames.Professor) ? RoleNames.Professor
+        : roles.Contains(RoleNames.Student) ? RoleNames.Student
+        : roles.Contains(RoleNames.Parent) ? RoleNames.Parent
+        : "User";
+
+    string RoleLabel(string r) => r switch
+    {
+        RoleNames.SuperAdmin => Localizer["Role_SuperAdmin"],
+        RoleNames.Admin => Localizer["Role_Admin"],
+        RoleNames.Professor => Localizer["Role_Professor"],
+        RoleNames.Student => Localizer["Role_Student"],
+        RoleNames.Parent => Localizer["Role_Parent"],
+        _ => r
+    };
+
+    var roleClass = primaryRole switch
+    {
+        RoleNames.SuperAdmin => "role-badge--super",
+        RoleNames.Admin => "role-badge--admin",
+        RoleNames.Professor => "role-badge--professor",
+        RoleNames.Student => "role-badge--student",
+        RoleNames.Parent => "role-badge--parent",
+        _ => "role-badge--admin"
+    };
+
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+
+    bool IsActive(string c, string? a = null) =>
+        string.Equals(ctrl, c, StringComparison.OrdinalIgnoreCase) &&
+        (a == null || string.Equals(action, a, StringComparison.OrdinalIgnoreCase));
+
+    bool IsActiveController(string c) => string.Equals(ctrl, c, StringComparison.OrdinalIgnoreCase);
+}
+
+<aside class="app-sidebar" id="app-sidebar">
+    <a asp-controller="Home" asp-action="Index" class="app-sidebar-brand">
+        <span class="app-sidebar-brand-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="app-sidebar-brand-text">
+            <strong>@Localizer["Brand_Title"]</strong>
+            <span>@Localizer["Brand_Subtitle"]</span>
+        </span>
+    </a>
+
+    <div class="app-sidebar-user">
+        <div class="app-sidebar-user-name">@displayName</div>
+        <div class="app-sidebar-user-email">@(user?.Email)</div>
+        <span class="role-badge @roleClass">
+            @if (primaryRole == RoleNames.SuperAdmin) { <i class="fas fa-crown"></i> }
+            @RoleLabel(primaryRole)
+        </span>
+    </div>
+
+    <div class="sidebar-search">
+        <i class="fas fa-search"></i>
+        <input type="search" id="sidebar-search" placeholder="@Localizer["Nav_SearchMenu"]" autocomplete="off" />
+    </div>
+
+    <nav class="app-sidebar-nav">
+        @if (User.IsInRole(RoleNames.SuperAdmin) || User.IsInRole(RoleNames.Admin))
+        {
+            <div class="nav-group">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_Overview"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Admin" asp-action="Dashboard" class="app-sidebar-link @(IsActive("Admin", "Dashboard") ? "active" : "")" data-label="@Localizer["Nav_Dashboard"]">
+                        <span class="nav-icon"><i class="fas fa-gauge-high"></i></span> @Localizer["Nav_Dashboard"]
+                    </a>
+                    <a asp-controller="Statistics" asp-action="Index" class="app-sidebar-link @(IsActive("Statistics") ? "active" : "")" data-label="@Localizer["Nav_Analytics"]">
+                        <span class="nav-icon"><i class="fas fa-chart-pie"></i></span> @Localizer["Nav_Analytics"]
+                    </a>
+                    <a asp-controller="Reports" asp-action="Index" class="app-sidebar-link @(IsActive("Reports") ? "active" : "")" data-label="@Localizer["Nav_Reports"]">
+                        <span class="nav-icon"><i class="fas fa-file-export"></i></span> @Localizer["Nav_Reports"]
+                    </a>
+                    <a asp-controller="AtRisk" asp-action="Index" class="app-sidebar-link @(IsActive("AtRisk") ? "active" : "")" data-label="@Localizer["Nav_AtRisk"]">
+                        <span class="nav-icon"><i class="fas fa-triangle-exclamation"></i></span> @Localizer["Nav_AtRisk"]
+                    </a>
+                    <a asp-controller="Home" asp-action="SystemGuide" class="app-sidebar-link @(IsActive("Home", "SystemGuide") ? "active" : "")" data-label="@Localizer["Nav_HowItWorks"]">
+                        <span class="nav-icon"><i class="fas fa-circle-info"></i></span> @Localizer["Nav_HowItWorks"]
+                    </a>
+                </div>
+            </div>
+
+            @if (User.IsInRole(RoleNames.SuperAdmin))
+            {
+                <div class="nav-group">
+                    <button type="button" class="nav-group-toggle">@Localizer["Nav_SuperAdmin"] <i class="fas fa-chevron-down chevron"></i></button>
+                    <div class="nav-group-items">
+                        <a asp-controller="SuperAdmin" asp-action="Hub" class="app-sidebar-link app-sidebar-link--featured @(IsActiveController("SuperAdmin") ? "active" : "")" data-label="@Localizer["Nav_ControlCenter"]">
+                            <span class="nav-icon"><i class="fas fa-crown"></i></span> @Localizer["Nav_ControlCenter"]
+                        </a>
+                        <a asp-controller="Users" asp-action="Index" class="app-sidebar-link @(IsActive("Users") ? "active" : "")" data-label="@Localizer["Nav_UsersRoles"]">
+                            <span class="nav-icon"><i class="fas fa-users-cog"></i></span> @Localizer["Nav_UsersRoles"]
+                        </a>
+                    </div>
+                </div>
+            }
+
+            <div class="nav-group">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_People"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Students" asp-action="Index" class="app-sidebar-link @(IsActive("Students") ? "active" : "")" data-label="@Localizer["Nav_Students"]">
+                        <span class="nav-icon"><i class="fas fa-user-graduate"></i></span> @Localizer["Nav_Students"]
+                    </a>
+                    <a asp-controller="Professors" asp-action="Index" class="app-sidebar-link @(IsActive("Professors") ? "active" : "")" data-label="@Localizer["Nav_Professors"]">
+                        <span class="nav-icon"><i class="fas fa-chalkboard-teacher"></i></span> @Localizer["Nav_Professors"]
+                    </a>
+                    <a asp-controller="Parents" asp-action="Index" class="app-sidebar-link @(IsActive("Parents") ? "active" : "")" data-label="@Localizer["Nav_Parents"]">
+                        <span class="nav-icon"><i class="fas fa-people-roof"></i></span> @Localizer["Nav_Parents"]
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-group">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_Academics"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Departments" asp-action="Index" class="app-sidebar-link @(IsActive("Departments") ? "active" : "")" data-label="@Localizer["Nav_Departments"]">
+                        <span class="nav-icon"><i class="fas fa-building"></i></span> @Localizer["Nav_Departments"]
+                    </a>
+                    <a asp-controller="Courses" asp-action="Index" class="app-sidebar-link @(IsActive("Courses") ? "active" : "")" data-label="@Localizer["Nav_Courses"]">
+                        <span class="nav-icon"><i class="fas fa-book"></i></span> @Localizer["Nav_Courses"]
+                    </a>
+                    <a asp-controller="Enrollments" asp-action="Index" class="app-sidebar-link @(IsActive("Enrollments") ? "active" : "")" data-label="@Localizer["Nav_Enrollments"]">
+                        <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span> @Localizer["Nav_Enrollments"]
+                    </a>
+                    <a asp-controller="Schedules" asp-action="Index" class="app-sidebar-link @(IsActive("Schedules") ? "active" : "")" data-label="@Localizer["Nav_Schedules"]">
+                        <span class="nav-icon"><i class="fas fa-calendar-alt"></i></span> @Localizer["Nav_Schedules"]
+                    </a>
+                    <a asp-controller="Grades" asp-action="Index" class="app-sidebar-link @(IsActive("Grades") ? "active" : "")" data-label="@Localizer["Nav_Grades"]">
+                        <span class="nav-icon"><i class="fas fa-star"></i></span> @Localizer["Nav_Grades"]
+                    </a>
+                    <a asp-controller="AcademicCalendar" asp-action="Index" class="app-sidebar-link @(IsActive("AcademicCalendar") ? "active" : "")" data-label="@Localizer["Nav_AcademicCalendar"]">
+                        <span class="nav-icon"><i class="fas fa-calendar-days"></i></span> @Localizer["Nav_AcademicCalendar"]
+                    </a>
+                    <a asp-controller="DocumentRequests" asp-action="Admin" class="app-sidebar-link @(IsActive("DocumentRequests") ? "active" : "")" data-label="@Localizer["Nav_DocumentRequests"]">
+                        <span class="nav-icon"><i class="fas fa-file-pdf"></i></span> @Localizer["Nav_DocumentRequests"]
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-group collapsed">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_Security"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Admin" asp-action="AuthLogs" class="app-sidebar-link @(IsActive("Admin", "AuthLogs") ? "active" : "")" data-label="@Localizer["Nav_LoginActivity"]">
+                        <span class="nav-icon"><i class="fas fa-shield-halved"></i></span> @Localizer["Nav_LoginActivity"]
+                    </a>
+                    <a asp-controller="Admin" asp-action="ActivityLogs" class="app-sidebar-link @(IsActive("Admin", "ActivityLogs") ? "active" : "")" data-label="@Localizer["Nav_AdminChanges"]">
+                        <span class="nav-icon"><i class="fas fa-list-check"></i></span> @Localizer["Nav_AdminChanges"]
+                    </a>
+                </div>
+            </div>
+        }
+
+        @if (User.IsInRole(RoleNames.Professor) && !User.IsInRole(RoleNames.Admin) && !User.IsInRole(RoleNames.SuperAdmin))
+        {
+            <div class="nav-group">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_Professor"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Professor" asp-action="Dashboard" class="app-sidebar-link @(IsActive("Professor", "Dashboard") ? "active" : "")" data-label="@Localizer["Nav_Dashboard"]">
+                        <span class="nav-icon"><i class="fas fa-gauge-high"></i></span> @Localizer["Nav_Dashboard"]
+                    </a>
+                    <a asp-controller="Professor" asp-action="Schedules" class="app-sidebar-link @(IsActive("Professor", "Schedules") ? "active" : "")" data-label="@Localizer["Nav_MySchedules"]">
+                        <span class="nav-icon"><i class="fas fa-calendar-week"></i></span> @Localizer["Nav_MySchedules"]
+                    </a>
+                    <a asp-controller="Home" asp-action="SystemGuide" class="app-sidebar-link @(IsActive("Home", "SystemGuide") ? "active" : "")" data-label="@Localizer["Nav_HowItWorks"]">
+                        <span class="nav-icon"><i class="fas fa-circle-info"></i></span> @Localizer["Nav_HowItWorks"]
+                    </a>
+                </div>
+            </div>
+        }
+
+        @if (User.IsInRole(RoleNames.Student) && !User.IsInRole(RoleNames.Admin) && !User.IsInRole(RoleNames.SuperAdmin))
+        {
+            <div class="nav-group">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_Student"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Student" asp-action="Dashboard" class="app-sidebar-link @(IsActive("Student", "Dashboard") ? "active" : "")" data-label="@Localizer["Nav_Dashboard"]">
+                        <span class="nav-icon"><i class="fas fa-gauge-high"></i></span> @Localizer["Nav_Dashboard"]
+                    </a>
+                    <a asp-controller="Student" asp-action="Schedules" class="app-sidebar-link @(IsActive("Student", "Schedules") ? "active" : "")" data-label="@Localizer["Nav_MySchedule"]">
+                        <span class="nav-icon"><i class="fas fa-calendar"></i></span> @Localizer["Nav_MySchedule"]
+                    </a>
+                    <a asp-controller="Student" asp-action="MyGrades" class="app-sidebar-link @(IsActive("Student", "MyGrades") ? "active" : "")" data-label="@Localizer["Nav_MyGrades"]">
+                        <span class="nav-icon"><i class="fas fa-star"></i></span> @Localizer["Nav_MyGrades"]
+                    </a>
+                </div>
+            </div>
+        }
+
+        @if (User.IsInRole(RoleNames.Parent) && !User.IsInRole(RoleNames.Admin) && !User.IsInRole(RoleNames.SuperAdmin))
+        {
+            <div class="nav-group">
+                <button type="button" class="nav-group-toggle">@Localizer["Nav_Parent"] <i class="fas fa-chevron-down chevron"></i></button>
+                <div class="nav-group-items">
+                    <a asp-controller="Parent" asp-action="Dashboard" class="app-sidebar-link @(IsActive("Parent", "Dashboard") ? "active" : "")" data-label="@Localizer["Nav_Dashboard"]">
+                        <span class="nav-icon"><i class="fas fa-gauge-high"></i></span> @Localizer["Nav_Dashboard"]
+                    </a>
+                    <a asp-controller="Parent" asp-action="ChildGrades" class="app-sidebar-link @(IsActive("Parent", "ChildGrades") ? "active" : "")" data-label="@Localizer["Nav_ChildGrades"]">
+                        <span class="nav-icon"><i class="fas fa-star"></i></span> @Localizer["Nav_ChildGrades"]
+                    </a>
+                    <a asp-controller="Parent" asp-action="ChildSchedule" class="app-sidebar-link @(IsActive("Parent", "ChildSchedule") ? "active" : "")" data-label="@Localizer["Nav_ChildSchedule"]">
+                        <span class="nav-icon"><i class="fas fa-calendar"></i></span> @Localizer["Nav_ChildSchedule"]
+                    </a>
+                    <a asp-controller="Parent" asp-action="ChildAttendance" class="app-sidebar-link @(IsActive("Parent", "ChildAttendance") ? "active" : "")" data-label="@Localizer["Nav_Attendance"]">
+                        <span class="nav-icon"><i class="fas fa-clipboard-check"></i></span> @Localizer["Nav_Attendance"]
+                    </a>
+                    <a asp-controller="Parent" asp-action="ChildAssignments" class="app-sidebar-link @(IsActive("Parent", "ChildAssignments") ? "active" : "")" data-label="@Localizer["Nav_Assignments"]">
+                        <span class="nav-icon"><i class="fas fa-tasks"></i></span> @Localizer["Nav_Assignments"]
+                    </a>
+                    <a asp-controller="DocumentRequests" asp-action="Index" class="app-sidebar-link @(IsActive("DocumentRequests") ? "active" : "")" data-label="@Localizer["Nav_Documents"]">
+                        <span class="nav-icon"><i class="fas fa-file-pdf"></i></span> @Localizer["Nav_Documents"]
+                    </a>
+                </div>
+            </div>
+        }
+
+        <div class="nav-group collapsed">
+            <button type="button" class="nav-group-toggle">@Localizer["Nav_General"] <i class="fas fa-chevron-down chevron"></i></button>
+            <div class="nav-group-items">
+                <a asp-controller="Home" asp-action="Index" class="app-sidebar-link" data-label="@Localizer["Nav_PublicHome"]">
+                    <span class="nav-icon"><i class="fas fa-house"></i></span> @Localizer["Nav_PublicHome"]
+                </a>
+                <a asp-controller="Home" asp-action="Privacy" class="app-sidebar-link @(IsActive("Home", "Privacy") ? "active" : "")" data-label="@Localizer["Nav_Privacy"]">
+                    <span class="nav-icon"><i class="fas fa-lock"></i></span> @Localizer["Nav_Privacy"]
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-sidebar-lang">
+        <partial name="_LanguageSwitcher" />
+    </div>
+
+    <div class="app-sidebar-footer">
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+            <button type="submit" class="sidebar-logout-btn">
+                <i class="fas fa-right-from-bracket"></i> @Localizer["Nav_SignOut"]
+            </button>
+        </form>
+    </div>
+</aside>

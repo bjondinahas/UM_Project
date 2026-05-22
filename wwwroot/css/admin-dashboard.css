@@ -1,0 +1,219 @@
+.adm-dash {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.adm-hero {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.adm-hero h1 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #111827;
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.02em;
+}
+
+.adm-hero-sub {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.adm-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.adm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1.15rem;
+    border-radius: 11px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.adm-btn--primary {
+    background: #dc2626;
+    color: #fff;
+    border: none;
+}
+
+.adm-btn--primary:hover {
+    background: #b91c1c;
+    color: #fff;
+}
+
+.adm-btn--gold {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #78350f;
+}
+
+.adm-btn--outline {
+    background: #fff;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+}
+
+.adm-btn--outline:hover {
+    border-color: #fca5a5;
+    color: #991b1b;
+}
+
+.adm-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.adm-kpi {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 1rem 1.1rem;
+    transition: box-shadow 0.2s;
+}
+
+.adm-kpi:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.adm-kpi-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.adm-kpi-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.1;
+}
+
+.adm-kpi-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #9ca3af;
+    margin-top: 0.2rem;
+}
+
+.adm-kpi--highlight {
+    border-color: #fca5a5;
+    background: linear-gradient(180deg, #fff, #fef2f2);
+}
+
+.adm-charts {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.adm-chart-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.25rem 1.35rem;
+}
+
+.adm-chart-card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 1rem;
+}
+
+.adm-chart-card--wide { grid-column: span 8; }
+.adm-chart-card--narrow { grid-column: span 4; }
+.adm-chart-card--half { grid-column: span 6; }
+
+.adm-chart-wrap {
+    height: 220px;
+    position: relative;
+}
+
+.adm-insights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.adm-insight-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.adm-insight-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.875rem;
+}
+
+.adm-insight-list li:last-child {
+    border-bottom: none;
+}
+
+.adm-quick-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.adm-quick-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.85rem;
+    background: #f9fafb;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #374151;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background 0.15s;
+}
+
+.adm-quick-link:hover {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+@media (max-width: 1024px) {
+    .adm-chart-card--wide,
+    .adm-chart-card--narrow,
+    .adm-chart-card--half {
+        grid-column: span 12;
+    }
+    .adm-insights {
+        grid-template-columns: 1fr;
+    }
+}

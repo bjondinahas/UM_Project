@@ -1,0 +1,28 @@
+@using System.Globalization
+@{
+    var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var returnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+    var isEn = culture == "en";
+}
+<div class="lang-dropdown" data-lang-dropdown>
+    <button type="button" class="lang-dropdown-btn" data-lang-toggle aria-expanded="false" aria-haspopup="true"
+            title="@Localizer["Lang_SelectLanguage"]">
+        <i class="fas fa-globe lang-dropdown-icon"></i>
+        <span class="lang-dropdown-code">@(isEn ? "EN" : "SQ")</span>
+        <i class="fas fa-chevron-down lang-dropdown-chevron"></i>
+    </button>
+    <div class="lang-dropdown-menu" data-lang-menu role="menu">
+        <a asp-controller="Culture" asp-action="Set" asp-route-culture="en" asp-route-returnUrl="@returnUrl"
+           class="lang-dropdown-item @(isEn ? "active" : "")" role="menuitem">
+            <span class="lang-flag">🇬🇧</span>
+            <span>@Localizer["Lang_English"]</span>
+            @if (isEn) { <i class="fas fa-check ms-auto text-danger"></i> }
+        </a>
+        <a asp-controller="Culture" asp-action="Set" asp-route-culture="sq" asp-route-returnUrl="@returnUrl"
+           class="lang-dropdown-item @(!isEn ? "active" : "")" role="menuitem">
+            <span class="lang-flag">🇦🇱</span>
+            <span>@Localizer["Lang_Albanian"]</span>
+            @if (!isEn) { <i class="fas fa-check ms-auto text-danger"></i> }
+        </a>
+    </div>
+</div>

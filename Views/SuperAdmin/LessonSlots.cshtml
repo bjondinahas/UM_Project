@@ -1,0 +1,83 @@
+@model IEnumerable<UM_Project.Models.LessonSlot>
+@{
+    ViewData["Title"] = "Lesson slots";
+}
+
+<link rel="stylesheet" href="~/css/superadmin-hub.css" asp-append-version="true" />
+
+<div class="sa-hub">
+    <a asp-action="Hub" class="sa-back"><i class="fas fa-arrow-left"></i> Control center</a>
+    <div class="sa-hero" style="padding:1.5rem;margin-bottom:1.25rem">
+        <h1 style="font-size:1.35rem">Daily lesson schedule</h1>
+        <p style="font-size:0.85rem">Up to @ViewBag.LessonsPerDay slots used for attendance. Inactive slots are hidden from professors.</p>
+    </div>
+
+    <div class="sa-settings-panel mb-4">
+        <h3 class="h6 fw-bold mb-3">Add or edit period</h3>
+        <form asp-action="SaveLessonSlot" method="post" class="row g-2 align-items-end">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="lessonSlotId" id="editSlotId" value="" />
+            <div class="col-md-1">
+                <label class="form-label small">#</label>
+                <input type="number" name="slotNumber" id="editSlotNumber" class="form-control" min="1" max="12" required />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Title</label>
+                <input type="text" name="title" id="editTitle" class="form-control" required placeholder="Lesson 1" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">Start</label>
+                <input type="time" name="startTime" id="editStart" class="form-control" required />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small">End</label>
+                <input type="time" name="endTime" id="editEnd" class="form-control" required />
+            </div>
+            <div class="col-md-2">
+                <div class="form-check mt-4">
+                    <input type="checkbox" name="isActive" value="true" id="editActive" class="form-check-input" checked />
+                    <label class="form-check-label small" for="editActive">Active</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="um-btn-primary w-100">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="sa-settings-panel">
+        <table class="um-table">
+            <thead><tr><th>#</th><th>Title</th><th>Time</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr class="@(!s.IsActive ? "opacity-50" : "")">
+                        <td>@s.SlotNumber</td>
+                        <td class="fw-semibold">@s.Title</td>
+                        <td>@s.StartTime – @s.EndTime</td>
+                        <td><span class="um-badge @(s.IsActive ? "um-badge-green" : "um-badge-gray")">@(s.IsActive ? "Active" : "Off")</span></td>
+                        <td>
+                            <button type="button" class="um-btn-sm um-btn-edit" onclick="fillEdit(@s.LessonSlotId,@s.SlotNumber,'@s.Title.Replace("'","\\'")','@s.StartTime','@s.EndTime',@s.IsActive.ToString().ToLower())">Edit</button>
+                            <form asp-action="DeleteLessonSlot" method="post" class="d-inline" onsubmit="return confirm('Remove this slot?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@s.LessonSlotId" />
+                                <button type="submit" class="um-btn-sm um-btn-delete"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function fillEdit(id, num, title, start, end, active) {
+        document.getElementById('editSlotId').value = id;
+        document.getElementById('editSlotNumber').value = num;
+        document.getElementById('editTitle').value = title;
+        document.getElementById('editStart').value = start;
+        document.getElementById('editEnd').value = end;
+        document.getElementById('editActive').checked = active;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>

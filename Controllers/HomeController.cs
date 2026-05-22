@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using UM_Project.Models;
@@ -29,13 +30,27 @@ namespace UM_Project.Controllers
                     return RedirectToAction("Index");
                 }
                 var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Contains("Admin")) return RedirectToAction("Dashboard", "Admin");
-                if (roles.Contains("Professor")) return RedirectToAction("Dashboard", "Professor");
-                if (roles.Contains("Student")) return RedirectToAction("Dashboard", "Student");
+                if (roles.Contains(RoleNames.SuperAdmin) || roles.Contains(RoleNames.Admin))
+                    return RedirectToAction("Dashboard", "Admin");
+                if (roles.Contains(RoleNames.Professor))
+                    return RedirectToAction("Dashboard", "Professor");
+                if (roles.Contains(RoleNames.Student))
+                    return RedirectToAction("Dashboard", "Student");
+                if (roles.Contains(RoleNames.Parent))
+                    return RedirectToAction("Dashboard", "Parent");
             }
             return View();
         }
 
+        public IActionResult Features() => View();
+
+        public IActionResult About() => View();
+
+        public IActionResult Contact() => View();
+
         public IActionResult Privacy() => View();
+
+        [Authorize]
+        public IActionResult SystemGuide() => View();
     }
 }

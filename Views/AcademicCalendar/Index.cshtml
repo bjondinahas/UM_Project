@@ -1,0 +1,132 @@
+@{
+    ViewData["Title"] = "Academic Calendar";
+    ViewData["PageTitle"] = "Academic calendar";
+    ViewData["PageIcon"] = "fa-calendar-days";
+    ViewData["PageSubtitle"] = "Terms, holidays, exam weeks — blocks professor attendance";
+    ViewData["ShowCreate"] = false;
+    var y = (int)ViewBag.Year;
+    var m = (int)ViewBag.Month;
+    var events = ViewBag.Events as List<UM_Project.Models.SchoolCalendarEvent> ?? new();
+    var terms = ViewBag.Terms as List<UM_Project.Models.AcademicTerm> ?? new();
+    var daysInMonth = (int)ViewBag.DaysInMonth;
+    var firstDow = (int)ViewBag.FirstDayOfWeek;
+    var prevM = m == 1 ? 12 : m - 1; var prevY = m == 1 ? y - 1 : y;
+    var nextM = m == 12 ? 1 : m + 1; var nextY = m == 12 ? y + 1 : y;
+    var eventByDay = events.GroupBy(e => e.EventDate.Day).ToDictionary(g => g.Key, g => g.ToList());
+}
+
+<link rel="stylesheet" href="~/css/um-responsive.css" asp-append-version="true" />
+
+<div class="um-page">
+    <partial name="_AdminPageHeader" />
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div class="btn-group">
+            <a asp-action="Index" asp-route-year="@prevY" asp-route-month="@prevM" class="btn btn-sm btn-light border">&laquo;</a>
+            <span class="btn btn-sm btn-light border disabled">@ViewBag.MonthName</span>
+            <a asp-action="Index" asp-route-year="@nextY" asp-route-month="@nextM" class="btn btn-sm btn-light border">&raquo;</a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-8">
+            <div class="um-card">
+                <div class="um-cal-grid mb-2">
+                    @foreach (var dn in new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" })
+                    {
+                        <div class="text-center fw-bold text-muted small py-1">@dn</div>
+                    }
+                    @for (var blank = 0; blank < firstDow; blank++) { <div></div> }
+                    @for (var day = 1; day <= daysInMonth; day++)
+                    {
+                        var dt = new DateTime(y, m, day);
+                        var isWeekend = dt.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+                        var dayEvents = eventByDay.GetValueOrDefault(day) ?? new List<UM_Project.Models.SchoolCalendarEvent>();
+                        var blocked = isWeekend || dayEvents.Any(e => e.BlocksAttendance);
+                        <div class="um-cal-day @(blocked ? "um-cal-day--off" : "") @(isWeekend ? "um-cal-day--weekend" : "")">
+                            <span class="um-cal-day-num">@day</span>
+                            @foreach (var ev in dayEvents)
+                            {
+                                <span class="um-cal-event" title="@ev.Title">@ev.Title</span>
+                            }
+                        </div>
+                    }
+                </div>
+                <p class="small text-muted mb-0"><span class="d-inline-block um-cal-day--off px-2 rounded">Pink</span> = attendance blocked (weekends + marked days)</p>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="um-card mb-3">
+                <h3 class="h6 fw-bold text-danger mb-3">Add calendar day</h3>
+                <form asp-action="AddEvent" method="post" class="row g-2 um-form-row-stack">
+                    @Html.AntiForgeryToken()
+                    <div class="col-12">
+                        <input type="date" name="eventDate" class="form-control form-control-sm" required value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="col-12">
+                        <input type="text" name="title" class="form-control form-control-sm" placeholder="Title" required />
+                    </div>
+                    <div class="col-12">
+                        <select name="eventType" class="form-select form-select-sm">
+                            <option value="Holiday">Holiday</option>
+                            <option value="ExamWeek">Exam week</option>
+                            <option value="NoSchool">No school</option>
+                            <option value="Break">Break</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <select name="academicTermId" class="form-select form-select-sm">
+                            <option value="">No term</option>
+                            @foreach (var t in terms) { <option value="@t.AcademicTermId">@t.Name</option> }
+                        </select>
+                    </div>
+                    <div class="col-12 form-check">
+                        <input type="checkbox" name="blocksAttendance" value="true" class="form-check-input" id="blockAtt" checked />
+                        <label class="form-check-label small" for="blockAtt">Block attendance</label>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="um-btn-primary w-100 btn-sm">Add event</button>
+                    </div>
+                </form>
+            </div>
+            <div class="um-card">
+                <h3 class="h6 fw-bold text-danger mb-3">Add term</h3>
+                <form asp-action="AddTerm" method="post" class="row g-2 um-form-row-stack">
+                    @Html.AntiForgeryToken()
+                    <div class="col-12"><input type="text" name="name" class="form-control form-control-sm" placeholder="Fall 2026" required /></div>
+                    <div class="col-6"><input type="date" name="startDate" class="form-control form-control-sm" required /></div>
+                    <div class="col-6"><input type="date" name="endDate" class="form-control form-control-sm" required /></div>
+                    <div class="col-12"><button type="submit" class="btn btn-outline-danger w-100 btn-sm">Save term</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="um-card">
+        <h3 class="h6 fw-bold mb-3">Events this month</h3>
+        <div class="um-table-wrap">
+            <table class="um-table table-sm">
+                <thead><tr><th>Date</th><th>Title</th><th>Type</th><th>Blocks</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var ev in events)
+                    {
+                        <tr>
+                            <td>@ev.EventDate.ToString("ddd, dd MMM")</td>
+                            <td>@ev.Title</td>
+                            <td><span class="um-badge um-badge-gray">@ev.EventType</span></td>
+                            <td>@(ev.BlocksAttendance ? "Yes" : "No")</td>
+                            <td>
+                                <form asp-action="DeleteEvent" method="post" class="d-inline" onsubmit="return confirm('Delete?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@ev.SchoolCalendarEventId" />
+                                    <input type="hidden" name="year" value="@y" />
+                                    <input type="hidden" name="month" value="@m" />
+                                    <button type="submit" class="um-btn-sm um-btn-delete"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
